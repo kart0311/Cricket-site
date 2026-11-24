@@ -1,0 +1,63 @@
+name: Make matchup card
+
+# Run by hand from the Actions tab (or `gh workflow run card.yml -f bowler=... -f batter=...`).
+# Builds the same data as the site, makes a shareable JPEG, and saves it on the `cards` branch.
+on:
+  workflow_dispatch:
+    inputs:
+      bowler:
+        description: Bowler (e.g. Jasprit Bumrah)
+        required: true
+      batter:
+        description: Batter (e.g. Steve Smith)
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  card:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - name: Install the picture tool
+        run: npm install --no-save --no-audit --no-fund playwright && npx playwright install --with-deps chromium
+      - name: Download the scorecard history
+        env:
+          HF: https://huggingface.co/datasets/bhuvaneshprasad/test-cricket-dataset-1877-2014/resolve/main
+        run: |
+          set -e
+          mkdir -p data/history
+          for f in test_Matches_Data.csv test_Batting_Card.csv test_Bowling_Card.csv players_info.csv; do
+            curl -fsSL --retry 3 --retry-delay 5 -o "data/history/$f" "$HF/$f"
+          done
+      - name: Download the latest matches and rebuild the database
+        run: node refresh/refresh.mjs
+      - name: Make the card
+        env:
+          BOWLER: ${{ inputs.bowler }}
+          BATTER: ${{ inputs.batter }}
+        run: |
+          slug=$(echo "$BOWLER-v-$BATTER" | tr 'A-Z ' 'a-z-' | tr -cd 'a-z-')
+          echo "SLUG=$slug" >> "$GITHUB_ENV"
+          node tools/card.mjs --bowler "$BOWLER" --batter "$BATTER" --out "out/$slug.jpg"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: card
+          path: out/*.jpg
+      - name: Save on the cards branch
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git checkout --orphan cards-new
+          git rm -rf --cached . >/dev/null 2>&1 || true
+          mkdir -p /tmp/keep && cp out/*.jpg /tmp/keep/
+          find . -mindepth 1 -maxdepth 1 ! -name .git ! -name out -exec rm -rf {} +
+          cp /tmp/keep/*.jpg .
+          git add *.jpg
+          git commit -m "Card: $SLUG"
+          git push -f origin cards-new:cards

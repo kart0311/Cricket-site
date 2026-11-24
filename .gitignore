@@ -3,3 +3,4 @@ dist/
 refresh/.cache/
 data/history/*.csv
 app/indiaData.ts
+.card-tmp/
