@@ -38,6 +38,7 @@ const { chromium } = await import(process.env.PLAYWRIGHT || 'playwright');
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 2 });
 await page.goto(pathToFileURL(htmlFile).href); await page.waitForTimeout(300);
+await page.evaluate(() => { const r = document.getElementById('rows'); while (r && r.children.length > 1 && r.scrollHeight > r.clientHeight + 1) r.lastElementChild.remove(); });
 mkdirSync(dirname(out), { recursive: true });
 await page.screenshot({ path: out, type: 'jpeg', quality: 90 });
 await browser.close();
