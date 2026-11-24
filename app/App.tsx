@@ -17,7 +17,7 @@ const MASTHEAD_LINE = (() => {
 const TABS: [string, string, string][] = [['matchups', 'Player', 'matchup'], ['countries', 'Country', 'matchup'], ['players', 'Player', 'analysis'], ['grounds', 'Ground', 'analysis']];
 const SUBVIEWS: [string, string][] = [['one', 'Head to head'], ['next', 'Next Test']];
 
-function Selector({ label, value, options, open, onToggle, onChange, sort = true, placeholder, title, half, searchable = true }: any) {
+function Selector({ label, value, options, open, onToggle, onChange, sort = true, placeholder, title, half, searchable = true, tone }: any) {
     const current = options.find((o: any) => o.value === value);
     const [q, setQ] = useState('');
     const sorted = useMemo(() => sort ? options.slice().sort((a: any, b: any) => a.label.localeCompare(b.label)) : options, [options, sort]);
@@ -37,7 +37,7 @@ function Selector({ label, value, options, open, onToggle, onChange, sort = true
         };
     }, [open]);
     const dismiss = () => { setQ(''); onToggle(); };
-    return countryView(<div className={'crx-sel' + (half ? ' crx-sel-half' : '')} data-selector={label} ref={rootRef}>
+    return countryView(<div className={'crx-sel' + (half ? ' crx-sel-half' : '') + (tone ? ' crx-t-' + tone : '')} data-selector={label} ref={rootRef}>
         <button type="button" className={'crx-selbtn' + ((current || value != null) ? ' crx-filled' : '')} onClick={() => { setQ(''); onToggle(); }} aria-expanded={open} aria-haspopup="dialog" aria-label={label}>
             <span className="crx-sellabel">{label}</span>
             <span className={'crx-selvalue' + (!current && value == null ? ' crx-selph' : '')}>{current ? current.label : (value != null ? value : (placeholder || 'Select'))}</span>

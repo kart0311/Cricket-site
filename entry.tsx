@@ -7,5 +7,6 @@ import './app/style.css';
 import './app/overview.css';
 import './app/playanalysis.css';
 import './app/compact.css';
+import './app/polish.css';
 
 createRoot(document.getElementById('root')!).render(<FileRouter><App /></FileRouter>);

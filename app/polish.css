@@ -1,0 +1,81 @@
+/* Polish layer, loaded last: two side colours, team badges, small charts, and a wide two-column layout. */
+
+/* ---- two colours: India and the opposition ---- */
+.crx-theme { --ind: #f2a652; --opp: #6fc1d8; --neu: #d9c3a5; }
+.crx-theme .crx-t-ind { --tone: var(--ind); }
+.crx-theme .crx-t-opp { --tone: var(--opp); }
+.crx-theme .crx-t-neu { --tone: var(--neu); }
+
+.crx-theme .crx-hg-bars.crx-t-ind .crx-hg-bartrack i,
+.crx-theme .crx-hg-bars.crx-t-opp .crx-hg-bartrack i,
+.crx-theme .crx-hg-bars.crx-t-neu .crx-hg-bartrack i { background: var(--tone); }
+
+.crx-theme .crx-stats.crx-tiles > .crx-stat.crx-st-ind { box-shadow: inset 0 2px 0 var(--ind); }
+.crx-theme .crx-stats.crx-tiles > .crx-stat.crx-st-ind .crx-statv { color: var(--ind); }
+.crx-theme .crx-stats.crx-tiles > .crx-stat.crx-st-opp { box-shadow: inset 0 2px 0 var(--opp); }
+.crx-theme .crx-stats.crx-tiles > .crx-stat.crx-st-opp .crx-statv { color: var(--opp); }
+
+.crx-theme .crx-sel.crx-t-ind .crx-selbtn { box-shadow: inset 3px 0 0 var(--ind); }
+.crx-theme .crx-sel.crx-t-opp .crx-selbtn { box-shadow: inset 3px 0 0 var(--opp); }
+.crx-theme .crx-nm.crx-t-ind { color: var(--ind); }
+.crx-theme .crx-nm.crx-t-opp { color: var(--opp); }
+.crx-theme .crx-hg-top section.crx-t-ind h4 { color: var(--ind); }
+.crx-theme .crx-hg-top section.crx-t-opp h4 { color: var(--opp); }
+
+/* ---- team badges ---- */
+.crx-theme .crx-badge {
+    display: inline-flex; align-items: center; gap: 4px; height: 17px; padding: 0 7px 0 5px;
+    border: 1px solid var(--ds-hairline); border-radius: 9px; background: rgba(0,0,0,.14);
+    font-size: 10.5px; font-weight: 600; font-style: normal; letter-spacing: .05em; line-height: 1;
+    color: var(--ds-ink); white-space: nowrap; vertical-align: 1px; --tc: #d9c3a5;
+}
+.crx-theme .crx-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--tc); flex: none; }
+.crx-theme .crx-badge[data-team="IND"] { --tc: #f2a652; }
+.crx-theme .crx-badge[data-team="AUS"] { --tc: #f4c430; }
+.crx-theme .crx-badge[data-team="ENG"] { --tc: #e5636b; }
+.crx-theme .crx-badge[data-team="NZ"]  { --tc: #c9d1d6; }
+.crx-theme .crx-badge[data-team="SA"]  { --tc: #8ccf4d; }
+.crx-theme .crx-badge[data-team="WI"]  { --tc: #c4607f; }
+.crx-theme .crx-badge[data-team="PAK"] { --tc: #2fae78; }
+.crx-theme .crx-badge[data-team="SL"]  { --tc: #5b8ae6; }
+.crx-theme .crx-badge[data-team="BD"]  { --tc: #17a589; }
+.crx-theme .crx-badge[data-team="ZIM"] { --tc: #e07a5f; }
+.crx-theme .crx-badge[data-team="AFG"] { --tc: #9a7be0; }
+.crx-theme .crx-badge[data-team="IRE"] { --tc: #4cc38a; }
+.crx-theme .crx-hg-topName em .crx-badge { margin-left: 2px; }
+.crx-theme .crx-groundtable thead th .crx-badge { vertical-align: middle; }
+
+/* ---- small charts ---- */
+.crx-theme .crx-mini { margin: 0 0 14px; padding: 12px 14px 10px; background: var(--ds-raised); border: 1px solid var(--ds-hairline); }
+.crx-theme .crx-mini figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin: 0 0 10px; font-size: 13px; line-height: 18px; color: var(--ds-ink-2); }
+.crx-theme .crx-mini figcaption span { font-weight: 600; color: var(--ds-ink); }
+.crx-theme .crx-mini figcaption em { font-style: normal; font-size: 12px; text-align: right; }
+.crx-theme .crx-minibars { display: flex; align-items: flex-end; gap: 3px; height: 68px; }
+.crx-theme .crx-minibars i { flex: 1 1 0; min-width: 2px; max-width: 30px; position: relative; background: var(--tone, var(--neu)); border-radius: 1px 1px 0 0; }
+.crx-theme .crx-minibars i.crx-out::after { content: ""; position: absolute; top: -7px; left: 50%; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: #ff8a7a; }
+.crx-theme .crx-minifoot { display: flex; justify-content: space-between; margin-top: 7px; font-size: 11.5px; line-height: 16px; color: var(--ds-ink-4); font-variant-numeric: tabular-nums; }
+.crx-theme .crx-stripblocks { display: flex; flex-wrap: wrap; gap: 3px; }
+.crx-theme .crx-rs { display: block; width: 11px; height: 22px; border-radius: 1px; }
+.crx-theme .crx-rs-ind { background: var(--ind); }
+.crx-theme .crx-rs-opp { background: var(--opp); }
+.crx-theme .crx-rs-draw { background: #7e6455; }
+.crx-theme .crx-stripkey { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 10px; font-size: 12px; color: var(--ds-ink-2); }
+.crx-theme .crx-stripkey span { display: inline-flex; align-items: center; gap: 6px; background: none; width: auto; height: auto; }
+.crx-theme .crx-stripkey span::before { content: ""; width: 10px; height: 10px; border-radius: 1px; background: currentColor; }
+.crx-theme .crx-stripkey .crx-rs-ind { color: var(--ind); }
+.crx-theme .crx-stripkey .crx-rs-opp { color: var(--opp); }
+.crx-theme .crx-stripkey .crx-rs-draw { color: #a58872; }
+
+/* ---- two columns on wide screens (iPad landscape, laptops) ---- */
+.crx-theme .crx-split, .crx-theme .crx-col { display: block; min-width: 0; }
+@media (min-width: 1000px) {
+    .crx-theme, .crx-theme .file-card { --crx-edge: 40px; }
+    .crx-theme .file-card { max-width: 1120px; }
+    .crx-theme .crx-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 44px; align-items: start; }
+    /* masthead: photo on the left, title on the right, instead of a tall stacked header */
+    .crx-theme .crx-photoheader { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); align-items: center; gap: 0; margin-bottom: 8px; }
+    .crx-theme .crx-stadium-photo::after { background: linear-gradient(90deg, transparent 72%, rgba(67,40,29,.7) 92%, var(--ds-page) 100%); }
+    .crx-theme .crx-masthead { padding: 0 var(--crx-edge) 0 8px; }
+    .crx-theme .crx-photoheader .crx-title { font-size: clamp(32px, 3.4vw, 44px); }
+    .crx-theme .crx-mastsub { max-width: 34ch; }
+}

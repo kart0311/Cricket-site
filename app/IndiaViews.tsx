@@ -2,6 +2,7 @@
 // Every number is computed here from app/indiaData.ts (see india.ts); nothing is typed in by hand.
 import React, { useMemo, useState } from 'react';
 import { countryView } from './countryLabels';
+import { Badge, MiniBars, ResultStrip, type Tone } from './charts';
 import {
     BAT, BOWL, CODE, CODE_LETTER, CODE_NAME, GROUNDS, GROUND_AGG, INNINGS_NAME, PAIRS, PAIRS_FROM, PLAYERS, TEAMS, TESTS,
     BOWL_KINDS, addStats, ballToken, batAgg, batByMatch, batByPlayer, batHand, bowlAgg, bowlByMatch, bowlByPlayer, bowlKind, creditedBy, emptyStats, fmtDate, fmtKinds, isSpinKind,
@@ -10,15 +11,17 @@ import {
 } from './india';
 
 const pname = (i: number) => PLAYERS[i].name;
+// Which side a player is on, for colour: India's players or the opposition's.
+const toneOf = (p: number | null): Tone | undefined => (p == null ? undefined : PLAYERS[p].team === 0 ? 'ind' : 'opp');
 const plabel = (i: number) => `${PLAYERS[i].name} (${CODE[PLAYERS[i].team]})`;
 const plural = (n: number, w: string, ws?: string) => `${n1(n)} ${n === 1 ? w : ws || w + 's'}`;
 
 // Stat tiles. The row carries how many tiles it holds, so the stylesheet can pick a column count that
 // fits them instead of squeezing every tile onto one line.
-function Tiles({ rows, cls = '' }: { rows: [string, string | number][]; cls?: string }) {
+function Tiles({ rows, cls = '' }: { rows: [string, string | number, Tone?][]; cls?: string }) {
     const n = Math.min(rows.length, 10);
-    return <div className={`crx-stats crx-tiles crx-tiles${n} ${cls}`.trim()}>{rows.map(([l, v]) =>
-        <div key={l} className="crx-stat"><div className="crx-statv">{v}</div><div className="crx-statl">{l}</div></div>)}</div>;
+    return <div className={`crx-stats crx-tiles crx-tiles${n} ${cls}`.trim()}>{rows.map(([l, v, tone]) =>
+        <div key={l} className={'crx-stat' + (tone ? ' crx-st-' + tone : '')}><div className="crx-statv">{v}</div><div className="crx-statl">{l}</div></div>)}</div>;
 }
 function Pills({ label, items, value, onChange, cls }: { label: string; items: [string, string][]; value: string; onChange: (v: string) => void; cls: string }) {
     return <div className={'crx-viewtoggle ' + cls} role="group" aria-label={label}>{items.map(([id, l]) =>
@@ -29,9 +32,9 @@ function Fold({ label, note, children, cls = '' }: { label: string; note?: strin
 }
 const Label = ({ children }: { children: any }) => <div className="crx-filterlabel">{children}</div>;
 const Hint = ({ children }: { children: any }) => <p className="crx-hint">{children}</p>;
-function Bars({ rows }: { rows: [string, number][] }) {
+function Bars({ rows, tone }: { rows: [string, number][]; tone?: Tone }) {
     const total = rows.reduce((a, r) => a + r[1], 0) || 1;
-    return <div className="crx-hg-bars">{rows.filter((r) => r[1] > 0).map(([l, n]) =>
+    return <div className={'crx-hg-bars' + (tone ? ' crx-t-' + tone : '')}>{rows.filter((r) => r[1] > 0).map(([l, n]) =>
         <div className="crx-hg-bar" key={l}><span className="crx-hg-barname">{l}</span><span className="crx-hg-bartrack" aria-hidden="true"><i style={{ width: Math.max(2, Math.round(100 * n / total)) + '%' }} /></span><span className="crx-hg-barnum">{n1(n)} · {Math.round(100 * n / total)}%</span></div>)}</div>;
 }
 function ShowMore({ open, onToggle, total, shown, what }: { open: boolean; onToggle: () => void; total: number; shown: number; what: string }) {
@@ -40,7 +43,7 @@ function ShowMore({ open, onToggle, total, shown, what }: { open: boolean; onTog
 }
 function TestRow({ t, vs }: { t: Test; vs?: boolean }) {
     return <div className="crx-meet">
-        <div className="crx-meethead"><span className="crx-meetlabel"><span className="crx-meetdate">{fmtDate(t.d)}</span><span className="crx-meetvenue">{' · '}{vs ? `${CODE[t.a]} v ${CODE[t.b]} · ` : ''}{groundShort(t.g)}</span></span></div>
+        <div className="crx-meethead"><span className="crx-meetlabel"><span className="crx-meetdate">{fmtDate(t.d)}</span><span className="crx-meetvenue">{' · '}{vs && <><Badge team={t.a} /> v <Badge team={t.b} />{' · '}</>}{groundShort(t.g)}</span></span></div>
         <div className="crx-meetline crx-matchres">{resultText(t)}</div>
         <div className="crx-scoreline">{scoreLine(t) || 'Scores not recorded'}</div>
     </div>;
@@ -93,6 +96,11 @@ export function IndiaMatchup({ Selector }: any) {
     }
     const tests = new Set(shown.map((x) => x.m)).size;
     const hasCard = shown.some((x) => x.card);
+    // Runs the batter scored in each meeting that has ball-by-ball detail, oldest first; a dot marks a dismissal.
+    const meetBars = shown.filter((x) => x.over).slice().reverse().map((x) => {
+        const o = emptyStats(); addStats(o, x.over!); const t = TESTS[x.m];
+        return { v: o.runs, out: o.outs > 0, label: `${fmtDate(t.d)} · ${INNINGS_NAME[x.inn]}: ${o.runs} off ${o.balls}${o.outs ? ', dismissed' : ''}` };
+    });
     const groundOpts = useMemo(() => {
         const gs = [...new Set(meets.map((x) => TESTS[x.m].g))];
         return [{ value: -1, label: 'All grounds' }, ...gs.map((g) => ({ value: g, label: groundName(g), searchText: groundName(g) })).sort((a, b) => a.label.localeCompare(b.label))];
@@ -104,9 +112,9 @@ export function IndiaMatchup({ Selector }: any) {
     const chooseBatter = (v: number | null) => { setBatter(v); if (v != null && bowler != null && !BY_BATTER.get(v)?.has(bowler)) setBowler(null); reset(); };
     return countryView(<div>
         <div className="crx-pair">
-            <Selector half label="Bowler" value={bowler} open={open === 'bowler'} placeholder="Pick a player" title="Bowler" onToggle={() => toggle('bowler')} onChange={(v: number | null) => { chooseBowler(v); }} sort={false}
+            <Selector half tone={toneOf(bowler)} label="Bowler" value={bowler} open={open === 'bowler'} placeholder="Pick a player" title="Bowler" onToggle={() => toggle('bowler')} onChange={(v: number | null) => { chooseBowler(v); }} sort={false}
                 options={[...(bowler != null ? [{ value: null, label: 'Pick a player' }] : []), ...bowlerOpts]} />
-            <Selector half label="Batter" value={batter} open={open === 'batter'} placeholder="Pick a player" title="Batter" onToggle={() => toggle('batter')} onChange={(v: number | null) => { chooseBatter(v); }} sort={false}
+            <Selector half tone={toneOf(batter)} label="Batter" value={batter} open={open === 'batter'} placeholder="Pick a player" title="Batter" onToggle={() => toggle('batter')} onChange={(v: number | null) => { chooseBatter(v); }} sort={false}
                 options={[...(batter != null ? [{ value: null, label: 'Pick a player' }] : []), ...batterOpts]} />
         </div>
         {!pair && <Hint>{bowler != null ? 'Now pick a batter.' : batter != null ? 'Now pick a bowler.' : 'Pick a bowler and a batter. One side is always an Indian player, the other from the opposition.'}</Hint>}
@@ -119,20 +127,23 @@ export function IndiaMatchup({ Selector }: any) {
         </Fold>}
         {pair && shown.length === 0 && <div className="crx-note"><div className="crx-notetitle">No data available</div><div className="crx-notebody">No recorded meeting for this selection. Try widening the filters.</div></div>}
         {pair && shown.length > 0 && <>
-            <div className="crx-hero"><div className="crx-heroname">{pname(bowler!)} to {pname(batter!)}</div><div className="crx-herosub">{groundLabel} · {innLabel}</div></div>
+            <div className="crx-hero"><div className="crx-heroname"><span className={'crx-nm crx-t-' + toneOf(bowler)}>{pname(bowler!)}</span> to <span className={'crx-nm crx-t-' + toneOf(batter)}>{pname(batter!)}</span></div><div className="crx-herosub">{groundLabel} · {innLabel}</div></div>
+            <div className="crx-split"><div className="crx-col">
             <Tiles rows={[['Balls', n1(stats.balls)], [stats.runs === 1 ? 'Run' : 'Runs', n1(stats.runs)], [stats.outs === 1 ? 'Dismissal' : 'Dismissals', stats.outs], [tests === 1 ? 'Test' : 'Tests', tests]]} />
             <div className="crx-outkinds">{stats.outs > 0 ? <><span>Got out</span><strong>{fmtKinds(stats.kinds)}</strong></> : <span>{stats.balls ? `Not dismissed in ${plural(stats.balls, 'ball')}` : 'No dismissals'}</span>}</div>
             {hasCard && <p className="crx-fine">Balls and runs come from Tests with ball-by-ball data only. Dismissals include every Test since {fmtDate(PAIRS_FROM)}.</p>}
+            {meetBars.length > 1 && <MiniBars items={meetBars} tone={toneOf(batter)} title="Runs in each meeting" note="dot = dismissed" foot={[yearOf(TESTS[shown[shown.length - 1].m].d), yearOf(TESTS[shown[0].m].d)]} />}
             {stats.balls > 0 && <Fold label="More numbers" cls="crx-morenums">
                 <Tiles rows={[['Strike rate', ratio(stats.runs * 100, stats.balls, 1)], ['Dots', stats.dots], ['Dot %', Math.round(100 * stats.dots / stats.balls) + '%'], ['Fours', stats.fours], ['Sixes', stats.sixes], ['Runs per out', stats.outs ? ratio(stats.runs, stats.outs, 1) : '–']]} />
             </Fold>}
+            </div><div className="crx-col">
             <Label>Meetings · newest first</Label>
             <div className="crx-meets">{(all ? shown : shown.slice(0, 4)).map((x) => {
                 const t = TESTS[x.m]; const key = x.m + '-' + x.inn; let line = '';
                 if (x.over) { const s = emptyStats(); addStats(s, x.over); line = `${plural(s.balls, 'ball')} · ${plural(s.runs, 'run')} · ${plural(s.outs, 'dismissal')}`; }
                 else if (x.card) { const [k, r, b] = x.card; line = `Dismissed him for ${r}${b >= 0 ? ` (${b} balls)` : ''} · ${CODE_NAME[k]}`; }
                 return <div className="crx-meet" key={key}>
-                    <div className="crx-meethead"><span className="crx-meetlabel"><span className="crx-meetdate">{fmtDate(t.d)}</span><span className="crx-meetvenue">{' · '}{CODE[t.a]} v {CODE[t.b]} · {groundShort(t.g)} · {INNINGS_NAME[x.inn]}</span></span></div>
+                    <div className="crx-meethead"><span className="crx-meetlabel"><span className="crx-meetdate">{fmtDate(t.d)}</span><span className="crx-meetvenue">{' · '}<Badge team={t.a} /> v <Badge team={t.b} /> · {groundShort(t.g)} · {INNINGS_NAME[x.inn]}</span></span></div>
                     <div className="crx-meetline">{line}</div>
                     {x.over && <>
                         <button type="button" className="crx-ctabmorebtn crx-delbtn" onClick={() => setMore(more === key ? null : key)}>{more === key ? 'Hide ball by ball −' : 'Ball by ball +'}</button>
@@ -141,6 +152,7 @@ export function IndiaMatchup({ Selector }: any) {
                 </div>;
             })}</div>
             <ShowMore open={all} onToggle={() => setAll(!all)} total={shown.length} shown={4} what="meetings" />
+            </div></div>
         </>}
     </div>);
 }
@@ -191,26 +203,28 @@ export function IndiaCountry({ Selector }: any) {
         <div className="crx-hero"><div className="crx-heroname">India v {TEAMS[opp]}</div>
             {first && <div className="crx-herosub">{plural(allTests.length, 'Test')} · {yearOf(first.d)}{last && yearOf(last.d) !== yearOf(first.d) ? '–' + yearOf(last.d) : ''}</div>}</div>
         <Pills label="Where played" cls="crx-matchupmodes" value={where} onChange={(v) => { setWhere(v); setAll(false); }} items={[['all', 'All'], ['home', 'In India'], ['away', 'Away']]} />
-        {tests.length === 0 ? <Hint>No Tests in this selection.</Hint> : <>
-            <Tiles rows={[['Tests', tests.length], ['India won', won], [`${CODE[opp]} won`, lost], ['Drawn', drawn]]} />
+        {tests.length === 0 ? <Hint>No Tests in this selection.</Hint> : <div className="crx-split"><div className="crx-col">
+            <Tiles rows={[['Tests', tests.length], ['India won', won, 'ind'], [`${CODE[opp]} won`, lost, 'opp'], ['Drawn', drawn]]} />
+            {tests.length > 1 && <ResultStrip oppCode={CODE[opp]} items={tests.map((t) => ({ k: winnerOf(t) === 0 ? 'ind' as const : winnerOf(t) === opp ? 'opp' as const : 'draw' as const, label: `${fmtDate(t.d)} · ${GROUNDS[t.g]?.city || groundShort(t.g)} · ${resultText(t)}` }))} />}
             {tied > 0 && <p className="crx-fine">{tied === 1 ? '1 Test was tied.' : `${tied} Tests were tied.`}</p>}
             <Label>Highest and lowest totals</Label>
-            <table className="crx-groundtable crx-tot"><thead><tr><th /><th>India</th><th>{CODE[opp]}</th></tr></thead><tbody>
+            <table className="crx-groundtable crx-tot"><thead><tr><th /><th><Badge team={0} /></th><th><Badge team={opp} /></th></tr></thead><tbody>
                 <tr><th>Highest</th>{cell(ti.hi)}{cell(to.hi)}</tr>
                 <tr><th>Lowest (all out)</th>{cell(ti.lo)}{cell(to.lo)}</tr>
             </tbody></table>
+            </div><div className="crx-col">
             <Label>Tests · newest first</Label>
             <div className="crx-meets">{(all ? list : list.slice(0, 5)).map((t) => <TestRow key={t.i} t={t} />)}</div>
             <ShowMore open={all} onToggle={() => setAll(!all)} total={list.length} shown={5} what="Tests" />
             <Fold label="Top performers" note="runs and wickets" cls="crx-morerec">
                 {[0, 1].map((s) => <div key={s}>
                     <div className="crx-hg-top">
-                        <section><h4>{s === 0 ? 'India' : TEAMS[opp]} · most runs</h4>{leaders[s].bat.map((x) => <div className="crx-hg-topRow" key={x.p}><span className="crx-hg-topName">{pname(x.p)}<em>{x.tests} {x.tests === 1 ? 'Test' : 'Tests'}</em></span><strong>{n1(x.runs)}</strong></div>)}</section>
-                        <section><h4>{s === 0 ? 'India' : TEAMS[opp]} · most wickets</h4>{leaders[s].bowl.map((x) => <div className="crx-hg-topRow" key={x.p}><span className="crx-hg-topName">{pname(x.p)}<em>{x.tests} {x.tests === 1 ? 'Test' : 'Tests'}</em></span><strong>{x.wkts}</strong></div>)}</section>
+                        <section className={'crx-t-' + (s === 0 ? 'ind' : 'opp')}><h4>{s === 0 ? 'India' : TEAMS[opp]} · most runs</h4>{leaders[s].bat.map((x) => <div className="crx-hg-topRow" key={x.p}><span className="crx-hg-topName">{pname(x.p)}<em>{x.tests} {x.tests === 1 ? 'Test' : 'Tests'}</em></span><strong>{n1(x.runs)}</strong></div>)}</section>
+                        <section className={'crx-t-' + (s === 0 ? 'ind' : 'opp')}><h4>{s === 0 ? 'India' : TEAMS[opp]} · most wickets</h4>{leaders[s].bowl.map((x) => <div className="crx-hg-topRow" key={x.p}><span className="crx-hg-topName">{pname(x.p)}<em>{x.tests} {x.tests === 1 ? 'Test' : 'Tests'}</em></span><strong>{x.wkts}</strong></div>)}</section>
                     </div>
                 </div>)}
             </Fold>
-        </>}
+            </div></div>}
     </div>);
 }
 
@@ -242,6 +256,7 @@ function PlayerCard({ p }: { p: number }) {
     const span = playerSpan(p);
     const ba = batAgg(bat); const bo = bowlAgg(bowl);
     const isBat = branch === 'bat';
+    const tone: Tone = pl.team === 0 ? 'ind' : 'opp';
     const empty = (isBat ? bat.length : bowl.length) === 0;
     const sub = [pl.bat, pl.bowl && pl.bowl[0].toUpperCase() + pl.bowl.slice(1)].filter(Boolean).join(' · ');
     const against = pl.full ? '' : 'His Tests against India only. A complete career is kept for India\u2019s players and for anyone still playing.';
@@ -275,29 +290,44 @@ function PlayerCard({ p }: { p: number }) {
     const oppRows = [...byOpp.entries()].filter(([, v]) => (isBat ? v.bat.length : v.bowl.length) > 0).sort((a, b) => (isBat ? batAgg(b[1].bat).runs - batAgg(a[1].bat).runs : bowlAgg(b[1].bowl).wkts - bowlAgg(a[1].bowl).wkts));
     const grdRows = [...byGround.entries()].filter(([, v]) => (isBat ? v.bat.length : v.bowl.length) > 0).sort((a, b) => (isBat ? batAgg(b[1].bat).runs - batAgg(a[1].bat).runs : bowlAgg(b[1].bowl).wkts - bowlAgg(a[1].bowl).wkts));
     const recent = (isBat ? bat : bowl).slice().sort((a, b) => b[0] - a[0] || b[1] - a[1]).slice(0, rec ? 20 : 6);
+    // Runs (batting) or wickets (bowling) in each calendar year of his career, filling the quiet years with zero.
+    const yearBars = (() => {
+        const m = new Map<number, number>();
+        for (const r of (isBat ? bat : bowl)) { const y = Number(yearOf(TESTS[r[0]].d)); m.set(y, (m.get(y) || 0) + (isBat ? (r as BatRow)[3] : (r as BowlRow)[5])); }
+        const ys = [...m.keys()].sort((a, b) => a - b);
+        if (ys.length < 2) return null;
+        const unit = isBat ? 'runs' : 'wickets';
+        const items = []; let best = ys[0];
+        for (let y = ys[0]; y <= ys[ys.length - 1]; y++) { const v = m.get(y) || 0; if (v > (m.get(best) || 0)) best = y; items.push({ v, label: `${y}: ${n1(v)} ${unit}` }); }
+        return { items, first: String(ys[0]), last: String(ys[ys.length - 1]), note: `Best year ${best}: ${n1(m.get(best) || 0)}`, title: (isBat ? 'Runs' : 'Wickets') + ' by year' };
+    })();
+    const chart = yearBars ? <MiniBars items={yearBars.items} tone={tone} title={yearBars.title} note={yearBars.note} foot={[yearBars.first, yearBars.last]} /> : null;
     return <div className="crx-playercard">
         <div className="crx-hero"><div className="crx-heroname">{pl.name}</div>
-            <div className="crx-herosub">{CODE[pl.team]}{sub ? ' · ' + sub : ''}{span ? ` · ${yearOf(span[0])}–${yearOf(span[1])}` : ''}</div></div>
+            <div className="crx-herosub"><Badge team={pl.team} />{sub ? ' · ' + sub : ''}{span ? ` · ${yearOf(span[0])}–${yearOf(span[1])}` : ''}</div></div>
         <Pills label="Branch" cls="crx-twomodes" value={branch} onChange={setBranch} items={[['bat', 'Batting analysis'], ['bowl', 'Bowling analysis']]} />
-        {empty ? <p className="crx-hint">No {isBat ? 'batting' : 'bowling'} recorded in these Tests.</p> : <>
+        {empty ? <p className="crx-hint">No {isBat ? 'batting' : 'bowling'} recorded in these Tests.</p> : <div className="crx-split"><div className="crx-col">
         {isBat ? <>
             <Tiles rows={[['Tests', ba.tests], ['Runs', n1(ba.runs)], ['Average', ba.avg], ['Hundreds', ba.h]]} />
+            {chart}
             <Fold label="More numbers" cls="crx-morenums"><Tiles rows={[['Innings', ba.inns], ['Not outs', ba.no], ['High score', ba.hs + (ba.hsNo ? '*' : '')], ['Strike rate', ba.sr], ['Fifties', ba.f], ['Ducks', ba.ducks], ['Fours', n1(ba.fours)], ['Sixes', ba.sixes]]} /></Fold>
         </> : <>
             <Tiles rows={[['Tests', bo.tests], ['Wickets', n1(bo.wkts)], ['Average', bo.avg], ['Economy', bo.econ]]} />
+            {chart}
             <Fold label="More numbers" cls="crx-morenums"><Tiles rows={[['Innings', bo.inns], ['Overs', bo.overs], ['Maidens', bo.maidens], ['Best innings', bo.best], ['5 wicket hauls', bo.w5], ['10 wicket Tests', bo.w10], ['Strike rate', bo.sr], ['Runs conceded', n1(bo.runs)]]} /></Fold>
         </>}
         {against ? <p className="crx-fine">{against}</p> : pl.team !== 0 ? <p className="crx-fine">Complete Test career, every opponent.</p> : null}
         <Label>{isBat ? 'How he gets out' : 'How he takes wickets'}</Label>
-        {kindRows.some((r) => r[1] > 0) ? <Bars rows={kindRows} /> : <p className="crx-fine">No dismissals recorded.</p>}
+        {kindRows.some((r) => r[1] > 0) ? <Bars rows={kindRows} tone={tone} /> : <p className="crx-fine">No dismissals recorded.</p>}
         <Label>{isBat ? 'What kind of bowler gets him out' : 'Which batters he gets out'}</Label>
         {styleRows.some((r) => r[1] > 0)
-            ? <><Bars rows={styleRows} />
+            ? <><Bars rows={styleRows} tone={tone} />
                 <p className="crx-fine">{styleNote}</p></>
             : <p className="crx-fine">No dismissals with a known {isBat ? 'bowling' : 'batting'} style.</p>}
+        </div><div className="crx-col">
         {topList.length > 0 && <>
             <Label>{isBat ? 'Dismissed most often by' : 'Dismissed most often'}</Label>
-            <div className="crx-hg-top crx-one">{<section>{topList.map(([i, n]) => <div className="crx-hg-topRow" key={i}><span className="crx-hg-topName">{pname(i)}<em>{CODE[PLAYERS[i].team]}</em></span><strong>{n}</strong></div>)}</section>}</div>
+            <div className="crx-hg-top crx-one">{<section>{topList.map(([i, n]) => <div className="crx-hg-topRow" key={i}><span className="crx-hg-topName">{pname(i)}<em><Badge team={PLAYERS[i].team} /></em></span><strong>{n}</strong></div>)}</section>}</div>
         </>}
         {pl.full && oppRows.length > 1 && <Fold label="By opponent" note={`${oppRows.length} teams`}>
             {oppTable(oppRows.map(([o, v]) => ({ opp: o, label: TEAMS[o], vals: isBat ? (() => { const a = batAgg(v.bat); return [a.tests, n1(a.runs), a.avg, a.h]; })() : (() => { const a = bowlAgg(v.bowl); return [a.tests, a.wkts, a.avg, a.best]; })() })), isBat ? ['Opponent', 'Tests', 'Runs', 'Avg', '100s'] : ['Opponent', 'Tests', 'Wkts', 'Avg', 'Best'])}
@@ -310,11 +340,11 @@ function PlayerCard({ p }: { p: number }) {
             <div className="crx-meets">{recent.map((r, i) => {
                 const t = TESTS[r[0]];
                 const line = isBat ? (() => { const b = r as BatRow; return `${b[3]}${b[7] === 0 ? '*' : ''}${b[4] >= 0 ? ` (${b[4]} balls)` : ''} · ${CODE_NAME[b[7]]}`; })() : (() => { const w = r as BowlRow; return `${w[5]}/${w[4]} from ${Math.floor(w[3] / 6)}${w[3] % 6 ? '.' + (w[3] % 6) : ''} overs`; })();
-                return <div className="crx-meet" key={i}><div className="crx-meethead"><span className="crx-meetlabel"><span className="crx-meetdate">{fmtDate(t.d)}</span><span className="crx-meetvenue">{' · '}{CODE[t.a]} v {CODE[t.b]} · {groundShort(t.g)} · {INNINGS_NAME[r[1]]}</span></span></div><div className="crx-meetline">{line}</div></div>;
+                return <div className="crx-meet" key={i}><div className="crx-meethead"><span className="crx-meetlabel"><span className="crx-meetdate">{fmtDate(t.d)}</span><span className="crx-meetvenue">{' · '}<Badge team={t.a} /> v <Badge team={t.b} /> · {groundShort(t.g)} · {INNINGS_NAME[r[1]]}</span></span></div><div className="crx-meetline">{line}</div></div>;
             })}</div>
             <ShowMore open={rec} onToggle={() => setRec(!rec)} total={(isBat ? bat : bowl).length} shown={6} what="innings" />
         </Fold>
-        </>}
+        </div></div>}
     </div>;
 }
 
@@ -351,6 +381,7 @@ function GroundCard({ g, allInd, setAllInd }: { g: number; allInd: boolean; setA
         for (const i of t.inns) { if (!hi || i[1] > hi[0]) hi = [i[1], t, i[0]]; if (i[2] >= 10 && (!lo || i[1] < lo[0])) lo = [i[1], t, i[0]]; }
         if (t.by && t.by[0] === 'w' && typeof t.res === 'number') { const last = [...t.inns].reverse().find((i) => i[0] === t.res); if (last && (!ch || last[1] > ch[0])) ch = [last[1], t, t.res]; }
     }
+    const totalsBars = done.filter((t) => t.inns[0]).slice(-40).map((t) => ({ v: t.inns[0][1], label: `${fmtDate(t.d)} · ${CODE[t.inns[0][0]]} ${t.inns[0][1]}` }));
     const rowDetail = (x: [number, Test, number] | null) => x ? `${CODE[x[2]]} v ${CODE[x[2] === x[1].a ? x[1].b : x[1].a]} · ${yearOf(x[1].d)}` : '';
     const A = GROUND_AGG[g];
     const dis = A ? (A.k as number[]).reduce((a, b) => a + b, 0) : 0;
@@ -361,8 +392,10 @@ function GroundCard({ g, allInd, setAllInd }: { g: number; allInd: boolean; setA
     const Top = ({ title, rows, unit }: { title: string; rows: any[]; unit: (r: any) => string }) => <section><h4>{title}</h4>{rows.map((r) => <div className="crx-hg-topRow" key={r[0]}><span className="crx-hg-topName">{r[0]}<em>{r[1]} {r[1] === 1 ? 'inns' : 'inns'}</em></span><strong>{unit(r)}</strong></div>)}</section>;
     return <div>
         <div className="crx-hero"><div className="crx-heroname">{GROUNDS[g].name}</div><div className="crx-herosub">{[GROUNDS[g].city, GROUNDS[g].country].filter(Boolean).join(', ')} · {plural(ts.length, 'Test')} {yrs}</div></div>
+        <div className="crx-split"><div className="crx-col">
         <Label>Results</Label>
         <Tiles rows={[['Tests', done.length], ['Batting first won', batFirst], ['Chasing won', chase], ['Drawn', draws]]} />
+        {totalsBars.length > 2 && <MiniBars items={totalsBars} tone="neu" title="First-innings totals" note={`last ${totalsBars.length} Tests`} foot={[yearOf(done.filter((t) => t.inns[0]).slice(-40)[0].d), yearOf(done[done.length - 1].d)]} />}
         <Label>Scores</Label>
         <div className="crx-hg-scores">
             {avgFirst > 0 && <div className="crx-hg-score"><span>Average first innings</span><strong>{avgFirst}</strong></div>}
@@ -372,9 +405,10 @@ function GroundCard({ g, allInd, setAllInd }: { g: number; allInd: boolean; setA
         </div>
         {A && dis > 0 && <>
             <Label>How wickets fall</Label>
-            <Bars rows={KIND_LABELS.map((l, i) => [l, A.k[i]] as [string, number]).sort((a, b) => b[1] - a[1])} />
+            <Bars tone="neu" rows={KIND_LABELS.map((l, i) => [l, A.k[i]] as [string, number]).sort((a, b) => b[1] - a[1])} />
             <p className="crx-fine">{n1(dis)} dismissals{known > 20 ? ` · bowlers took ${Math.round(100 * ps[0] / known)}% of their wickets with pace and ${Math.round(100 * ps[1] / known)}% with spin` : ''}. All teams, every Test here.</p>
         </>}
+        </div><div className="crx-col">
         {A && (A.bat.length > 0 || A.bowl.length > 0) && <>
             <Label>Top players</Label>
             <div className="crx-hg-top">
@@ -384,10 +418,11 @@ function GroundCard({ g, allInd, setAllInd }: { g: number; allInd: boolean; setA
         </>}
         {ind.length > 0 && <>
             <Label>India here</Label>
-            <Tiles rows={[['Tests', ind.length], ['Won', iw], ['Lost', il], ['Drawn', idr]]} />
+            <Tiles rows={[['Tests', ind.length], ['Won', iw, 'ind'], ['Lost', il, 'opp'], ['Drawn', idr]]} />
             <div className="crx-meets">{(allInd ? ind : ind.slice(0, 4)).map((t) => <TestRow key={t.i} t={t} vs />)}</div>
             <ShowMore open={allInd} onToggle={() => setAllInd(!allInd)} total={ind.length} shown={4} what="Tests" />
         </>}
+        </div></div>
     </div>;
 }
 
