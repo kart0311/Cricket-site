@@ -251,7 +251,7 @@
     font-size: 13px; line-height: 19px; color: var(--ds-ink-2); max-width: 46ch;
 }
 @media (min-width: 768px) {
-    .crx-theme .crx-headerphoto { height: min(44vw, 440px); object-fit: cover; object-position: 50% 45%; }
+    .crx-theme .crx-headerphoto { height: auto; object-fit: contain; }
     .crx-theme .crx-masthead { padding: 18px var(--crx-edge) 20px; }
     .crx-theme .crx-mastsub { font-size: 14px; line-height: 21px; }
 }
@@ -263,3 +263,7 @@
 .crx-theme .crx-pa-fold .crx-sel-half .crx-chev { flex:none; }
 /* Line up the values of stacked pickers (Bowler / Batter) */
 .crx-theme .crx-section .crx-selbtn .crx-sellabel { min-width:52px; }
+
+/* Long player names wrap inside their box instead of running past the + (phones, iPads) */
+.crx-theme .crx-section .crx-sel-half .crx-selvalue { white-space:normal; overflow-wrap:anywhere; min-width:0; line-height:20px; }
+.crx-theme .crx-section .crx-sel-half .crx-chev { flex:none; }
