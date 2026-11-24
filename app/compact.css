@@ -219,3 +219,32 @@
 }
 
 }
+
+/* ---- masthead ----------------------------------------------------------
+   The photo is a cropped band rather than the whole frame, and the name sits below it on solid
+   colour. That is what lets the name be set large: over grass it had to shrink to stay legible.
+   Left aligned, the way a scorecard is. */
+.crx-theme .crx-headerphoto {
+    height: clamp(132px, 39vw, 190px); object-fit: cover; object-position: 50% 58%;
+}
+.crx-theme .crx-stadium-photo::after {
+    background: linear-gradient(180deg, transparent 42%, rgba(67,40,29,.62) 82%, var(--ds-page) 100%);
+}
+.crx-theme .crx-masthead { padding: 13px var(--crx-edge) 15px; }
+.crx-theme .crx-photoheader .crx-title {
+    margin: 0; padding: 0; border: 0; text-align: left; white-space: normal;
+    font-family: Georgia, 'Times New Roman', serif; font-weight: 400; letter-spacing: -.01em;
+    font-size: clamp(24px, 7.9vw, 38px); line-height: 1.08;
+}
+.crx-theme .crx-title1, .crx-theme .crx-title2 { display: block; }
+.crx-theme .crx-title1 { color: #fff0dc; }
+.crx-theme .crx-title2 { color: var(--ds-ink-4); line-height: 1.12; }
+.crx-theme .crx-mastsub {
+    margin: 0; padding-top: 11px; margin-top: 12px; border-top: 1px solid var(--ds-hairline);
+    font-size: 13px; line-height: 19px; color: var(--ds-ink-2); max-width: 46ch;
+}
+@media (min-width: 768px) {
+    .crx-theme .crx-headerphoto { height: 260px; object-position: 50% 52%; }
+    .crx-theme .crx-masthead { padding: 18px var(--crx-edge) 20px; }
+    .crx-theme .crx-mastsub { font-size: 14px; line-height: 21px; }
+}

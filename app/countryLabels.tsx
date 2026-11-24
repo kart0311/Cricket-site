@@ -20,6 +20,8 @@ export function countryView(node: any, inheritedHeading = false): any {
     const element = node as React.ReactElement<any>;
     const props = element.props;
     const className = typeof props.className === 'string' ? props.className : '';
+    // Opt out: text inside a crx-noabbr element is left exactly as written, country names and all.
+    if (/(?:^|\s)crx-noabbr(?:\s|$)/.test(className)) return node;
     const heading = inheritedHeading || (typeof element.type === 'string' && /^h[1-6]$/.test(element.type)) ||
         /(?:^|\s)crx-(?:filterlabel|sctitle|scinnhead|colltitle|sheettitle|profile-scope)(?:\s|$)/.test(className);
     const next: Record<string, any> = {};

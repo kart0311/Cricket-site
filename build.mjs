@@ -42,9 +42,8 @@ const html = `<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cricket - Beyond the Scoreboard</title>
+<title>Cricket — Beyond the Scoreboard</title>
 <meta name="description" content="India Test cricket explorer: player matchups, country matchups, player analysis and ground analysis.">
-<meta name="robots" content="noindex, nofollow">
 <style>${css}</style>
 </head>
 <body>

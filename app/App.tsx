@@ -4,6 +4,15 @@ import { PlayAnalysis } from './PlayAnalysis';
 import { IndiaCountry, IndiaGrounds, IndiaMatchup, IndiaPlayers } from './IndiaViews';
 import { countryView, displayText } from './countryLabels';
 import headerPhoto from './photos/cricket-header.jpg';
+import { TESTS, isIndia, n1, yearOf } from './india';
+
+// One line under the masthead, counted from the data rather than typed in, so it stays true
+// as the daily refresh adds matches.
+const MASTHEAD_LINE = (() => {
+    const bb = TESTS.filter((t) => isIndia(t) && t.bb).length;
+    const first = TESTS[0] ? yearOf(TESTS[0].d) : '1877';
+    return `${n1(TESTS.length)} Tests since ${first}, and ball-by-ball detail for ${n1(bb)} of India's.`;
+})();
 
 const TABS: [string, string, string][] = [['matchups', 'Player', 'matchup'], ['countries', 'Country', 'matchup'], ['players', 'Player', 'analysis'], ['grounds', 'Ground', 'analysis']];
 const SUBVIEWS: [string, string][] = [['one', 'Head to head'], ['next', 'Next Test']];
@@ -81,7 +90,10 @@ export function App() {
                 <div className="crx-stadium-photo">
                     <img className="crx-headerphoto" src={headerPhoto} alt="A bowler delivering to a batter, with close fielders waiting around the pitch" />
                 </div>
-                <h1 className="crx-title">Cricket - Beyond the Scoreboard</h1>
+                <div className="crx-masthead">
+                    <h1 className="crx-title"><span className="crx-title1">Cricket</span><span className="crx-title2">Beyond the Scoreboard</span></h1>
+                    <p className="crx-mastsub crx-noabbr">{MASTHEAD_LINE}</p>
+                </div>
             </header>
             <nav className="crx-tabs" role="tablist" aria-label="Sections">
                 {TABS.map(([id, a, b]) => <button key={id} type="button" role="tab" id={'crx-tab-' + id} aria-selected={tab === id} aria-controls={'crx-panel-' + id} aria-label={a + ' ' + b} className={'crx-tab' + (tab === id ? ' crx-tabon' : '')} onClick={() => pickTab(id)}><span>{a}</span><span>{b}</span></button>)}
