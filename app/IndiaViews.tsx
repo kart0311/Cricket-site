@@ -3,6 +3,7 @@
 import React, { useMemo, useState } from 'react';
 import { countryView } from './countryLabels';
 import { Badge, Info, MiniBars, ResultStrip, type Tone } from './charts';
+import { makeCard, saveCard } from './shareCard';
 import {
     BAT, BOWL, CODE, CODE_LETTER, CODE_NAME, GROUNDS, GROUND_AGG, INNINGS_NAME, PAIRS, PAIRS_FROM, PLAYERS, TEAMS, TESTS,
     BOWL_KINDS, addStats, ballToken, batAgg, batByMatch, batByPlayer, batHand, bowlAgg, bowlByMatch, bowlByPlayer, bowlKind, creditedBy, emptyStats, fmtDate, fmtKinds, isSpinKind,
@@ -74,6 +75,7 @@ export function IndiaMatchup({ Selector }: any) {
     const [inn, setInn] = useState('all');
     const [all, setAll] = useState(false);
     const [more, setMore] = useState<string | null>(null);
+    const [making, setMaking] = useState(false);
     const toggle = (id: string) => setOpen(open === id ? null : id);
     const reset = () => { setGround(-1); setInn('all'); setAll(false); setMore(null); setOpen(null); };
     const opts = (ids: number[], other: Map<number, Map<number, number>>, partner: number | null) => {
@@ -115,6 +117,31 @@ export function IndiaMatchup({ Selector }: any) {
         const o = emptyStats(); addStats(o, x.over!); const t = TESTS[x.m];
         return { v: o.runs, out: o.outs > 0, label: `${fmtDate(t.d)} · ${INNINGS_NAME[x.inn]}: ${o.runs} off ${o.balls}${o.outs ? ', dismissed' : ''}` };
     });
+    const downloadCard = async () => {
+        if (bowler == null || batter == null || making) return;
+        setMaking(true);
+        try {
+            const yrs: [number, number] | null = shown.length ? [yearOf(TESTS[shown[shown.length - 1].m].d), yearOf(TESTS[shown[0].m].d)] : null;
+            const filt = [ground >= 0 ? groundShort(ground) : '', inn !== 'all' ? INNINGS_NAME[Number(inn)] : ''].filter(Boolean).join(' · ');
+            const rows = shown.slice(0, 8).map((x) => {
+                const t = TESTS[x.m]; let line = ''; let out = false;
+                if (x.over) { const o = emptyStats(); addStats(o, x.over); out = o.outs > 0; line = `${plural(o.runs, 'run')} off ${plural(o.balls, 'ball')}${out ? ', dismissed' : ''}`; }
+                else if (x.card) { const [k, r, b] = x.card; out = k > 0; line = k > 0 ? `Dismissed for ${r}${b >= 0 ? ` off ${b} balls` : ''}` : `Not out, ${r}${b >= 0 ? ` off ${b} balls` : ''}`; }
+                return { date: fmtDate(t.d), place: `${groundShort(t.g)} · ${INNINGS_NAME[x.inn]}`, line, out };
+            });
+            const blob = await makeCard({
+                bowler: PLAYERS[bowler].name, bowlerTeam: CODE[PLAYERS[bowler].team], bowlerTone: toneOf(bowler) as 'ind' | 'opp',
+                batter: PLAYERS[batter].name, batterTeam: CODE[PLAYERS[batter].team], batterTone: toneOf(batter) as 'ind' | 'opp',
+                sub: `${plural(tests, 'Test')}${yrs ? ' · ' + (yrs[0] === yrs[1] ? yrs[0] : yrs[0] + ' to ' + yrs[1]) : ''}${filt ? ' · ' + filt : ''}${hasCard ? ' · some scorecard only' : ''}`,
+                verdict: verdict ? verdict.line : '', caveat: verdict ? verdict.small : '',
+                tiles: [[n1(stats.balls), 'Balls'], [n1(stats.runs), stats.runs === 1 ? 'Run' : 'Runs'], [String(stats.outs), stats.outs === 1 ? 'Dismissal' : 'Dismissals'], [String(tests), tests === 1 ? 'Test' : 'Tests']],
+                kinds: stats.outs > 0 ? fmtKinds(stats.kinds) : '',
+                smalls: stats.balls > 0 ? [[String(ratio(stats.runs * 100, stats.balls, 1)), 'Strike rate'], [Math.round(100 * stats.dots / stats.balls) + '%', 'Dot balls'], [String(stats.fours), 'Fours'], [String(stats.sixes), 'Sixes']] : null,
+                bars: meetBars.map((b) => ({ v: b.v, out: b.out })), years: yrs, rows, site: 'kart0311.github.io/Cricket-site',
+            });
+            await saveCard(blob, `${sur(bowler)}-to-${sur(batter)}.jpg`.toLowerCase());
+        } catch (e) { console.error(e); } finally { setMaking(false); }
+    };
     const groundOpts = useMemo(() => {
         const gs = [...new Set(meets.map((x) => TESTS[x.m].g))];
         return [{ value: -1, label: 'All grounds' }, ...gs.map((g) => ({ value: g, label: groundName(g), searchText: groundName(g) })).sort((a, b) => a.label.localeCompare(b.label))];
@@ -141,7 +168,7 @@ export function IndiaMatchup({ Selector }: any) {
         </Fold>}
         {pair && shown.length === 0 && <div className="crx-note"><div className="crx-notetitle">No data available</div><div className="crx-notebody">No recorded meeting for this selection. Try widening the filters.</div></div>}
         {pair && shown.length > 0 && <>
-            <div className="crx-hero"><div className="crx-heroname"><span className={'crx-nm crx-t-' + toneOf(bowler)}>{pname(bowler!)}</span> to <span className={'crx-nm crx-t-' + toneOf(batter)}>{pname(batter!)}</span></div><div className="crx-herosub">{groundLabel} · {innLabel}{hasCard && <Info>Balls and runs come from Tests with ball-by-ball data only. Dismissals include every Test since {fmtDate(PAIRS_FROM)}.</Info>}</div></div>
+            <div className="crx-hero crx-hero-dl"><button type="button" className="crx-dl" onClick={downloadCard} disabled={making} aria-label="Save this matchup as a picture to share"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M5 20h14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span>{making ? 'Making…' : 'Save picture'}</span></button><div className="crx-heroname"><span className={'crx-nm crx-t-' + toneOf(bowler)}>{pname(bowler!)}</span> to <span className={'crx-nm crx-t-' + toneOf(batter)}>{pname(batter!)}</span></div><div className="crx-herosub">{groundLabel} · {innLabel}{hasCard && <Info>Balls and runs come from Tests with ball-by-ball data only. Dismissals include every Test since {fmtDate(PAIRS_FROM)}.</Info>}</div></div>
             {verdict && <p className="crx-verdict crx-noabbr">{verdict.line}{verdict.small && <em className="crx-caveat"> {verdict.small}</em>}</p>}
             <div className="crx-split"><div className="crx-col">
             <Tiles rows={[['Balls', n1(stats.balls)], [stats.runs === 1 ? 'Run' : 'Runs', n1(stats.runs)], [stats.outs === 1 ? 'Dismissal' : 'Dismissals', stats.outs], [tests === 1 ? 'Test' : 'Tests', tests]]} />

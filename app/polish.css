@@ -120,3 +120,11 @@
 }
 .crx-theme .crx-verdict .crx-caveat { display: block; margin-top: 4px; font-style: normal; font-size: 13px; line-height: 19px; color: #e6b87f; }
 .crx-theme .crx-datanote .crx-fine { margin: 0 2px 12px; }
+
+/* Save-as-picture button on the matchup page */
+.crx-hero-dl { position: relative; }
+.crx-hero-dl .crx-heroname { padding-right: 150px; }
+.crx-dl { position: absolute; top: 14px; right: 0; display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 0 16px; border-radius: 22px !important; border: 1.5px solid #f2a652; background: rgba(242,166,82,.12); color: #ffc27e; font: 600 14px/1 -apple-system, 'Segoe UI', Arial, sans-serif; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.crx-dl:hover { background: rgba(242,166,82,.22); }
+.crx-dl:disabled { opacity: .6; cursor: progress; }
+@media (max-width: 520px) { .crx-hero-dl .crx-heroname { padding-right: 0; } .crx-dl { position: static; margin: 0 0 10px; } }
