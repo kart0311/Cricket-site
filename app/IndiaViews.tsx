@@ -46,7 +46,7 @@ function ShowMore({ open, onToggle, total, shown, what }: { open: boolean; onTog
 }
 function TestRow({ t, vs }: { t: Test; vs?: boolean }) {
     return <div className="crx-meet">
-        <div className="crx-meethead"><span className="crx-meetlabel"><span className="crx-meetdate">{fmtDate(t.d)}</span><span className="crx-meetvenue">{' · '}{vs && <><Badge team={t.a} /> v <Badge team={t.b} />{' · '}</>}{groundShort(t.g)}</span></span></div>
+        <div className="crx-meethead"><span className="crx-meetlabel"><span className="crx-meetdate">{fmtDate(t.d)}</span><span className="crx-meetvenue">{vs && <><Badge team={t.a} /> v <Badge team={t.b} />{' · '}</>}{groundShort(t.g)}</span></span></div>
         <div className="crx-meetline crx-matchres">{resultText(t)}</div>
         <div className="crx-scoreline">{scoreLine(t) || 'Scores not recorded'}</div>
     </div>;
@@ -184,7 +184,7 @@ export function IndiaMatchup({ Selector }: any) {
                 if (x.over) { const s = emptyStats(); addStats(s, x.over); line = `${plural(s.balls, 'ball')} · ${plural(s.runs, 'run')} · ${plural(s.outs, 'dismissal')}`; }
                 else if (x.card) { const [k, r, b] = x.card; line = `Dismissed him for ${r}${b >= 0 ? ` (${b} balls)` : ''} · ${CODE_NAME[k]}`; }
                 return <div className="crx-meet" key={key}>
-                    <div className="crx-meethead"><span className="crx-meetlabel"><span className="crx-meetdate">{fmtDate(t.d)}</span><span className="crx-meetvenue">{' · '}<Badge team={t.a} /> v <Badge team={t.b} /> · {groundShort(t.g)} · {INNINGS_NAME[x.inn]}</span></span></div>
+                    <div className="crx-meethead"><span className="crx-meetlabel"><span className="crx-meetdate">{fmtDate(t.d)}</span><span className="crx-meetvenue">{groundShort(t.g)} · {INNINGS_NAME[x.inn]}</span></span></div>
                     <div className="crx-meetline">{line}</div>
                     {x.over && <>
                         <button type="button" className="crx-ctabmorebtn crx-delbtn" onClick={() => setMore(more === key ? null : key)}>{more === key ? 'Hide ball by ball −' : 'Ball by ball +'}</button>

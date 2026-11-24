@@ -8,5 +8,6 @@ import './app/overview.css';
 import './app/playanalysis.css';
 import './app/compact.css';
 import './app/polish.css';
+import './app/premium.css';
 
 createRoot(document.getElementById('root')!).render(<FileRouter><App /></FileRouter>);
