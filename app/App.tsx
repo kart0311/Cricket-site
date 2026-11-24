@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FileCard } from '@instinct/files';
 import { PlayAnalysis } from './PlayAnalysis';
-import { IndiaCountry, IndiaGrounds, IndiaMatchup, IndiaPlayers } from './IndiaViews';
+import { IndiaCountry, IndiaGrounds, IndiaMatchup, IndiaPlayers, MatchupCoverage } from './IndiaViews';
 import { countryView, displayText } from './countryLabels';
 import headerPhoto from './photos/cricket-header.jpg';
 import { TESTS, isIndia, n1, yearOf } from './india';
@@ -117,7 +117,10 @@ export function App() {
                 <IndiaGrounds Selector={Selector} />
             </div>
         </section>
-        {!(tab === 'matchups' && matchupMode === 'next') && <p className="crx-credit">Ball-by-ball data: Cricsheet (cricsheet.org), ODC-By 1.0. Scorecard history since 1932: public Test dataset compiled from ESPNcricinfo records. Computed from match data, not official totals.</p>}
+        {!(tab === 'matchups' && matchupMode === 'next') && <details className="crx-datanote"><summary>About this data</summary>
+            {tab === 'matchups' && <p className="crx-fine"><MatchupCoverage /></p>}
+            <p className="crx-credit">Ball-by-ball data: Cricsheet (cricsheet.org), ODC-By 1.0. Scorecard history since 1932: public Test dataset compiled from ESPNcricinfo records. Computed from match data, not official totals.</p>
+        </details>}
     </FileCard>
     </div>
     </div>);

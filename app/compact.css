@@ -11,6 +11,15 @@
 .crx-theme .crx-tabtop { height:0; scroll-margin-top:52px; }
 .crx-theme .crx-tabpanel[hidden] { display:none !important; }
 .crx-theme .crx-credit { margin:18px 0 8px; padding:0 4px; font-size:12px; line-height:18px; color:var(--ds-ink-4); }
+/* Data notes at the foot of the page: one collapsed "About this data" bar */
+.crx-theme .crx-datanote { margin:18px 0 0; border-top:1px solid var(--ds-hairline); }
+.crx-theme .crx-datanote > summary { list-style:none; cursor:pointer; min-height:44px; padding:0 2px; display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:13px; color:#c6a78c; }
+.crx-theme .crx-datanote > summary::-webkit-details-marker { display:none; }
+.crx-theme .crx-datanote > summary::after { content:'+'; font-size:18px; line-height:1; }
+.crx-theme .crx-datanote[open] > summary::after { content:'−'; }
+.crx-theme .crx-datanote > summary:focus-visible { outline:2px solid #c6a78c; outline-offset:-2px; }
+.crx-theme .crx-datanote .crx-fine { margin:0 2px 8px; }
+.crx-theme .crx-datanote .crx-credit { margin:0 2px 12px; padding:0; }
 
 /* Play analysis: tighter, folded */
 .crx-theme .crx-pa { gap:10px; margin:0 0 12px; }
@@ -225,10 +234,10 @@
    colour. That is what lets the name be set large: over grass it had to shrink to stay legible.
    Left aligned, the way a scorecard is. */
 .crx-theme .crx-headerphoto {
-    height: clamp(132px, 39vw, 190px); object-fit: cover; object-position: 50% 58%;
+    height: auto; max-height: none; object-fit: contain;
 }
 .crx-theme .crx-stadium-photo::after {
-    background: linear-gradient(180deg, transparent 42%, rgba(67,40,29,.62) 82%, var(--ds-page) 100%);
+    background: linear-gradient(180deg, transparent 80%, rgba(67,40,29,.55) 94%, var(--ds-page) 100%);
 }
 .crx-theme .crx-masthead { padding: 13px var(--crx-edge) 15px; }
 .crx-theme .crx-photoheader .crx-title {
@@ -244,7 +253,7 @@
     font-size: 13px; line-height: 19px; color: var(--ds-ink-2); max-width: 46ch;
 }
 @media (min-width: 768px) {
-    .crx-theme .crx-headerphoto { height: 260px; object-position: 50% 52%; }
+    .crx-theme .crx-headerphoto { height: min(44vw, 440px); object-fit: cover; object-position: 50% 45%; }
     .crx-theme .crx-masthead { padding: 18px var(--crx-edge) 20px; }
     .crx-theme .crx-mastsub { font-size: 14px; line-height: 21px; }
 }

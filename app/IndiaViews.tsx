@@ -56,6 +56,11 @@ for (const [b, t] of PAIR_LIST) {
 }
 const WINDOW = TESTS.filter((t) => isIndia(t) && t.d >= PAIRS_FROM);
 
+export function MatchupCoverage() {
+    const ballsTests = WINDOW.filter((t) => t.bb).length;
+    return <>India's Tests since {fmtDate(PAIRS_FROM)}: {WINDOW.length} Tests. Ball-by-ball detail exists for {ballsTests} of them; for the rest you see who got whom out and how.</>;
+}
+
 export function IndiaMatchup({ Selector }: any) {
     const [open, setOpen] = useState<string | null>(null);
     const [bowler, setBowler] = useState<number | null>(null);
@@ -97,7 +102,6 @@ export function IndiaMatchup({ Selector }: any) {
     const innLabel = inn === 'all' ? 'all innings' : INNINGS_NAME[Number(inn)];
     const chooseBowler = (v: number | null) => { setBowler(v); if (v != null && batter != null && !BY_BOWLER.get(v)?.has(batter)) setBatter(null); reset(); };
     const chooseBatter = (v: number | null) => { setBatter(v); if (v != null && bowler != null && !BY_BATTER.get(v)?.has(bowler)) setBowler(null); reset(); };
-    const ballsTests = WINDOW.filter((t) => t.bb).length;
     return countryView(<div>
         <div className="crx-pair">
             <Selector half label="Bowler" value={bowler} open={open === 'bowler'} placeholder="Pick a player" title="Bowler" onToggle={() => toggle('bowler')} onChange={(v: number | null) => { chooseBowler(v); }} sort={false}
@@ -106,7 +110,6 @@ export function IndiaMatchup({ Selector }: any) {
                 options={[...(batter != null ? [{ value: null, label: 'Pick a player' }] : []), ...batterOpts]} />
         </div>
         {!pair && <Hint>{bowler != null ? 'Now pick a batter.' : batter != null ? 'Now pick a bowler.' : 'Pick a bowler and a batter. One side is always an Indian player, the other from the opposition.'}</Hint>}
-        {!pair && <p className="crx-fine">India's Tests since {fmtDate(PAIRS_FROM)}: {WINDOW.length} Tests. Ball-by-ball detail exists for {ballsTests} of them; for the rest you see who got whom out and how.</p>}
         {pair && <Fold label="Filters" note={`${groundLabel} · ${innLabel}`} cls="crx-filters">
             <div className="crx-pair">
                 <Selector half label="Ground" value={ground} options={groundOpts} sort={false} open={open === 'ground'} onToggle={() => toggle('ground')} onChange={(v: number) => { setGround(v); setOpen(null); setAll(false); }} />
