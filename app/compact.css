@@ -227,8 +227,6 @@
     .crx-plt tbody th { white-space: nowrap; overflow-wrap: normal; }
 }
 
-}
-
 /* ---- masthead ----------------------------------------------------------
    The photo is a cropped band rather than the whole frame, and the name sits below it on solid
    colour. That is what lets the name be set large: over grass it had to shrink to stay legible.
