@@ -42,8 +42,8 @@ const html = `<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cricket — Beyond the Scoreboard</title>
-<meta name="description" content="India Test cricket explorer: player matchups, country matchups, player analysis and ground analysis.">
+<title>Indian Cricket — Beyond the Scoreboard</title>
+<meta name="description" content="Indian Test cricket explorer: player matchups, country matchups, player analysis and ground analysis.">
 <style>${css}</style>
 </head>
 <body>

@@ -1,4 +1,4 @@
-# Cricket - Beyond the Scoreboard
+# Indian Cricket — Beyond the Scoreboard
 
 A single-page Test cricket explorer built around India: player matchups ball by ball,
 country matchups, player careers and ground analysis.

@@ -91,7 +91,7 @@ export function App() {
                     <img className="crx-headerphoto" src={headerPhoto} alt="A bowler delivering to a batter, with close fielders waiting around the pitch" />
                 </div>
                 <div className="crx-masthead">
-                    <h1 className="crx-title"><span className="crx-title1">Cricket</span><span className="crx-title2">Beyond the Scoreboard</span></h1>
+                    <h1 className="crx-title crx-noabbr"><span className="crx-title1">Indian Cricket</span><span className="crx-title2">Beyond the Scoreboard</span></h1>
                     <p className="crx-mastsub crx-noabbr">{MASTHEAD_LINE}</p>
                 </div>
             </header>
