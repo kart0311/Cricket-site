@@ -1,0 +1,19 @@
+{
+  "name": "cricket-beyond-the-scoreboard",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "refresh": "node refresh/refresh.mjs || echo 'Refresh failed, rebuilding with the data already in the kit'; node build.mjs",
+    "india": "node refresh/india.mjs",
+    "selftest": "node refresh/selftest.mjs",
+    "live": "node refresh/live.mjs"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}

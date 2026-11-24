@@ -1,0 +1,72 @@
+name: Rebuild and publish the site
+
+# Runs every morning at 02:30 UTC (08:00 in India), and whenever you press the button
+# on the Actions tab. Downloads the latest match data, rebuilds the database and the
+# page, and publishes it to GitHub Pages.
+on:
+  schedule:
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# If a run is already going, let it finish rather than publishing two versions at once.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install the build tool
+        run: npm install --no-audit --no-fund
+
+      - name: Download the scorecard history (1877 to 2023)
+        env:
+          HF: https://huggingface.co/datasets/bhuvaneshprasad/test-cricket-dataset-1877-2014/resolve/main
+        run: |
+          set -e
+          mkdir -p data/history
+          for f in test_Matches_Data.csv test_Batting_Card.csv test_Bowling_Card.csv players_info.csv; do
+            echo "fetching $f"
+            curl -fsSL --retry 3 --retry-delay 5 -o "data/history/$f" "$HF/$f"
+          done
+          wc -c data/history/*.csv
+
+      - name: Download the latest matches and rebuild the database
+        run: node refresh/refresh.mjs
+
+      - name: Check the numbers still add up
+        run: node refresh/selftest.mjs
+
+      - name: Build the page
+        run: node build.mjs
+
+      - name: Keep it out of search engines
+        run: cp robots.txt dist/robots.txt
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

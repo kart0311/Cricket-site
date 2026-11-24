@@ -1,0 +1,349 @@
+{
+  "id": "ind-aus",
+  "title": "IND v AUS",
+  "subtitle": "Border-Gavaskar Trophy 2027 · 5 Tests",
+  "homeTeam": "India",
+  "squadStatus": "probable",
+  "squadNote": "Neither squad is announced. India: the squad for the New Zealand Tests plus spin options. Australia: the 16 named for the South Africa Tests plus Todd Murphy. The pre-ticked XI is a guess. Tick players in or out, or edit refresh/series/ind-aus.json.",
+  "venues": [
+    {
+      "key": "nagpur",
+      "name": "Vidarbha Cricket Association Stadium",
+      "city": "Nagpur",
+      "match": [
+        "vidarbha",
+        "jamtha",
+        "nagpur"
+      ]
+    },
+    {
+      "key": "chennai",
+      "name": "MA Chidambaram Stadium",
+      "city": "Chennai",
+      "match": [
+        "chidambaram",
+        "chepauk",
+        "chennai"
+      ]
+    },
+    {
+      "key": "guwahati",
+      "name": "Barsapara Cricket Stadium",
+      "city": "Guwahati",
+      "match": [
+        "barsapara",
+        "guwahati"
+      ]
+    },
+    {
+      "key": "ranchi",
+      "name": "JSCA International Stadium Complex",
+      "city": "Ranchi",
+      "match": [
+        "jsca",
+        "ranchi"
+      ]
+    },
+    {
+      "key": "ahmedabad",
+      "name": "Narendra Modi Stadium",
+      "city": "Ahmedabad",
+      "match": [
+        "narendra modi",
+        "motera",
+        "sardar patel",
+        "ahmedabad"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "n": 1,
+      "venue": "nagpur",
+      "label": "1st Test",
+      "dates": "21-25 Jan 2027",
+      "start": "2027-01-21T04:00:00Z",
+      "days": 5,
+      "time": "First ball 09:30 IST",
+      "date": "2027-01-21"
+    },
+    {
+      "n": 2,
+      "venue": "chennai",
+      "label": "2nd Test",
+      "dates": "29 Jan-2 Feb 2027",
+      "start": "2027-01-29T04:00:00Z",
+      "days": 5,
+      "time": "First ball 09:30 IST",
+      "date": "2027-01-29"
+    },
+    {
+      "n": 3,
+      "venue": "guwahati",
+      "label": "3rd Test",
+      "dates": "11-15 Feb 2027",
+      "start": "2027-02-11T03:30:00Z",
+      "days": 5,
+      "time": "First ball 09:00 IST",
+      "date": "2027-02-11"
+    },
+    {
+      "n": 4,
+      "venue": "ranchi",
+      "label": "4th Test",
+      "dates": "19-23 Feb 2027",
+      "start": "2027-02-19T04:00:00Z",
+      "days": 5,
+      "time": "First ball 09:30 IST",
+      "date": "2027-02-19"
+    },
+    {
+      "n": 5,
+      "venue": "ahmedabad",
+      "label": "5th Test",
+      "dates": "27 Feb-3 Mar 2027",
+      "start": "2027-02-27T04:00:00Z",
+      "days": 5,
+      "time": "First ball 09:30 IST",
+      "date": "2027-02-27"
+    }
+  ],
+  "squads": [
+    {
+      "name": "Yashasvi Jaiswal",
+      "team": "India",
+      "raw": "YBK Jaiswal",
+      "likely": true
+    },
+    {
+      "name": "KL Rahul",
+      "team": "India",
+      "raw": "KL Rahul",
+      "likely": true
+    },
+    {
+      "name": "Devdutt Padikkal",
+      "team": "India",
+      "raw": "D Padikkal",
+      "likely": false
+    },
+    {
+      "name": "Shubman Gill",
+      "team": "India",
+      "raw": "Shubman Gill",
+      "likely": true
+    },
+    {
+      "name": "Rishabh Pant",
+      "team": "India",
+      "raw": "RR Pant",
+      "role": "Wicketkeeper",
+      "likely": true
+    },
+    {
+      "name": "Washington Sundar",
+      "team": "India",
+      "raw": "Washington Sundar",
+      "style": "Spin",
+      "likely": true
+    },
+    {
+      "name": "Dhruv Jurel",
+      "team": "India",
+      "raw": "Dhruv Jurel",
+      "role": "Wicketkeeper",
+      "likely": false
+    },
+    {
+      "name": "Akash Deep",
+      "team": "India",
+      "raw": "Akash Deep",
+      "style": "Pace",
+      "likely": false
+    },
+    {
+      "name": "Anshul Kamboj",
+      "team": "India",
+      "raw": "A Kamboj",
+      "style": "Pace",
+      "likely": false
+    },
+    {
+      "name": "Prasidh Krishna",
+      "team": "India",
+      "raw": "M Prasidh Krishna",
+      "style": "Pace",
+      "likely": false
+    },
+    {
+      "name": "Jasprit Bumrah",
+      "team": "India",
+      "raw": "JJ Bumrah",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Ravindra Jadeja",
+      "team": "India",
+      "raw": "RA Jadeja",
+      "style": "Spin",
+      "likely": true
+    },
+    {
+      "name": "Mohammed Siraj",
+      "team": "India",
+      "raw": "Mohammed Siraj",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Sai Sudharsan",
+      "team": "India",
+      "raw": "B Sai Sudharsan",
+      "likely": true
+    },
+    {
+      "name": "Nitish Kumar Reddy",
+      "team": "India",
+      "raw": "Nithish Kumar Reddy",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Gurnoor Brar",
+      "team": "India",
+      "raw": "Gurnoor Brar",
+      "style": "Pace",
+      "likely": false
+    },
+    {
+      "name": "Kuldeep Yadav",
+      "team": "India",
+      "raw": "Kuldeep Yadav",
+      "style": "Spin",
+      "likely": true
+    },
+    {
+      "name": "Axar Patel",
+      "team": "India",
+      "raw": "AR Patel",
+      "style": "Spin",
+      "likely": false
+    },
+    {
+      "name": "Pat Cummins",
+      "team": "Australia",
+      "raw": "PJ Cummins",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Mitchell Starc",
+      "team": "Australia",
+      "raw": "MA Starc",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Josh Hazlewood",
+      "team": "Australia",
+      "raw": "JR Hazlewood",
+      "style": "Pace",
+      "likely": false
+    },
+    {
+      "name": "Scott Boland",
+      "team": "Australia",
+      "raw": "SM Boland",
+      "style": "Pace",
+      "likely": false
+    },
+    {
+      "name": "Michael Neser",
+      "team": "Australia",
+      "raw": "MG Neser",
+      "style": "Pace",
+      "likely": false
+    },
+    {
+      "name": "Nathan Lyon",
+      "team": "Australia",
+      "raw": "NM Lyon",
+      "style": "Spin",
+      "likely": true
+    },
+    {
+      "name": "Matthew Kuhnemann",
+      "team": "Australia",
+      "raw": "MT Kuhnemann",
+      "style": "Spin",
+      "likely": true
+    },
+    {
+      "name": "Todd Murphy",
+      "team": "Australia",
+      "raw": "TR Murphy",
+      "style": "Spin",
+      "likely": false
+    },
+    {
+      "name": "Steve Smith",
+      "team": "Australia",
+      "raw": "SPD Smith",
+      "likely": true
+    },
+    {
+      "name": "Travis Head",
+      "team": "Australia",
+      "raw": "TM Head",
+      "likely": true
+    },
+    {
+      "name": "Marnus Labuschagne",
+      "team": "Australia",
+      "raw": "M Labuschagne",
+      "likely": true
+    },
+    {
+      "name": "Cameron Green",
+      "team": "Australia",
+      "raw": "C Green",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Alex Carey",
+      "team": "Australia",
+      "raw": "AT Carey",
+      "role": "Wicketkeeper",
+      "likely": true
+    },
+    {
+      "name": "Josh Inglis",
+      "team": "Australia",
+      "raw": "JP Inglis",
+      "role": "Wicketkeeper",
+      "likely": false
+    },
+    {
+      "name": "Cooper Connolly",
+      "team": "Australia",
+      "raw": "C Connolly",
+      "style": "Spin",
+      "likely": true
+    },
+    {
+      "name": "Matthew Renshaw",
+      "team": "Australia",
+      "raw": "MT Renshaw",
+      "likely": true
+    },
+    {
+      "name": "Beau Webster",
+      "team": "Australia",
+      "raw": "BJ Webster",
+      "style": "Pace",
+      "likely": false
+    }
+  ]
+}

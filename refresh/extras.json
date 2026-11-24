@@ -1,0 +1,13 @@
+[
+  {
+    "note": "Tests Cricsheet has not published yet. Remove an entry once Cricsheet has the match (the refresh also skips it by itself).",
+    "date": "2026-11-19",
+    "teams": ["New Zealand", "India"],
+    "ground": "Basin Reserve, Wellington",
+    "city": "Wellington",
+    "country": "New Zealand",
+    "host": "New Zealand",
+    "result": "draw",
+    "innings": [["New Zealand", 368, 10, 0], ["India", 720, 9, 1], ["New Zealand", 239, 5, 0]]
+  }
+]

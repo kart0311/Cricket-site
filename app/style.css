@@ -1,0 +1,939 @@
+html, body, #root { margin: 0; min-height: 100%; }
+.file-card { gap: 18px !important; }
+body { background: var(--ds-page); }
+.file-nav { display: flex; flex-wrap: wrap; gap: 20px; border-bottom: 1px solid var(--ds-hairline); }
+.file-nav a { padding: 10px 0; color: var(--ds-ink-2); text-decoration: none; }
+.file-nav a[aria-current="page"] { color: var(--ds-ink); box-shadow: inset 0 -1px 0 var(--ds-ink); }
+@media (max-width: 600px) { .file-nav a { display: inline-flex; align-items: center; min-height: 44px; } }
+
+/* crx: matchup explorer */
+.crx-topbar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+.crx-titleblock { min-width: 0; }
+.crx-kicker { color: var(--ds-ink-2); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+.crx-titlerow { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 7px; }
+.crx-title { font-size: 21px; font-weight: 650; letter-spacing: -0.02em; line-height: 1.15; white-space: nowrap; }
+.crx-titlerow .crx-themetoggle { align-self: center; flex: none; }
+.crx-titlerow .crx-themetoggle .crx-pill { min-height: 32px; padding: 0 10px; font-size: 12px; }
+.crx-section { margin: 0 0 22px; }
+.crx-dirtoggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 2px 0 14px; }
+.crx-dirtoggle .crx-pill { justify-content: center; text-align: center; padding: 0 6px; font-size: 13px; min-height: 44px; white-space: nowrap; }
+.crx-hint { font-size: 13px; color: var(--ds-ink-2); padding: 2px 2px 12px; line-height: 1.55; }
+.crx-filterrow { display: flex; justify-content: flex-end; margin: 2px 0 8px; }
+.crx-reset {
+    display: inline-flex; align-items: center; padding: 4px 2px;
+    background: none; border: none;
+    font: inherit; font-size: 12.5px; color: var(--ds-teal); cursor: pointer;
+}
+.crx-reset:disabled { color: var(--ds-ink-4); cursor: default; }
+.crx-reset:not(:disabled):active { opacity: 0.7; }
+.crx-sel { margin: 0 0 12px; }
+.crx-selbtn {
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    min-height: 54px; padding: 10px 16px;
+    background: var(--ds-page); border: 1px solid var(--ds-hairline); border-radius: 12px;
+    font: inherit; color: var(--ds-ink); text-align: left; cursor: pointer;
+}
+.crx-sellabel { color: var(--ds-ink-2); font-size: 12px; flex: none; letter-spacing: 0.02em; }
+.crx-selvalue { font-weight: 600; font-size: 15px; flex: 1 1 auto; }
+.crx-selph { color: var(--ds-ink-2); font-weight: 400; }
+.crx-chev { color: var(--ds-ink-2); flex: none; font-weight: 600; }
+.crx-pills { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 0 6px; }
+.crx-pill {
+    min-height: 44px; padding: 0 16px; display: inline-flex; align-items: center;
+    background: var(--ds-page); border: 1px solid var(--ds-hairline); border-radius: 999px;
+    font: inherit; color: var(--ds-ink); cursor: pointer;
+}
+.crx-pillon { background: var(--ds-teal); border-color: var(--ds-teal); color: #fff; font-weight: 600; }
+.crx-hero { padding: 16px 0 14px; border-bottom: 1px solid var(--ds-hairline); margin-bottom: 14px; }
+.crx-heroname { font-family: Georgia, 'Times New Roman', serif; font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
+.crx-herosub { color: var(--ds-ink-2); font-size: 11px; padding-top: 5px; text-transform: uppercase; letter-spacing: 0.08em; }
+.crx-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 6px 0 14px;
+}
+@media (max-width: 340px) { .crx-stats { grid-template-columns: repeat(2, 1fr); } }
+.crx-stat {
+    border: 1px solid var(--ds-hairline); border-radius: 12px; padding: 12px 14px;
+    min-height: 44px;
+}
+.crx-statv { font-size: 22px; font-weight: 600; color: var(--ds-ink); }
+.crx-statl { font-size: 10.5px; color: var(--ds-ink-2); padding-top: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
+.crx-more {
+    min-height: 42px; padding: 0 14px; margin: -2px 0 12px; display: inline-flex; align-items: center;
+    background: var(--ds-page); border: 1px solid var(--ds-hairline); border-radius: 999px;
+    font: inherit; font-size: 13px; color: var(--ds-ink-2); cursor: pointer;
+}
+.crx-stats2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 6px 0 14px; }
+.crx-meets { display: flex; flex-direction: column; margin: 2px 0 10px; }
+.crx-meet { padding: 11px 0 12px; border-top: 1px solid var(--ds-hairline); }
+.crx-meet:first-child { border-top: none; padding-top: 4px; }
+.crx-meethead { display: flex; gap: 7px; font-size: 12.5px; font-weight: 600; color: var(--ds-ink); margin: 0 0 8px; }
+.crx-meetnum { color: var(--ds-ink-2); font-weight: 500; }
+.crx-meetlink { color: inherit; font: inherit; text-decoration: none; }
+.crx-meetlink:active { opacity: 0.7; }
+.crx-linkarr { color: var(--ds-teal); font-size: 11px; font-weight: 600; }
+a.crx-meetlink .crx-linkarr { margin-left: 2px; }
+.crx-meetline { font-size: 14px; color: var(--ds-ink); padding-left: 0; }
+.crx-meetbtn { background: none; border: 0; padding: 0; text-align: left; cursor: pointer; }
+.crx-sc { padding: 72px 0 8px; }
+.crx-scback { min-height: 42px; padding: 0 14px; margin: 0 0 10px; display: inline-flex; align-items: center; background: var(--ds-page); border: 1px solid var(--ds-hairline); border-radius: 999px; font: inherit; font-size: 13px; color: var(--ds-ink-2); cursor: pointer; }
+.crx-sctitle { font-size: 18px; font-weight: 700; color: var(--ds-ink); }
+.crx-scsub { font-size: 12.5px; color: var(--ds-ink-2); margin-top: 3px; }
+.crx-scres { font-size: 13.5px; font-weight: 600; color: var(--ds-teal); margin: 8px 0 14px; }
+.crx-scinn { margin: 0 0 18px; }
+.crx-scinnhead { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; font-weight: 700; color: var(--ds-ink); padding: 8px 0; border-bottom: 2px solid var(--ds-ink); }
+.crx-scov { font-weight: 500; color: var(--ds-ink-2); font-size: 12px; }
+.crx-scrow { display: grid; grid-template-columns: minmax(0,1fr) 38px 34px 28px 28px; gap: 2px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid var(--ds-hairline); font-size: 13px; line-height: 1.25; color: var(--ds-ink); }
+.crx-scrow > span:not(:first-child) { text-align: right; }
+.crx-scbowl { grid-template-columns: minmax(0,1fr) 44px 28px 34px 28px; }
+.crx-schd { font-size: 11px; letter-spacing: 0.02em; color: var(--ds-ink-2); padding: 8px 0 5px; }
+.crx-scbowl.crx-schd { margin-top: 12px; }
+.crx-scname { display: flex; flex-direction: column; min-width: 0; }
+.crx-scplayer { font-weight: 600; }
+.crx-scout { font-size: 11.5px; line-height: 1.25; margin-top: 2px; color: var(--ds-ink-2); }
+.crx-scname, .crx-scplayer, .crx-scout { gap: 0; }
+.crx-scr { font-weight: 700; }
+.crx-scline { font-size: 12px; color: var(--ds-ink-2); padding: 7px 0 0; }
+.crx-srclink { color: var(--ds-teal); }
+.crx-stats2 .crx-statv { font-size: 17px; }
+.crx-posgrid { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 2px 0 6px; }
+.crx-poscard { border: 1px solid var(--ds-hairline); border-radius: 12px; padding: 12px 14px; }
+.crx-posname { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.crx-posbig { font-size: 20px; font-weight: 700; color: var(--ds-ink); margin-bottom: 18px; }
+.crx-posstats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.crx-posstatv { font-size: 17px; font-weight: 600; color: var(--ds-ink); }
+.crx-posstatl { font-size: 10px; color: var(--ds-ink-2); padding-top: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
+.crx-filterbody { padding: 2px 0 8px; }
+.crx-filterlabel { color: var(--ds-ink-2); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; padding: 14px 2px 6px; }
+
+/* crx: theme */
+.crx-theme { min-height: 100vh; background: var(--ds-page); }
+.crx-themetoggle { display: flex; justify-content: flex-end; gap: 6px; margin: 0; flex: none; align-self: flex-end; }
+.crx-themetoggle .crx-pill { min-height: 36px; padding: 0 12px; font-size: 12.5px; }
+.crx-dark, .crx-dark .file-card {
+    --ds-page: #181a1e;
+    --ds-ink: #edeae6;
+    --ds-ink-2: rgba(237,234,230,.66);
+    --ds-ink-4: rgba(237,234,230,.30);
+    --ds-hairline: rgba(237,234,230,.14);
+    --ds-teal: var(--ds-teal);
+    --ds-raised: #202227;
+    --ds-red: #f2606a;
+    color-scheme: dark;
+}
+body:has(.crx-dark) { background: #181a1e; }
+.crx-playervs { margin-top: 6px; font-size: 12px; color: var(--ds-ink-2); }
+.crx-listpanel { padding: 12px 2px 6px; }
+.crx-sheetback { position: fixed; inset: 0; background: rgba(10,10,12,.45); z-index: 60; }
+.crx-sel { position: relative; }
+.crx-sheet {
+    position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 61;
+    height: 300px; display: flex; flex-direction: column;
+    background: var(--ds-page); border-radius: 14px;
+    border: 1px solid var(--ds-hairline);
+    padding: 10px 12px 12px; box-shadow: 0 10px 30px rgba(0,0,0,.30);
+}
+.crx-pop-up { top: auto; bottom: calc(100% + 6px); box-shadow: 0 -10px 30px rgba(0,0,0,.30); }
+.crx-sheethead { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 2px 2px 10px; }
+.crx-sheettitle { font-size: 15px; font-weight: 650; color: var(--ds-ink); letter-spacing: -0.01em; }
+.crx-sheetdone { background: none; border: none; padding: 6px 2px; font: inherit; font-size: 13px; font-weight: 600; color: var(--ds-teal); cursor: pointer; }
+.crx-sheetdone:active { opacity: 0.7; }
+.crx-sheet .crx-optlist { max-height: none; flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.crx-sheet .crx-opt { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; }
+.crx-optcheck { color: var(--ds-teal); font-weight: 700; flex: none; }
+.crx-search { width: 100%; box-sizing: border-box; padding: 9px 12px; border: 1px solid var(--ds-hairline); border-radius: 8px; background: var(--ds-page); color: var(--ds-ink); font-size: 16px; margin-bottom: 6px; }
+.crx-optlist { max-height: 264px; overflow-y: auto; display: flex; flex-direction: column; }
+.crx-opt { text-align: left; padding: 12px; border: none; border-radius: 8px; background: transparent; color: var(--ds-ink); font-size: 14.5px; }
+.crx-opton { font-weight: 600; background: var(--ds-sand, rgba(127,127,127,.15)); }
+.crx-optnone { padding: 10px 12px; font-size: 13px; color: var(--ds-muted); }
+.crx-coll { border: 1px solid var(--ds-hairline); border-radius: 14px; margin: 0 0 14px; }
+.crx-collbtn { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; min-height: 56px; padding: 14px 16px; background: transparent; border: none; font: inherit; color: var(--ds-ink); text-align: left; cursor: pointer; }
+.crx-colltitle { display: block; font-size: 16.5px; font-weight: 600; letter-spacing: -0.01em; }
+.crx-collsub { display: block; font-size: 12.5px; color: var(--ds-ink-2); margin-top: 2px; }
+.crx-collbody { padding: 4px 16px 18px; }
+.crx-viewtoggle { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 8px; }
+.crx-viewtoggle .crx-pill { justify-content: center; text-align: center; padding: 0 12px; font-size: 12.5px; min-height: 32px; white-space: nowrap; }
+.crx-ctab { margin: 4px 0 14px; }
+.crx-ctabrow { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 9px 2px; border-bottom: 1px solid var(--ds-hairline); font-size: 13.5px; }
+.crx-ctabrow:last-child { border-bottom: none; }
+.crx-ctabname { font-weight: 600; color: var(--ds-ink); }
+.crx-ctabval { color: var(--ds-ink-2); text-align: right; white-space: nowrap; }
+.crx-ctabmore { color: var(--ds-ink-4); font-size: 12px; padding: 5px 2px 0; }
+.crx-nodata { color: var(--ds-ink-2); font-size: 12px; padding: 6px 2px 0; }
+.crx-ctabmorebtn { background: none; border: none; padding: 5px 2px 0; font-size: 12px; color: var(--ds-teal); cursor: pointer; font-family: inherit; }
+.crx-ctabmorebtn:active { opacity: 0.7; }
+.crx-del { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 2px; }
+.crx-delinn { color: var(--ds-ink); font-weight: 600; font-size: 12px; margin-top: 4px; }
+.crx-delover { display: grid; grid-template-columns: 54px repeat(6, 36px); gap: 4px; align-items: stretch; }
+.crx-delovn { align-self: center; color: var(--ds-ink); font-weight: 600; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.crx-deli { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1px; height: 46px; padding: 2px; border: 1px solid var(--ds-hairline); font-variant-numeric: tabular-nums; text-align: center; }
+.crx-dellt { color: var(--ds-ink); font-size: 12px; font-weight: 600; line-height: 1.15; }
+.crx-delph { border-style: dashed; color: var(--ds-ink-2); font-size: 12px; }
+.crx-delout { border-color: var(--ds-ink); }
+
+/* crx: polish pass */
+.crx-note { border-left: 3px solid var(--ds-teal); padding: 10px 0 10px 14px; margin: 14px 0 6px; }
+.crx-notetitle { font-size: 14.5px; font-weight: 650; color: var(--ds-ink); }
+.crx-notebody { font-size: 13.5px; color: var(--ds-ink-2); line-height: 1.55; margin-top: 4px; }
+.crx-collbody p, .crx-collbody li { font-size: 13.5px; line-height: 1.62; }
+.crx-theme .file-group { gap: 0; }
+.crx-theme .file-group-heading { margin-bottom: 14px; }
+.crx-collbody p { margin: 12px 0; }
+
+.crx-pstats { margin: 6px 0 12px; }
+.crx-phd, .crx-prow { display: grid; grid-template-columns: minmax(0,1fr) 44px 56px 52px 64px; gap: 2px; align-items: baseline; }
+.crx-phd { font-size: 11px; color: var(--ds-ink-2); padding: 8px 0 4px; border-bottom: 1px solid var(--ds-hairline); }
+.crx-phd + .crx-prow { padding-top: 6px; }
+.crx-prow { font-size: 15px; font-weight: 600; color: var(--ds-ink); padding-bottom: 4px; }
+.crx-prow > span:first-child { font-size: 12.5px; font-weight: 500; color: var(--ds-ink-2); }
+.crx-phd > span:not(:first-child), .crx-prow > span:not(:first-child) { text-align: right; }
+.crx-ctabrow { display: grid; align-items: baseline; gap: 4px; }
+.crx-ctabhd { font-size: 11px; color: var(--ds-ink-2); padding: 8px 2px 4px; border-bottom: 1px solid var(--ds-hairline); }
+.crx-ctabrow > span:not(:first-child) { text-align: right; }
+.crx-ctabval { color: var(--ds-ink); }
+
+.crx-pair { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 12px; }
+.crx-pair .crx-sel { margin: 0; }
+.crx-sel-half { position: static; min-width: 0; }
+.crx-sel-half .crx-selbtn { flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; padding: 8px 12px; min-height: 58px; position: relative; }
+.crx-sel-half .crx-selvalue { font-size: 14.5px; flex: none; max-width: 100%; line-height: 1.2; padding-right: 16px; }
+.crx-sel-half .crx-chev { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
+.crx-reset { }
+
+/* crx: visual reset (gen 49). One font family, one type scale, 8px spacing grid, square corners. */
+:root { --crx-font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; }
+html, body, #root, .crx-theme, .crx-theme *, .file-card, .file-card *, button, input { font-family: var(--crx-font) !important; border-radius: 0 !important; letter-spacing: normal; font-style: normal; }
+.crx-theme *, .file-card * { text-shadow: none; }
+.file-card { gap: 16px !important; }
+/* type scale: 11 label, 13 secondary, 15 body, 17 section, 22 hero/stat */
+.crx-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; }
+.crx-title { font-size: 22px; font-weight: 600; letter-spacing: normal; line-height: 28px; }
+.crx-titlerow { margin-top: 8px; gap: 8px; }
+.crx-topbar { gap: 8px; margin-bottom: 16px; }
+.crx-section { margin: 0 0 24px; }
+.crx-titlerow .crx-themetoggle .crx-pill, .crx-themetoggle .crx-pill { min-height: 32px; padding: 0 12px; font-size: 13px; }
+.crx-pill { min-height: 48px; padding: 0 16px; font-size: 15px; border-radius: 0; }
+.crx-dirtoggle { gap: 8px; margin: 0 0 16px; }
+.crx-dirtoggle .crx-pill { font-size: 15px; min-height: 48px; padding: 0 8px; }
+.crx-pills { gap: 8px; padding: 16px 0 8px; }
+.crx-viewtoggle { gap: 8px; margin: 16px 0 8px; }
+.crx-viewtoggle .crx-pill { font-size: 13px; min-height: 40px; padding: 0 12px; flex: 1 1 0; min-width: 0; }
+.crx-pillon { font-weight: 600; }
+.crx-hint { font-size: 13px; line-height: 20px; padding: 0 0 16px; }
+/* selectors */
+.crx-sel { margin: 0 0 16px; }
+.crx-selbtn { min-height: 56px; padding: 8px 16px; gap: 16px; border-radius: 0; }
+.crx-sellabel { font-size: 12px; letter-spacing: normal; }
+.crx-selvalue { font-size: 15px; font-weight: 600; line-height: 20px; }
+.crx-pair { gap: 8px; margin: 0 0 8px; }
+.crx-sel-half .crx-selbtn { padding: 8px 16px 8px 12px; min-height: 64px; gap: 4px; }
+.crx-sel-half .crx-selvalue { font-size: 15px; line-height: 20px; }
+.crx-sel-half .crx-sellabel { font-size: 12px; }
+.crx-sheet { border-radius: 0; box-shadow: none; border: 1px solid var(--ds-ink-2); padding: 8px 16px 16px; }
+.crx-pop-up { box-shadow: none; }
+.crx-sheethead { padding: 8px 0; }
+.crx-sheettitle { font-size: 15px; font-weight: 600; letter-spacing: normal; }
+.crx-sheetdone { font-size: 15px; padding: 8px 0 8px 8px; }
+.crx-search { font-size: 16px; padding: 8px 16px; min-height: 44px; margin-bottom: 8px; border-radius: 0; }
+.crx-opt { font-size: 15px; padding: 12px 8px; min-height: 44px; border-radius: 0; }
+.crx-optnone { font-size: 13px; padding: 12px 8px; }
+/* hero and stats */
+.crx-hero { padding: 16px 0; margin-bottom: 16px; }
+.crx-heroname { font-size: 22px; font-weight: 600; letter-spacing: normal; line-height: 28px; }
+.crx-herosub { font-size: 11px; letter-spacing: 0.08em; padding-top: 8px; }
+.crx-stats { gap: 8px; margin: 0 0 16px; }
+.crx-stats2 { gap: 8px; margin: 0 0 16px; }
+.crx-stat { padding: 16px; border-radius: 0; }
+.crx-statv { font-size: 22px; font-weight: 600; line-height: 28px; }
+.crx-statl { font-size: 11px; letter-spacing: 0.08em; padding-top: 4px; }
+.crx-stats2 .crx-statv { font-size: 22px; }
+.crx-more { min-height: 40px; padding: 0 16px; margin: 0 0 16px; font-size: 13px; border-radius: 0; }
+.crx-reset { font-size: 13px; padding: 8px 0; }
+.crx-filterrow { margin: 0 0 8px; }
+/* match list */
+.crx-meet { padding: 16px 0; }
+.crx-meet:first-child { padding-top: 8px; }
+.crx-meethead { font-size: 15px; font-weight: 600; margin: 0 0 8px; gap: 8px; }
+.crx-meetline { font-size: 15px; line-height: 20px; }
+.crx-linkarr { font-size: 13px; font-weight: 600; }
+/* player tables */
+.crx-pstats { margin: 0 0 16px; }
+.crx-phd, .crx-ctabhd { font-size: 12px; padding: 8px 0; }
+.crx-prow { font-size: 17px; font-weight: 600; padding: 8px 0; }
+.crx-prow > span:first-child { font-size: 13px; }
+.crx-ctab { margin: 0 0 16px; }
+.crx-ctabrow { font-size: 15px; padding: 12px 0; gap: 8px; }
+.crx-ctabmore, .crx-ctabmorebtn { font-size: 13px; padding: 8px 0; }
+/* scorecards */
+.crx-sc { padding: 72px 0 8px; }
+.crx-scback { min-height: 40px; padding: 0 16px; margin: 0 0 16px; font-size: 13px; border-radius: 0; }
+.crx-sctitle { font-size: 17px; font-weight: 600; line-height: 24px; }
+.crx-scsub { font-size: 13px; margin-top: 4px; }
+.crx-scres { font-size: 15px; font-weight: 600; margin: 8px 0 16px; }
+.crx-scinn { margin: 0 0 24px; }
+.crx-scinnhead { font-size: 15px; font-weight: 600; padding: 8px 0; }
+.crx-scov { font-size: 13px; }
+.crx-scrow { font-size: 13px; padding: 8px 0; line-height: 18px; }
+.crx-schd { font-size: 12px; padding: 8px 0; letter-spacing: normal; }
+.crx-scout { font-size: 12px; line-height: 16px; }
+.crx-scline { font-size: 13px; padding: 8px 0 0; }
+/* position cards, collapsibles, notes */
+.crx-poscard { padding: 16px; border-radius: 0; }
+.crx-posname { font-size: 15px; margin-bottom: 8px; }
+.crx-posbig { font-size: 22px; margin-bottom: 20px; }
+.crx-posstatv { font-size: 17px; }
+.crx-posstatl { font-size: 11px; letter-spacing: 0.08em; }
+.crx-filterlabel { font-size: 13px; padding: 16px 0 8px; }
+.crx-coll { border-radius: 0; margin: 0 0 16px; }
+.crx-collbtn { min-height: 64px; padding: 16px; }
+.crx-colltitle { font-size: 17px; font-weight: 600; letter-spacing: normal; line-height: 24px; }
+.crx-collsub { font-size: 13px; margin-top: 0; }
+.crx-collbody { padding: 0 16px 16px; }
+.crx-collbody p, .crx-collbody li { font-size: 13px; line-height: 20px; }
+.crx-note { padding: 8px 0 8px 16px; margin: 16px 0 8px; border-left-width: 2px; }
+.crx-notetitle { font-size: 15px; font-weight: 600; }
+.crx-notebody { font-size: 13px; line-height: 20px; margin-top: 4px; }
+.crx-meethead { font-size: 14px; flex-wrap: wrap; gap: 4px 8px; }
+.crx-linkarr { font-size: 12px; white-space: nowrap; }
+.crx-meetline { font-size: 14px; }
+
+/* crx: compact box heights (gen 50). Widths and font sizes unchanged. */
+.crx-dirtoggle { margin: 0 0 12px; }
+.crx-dirtoggle .crx-pill { min-height: 40px; }
+.crx-pill { min-height: 40px; }
+.crx-sel { margin: 0 0 8px; }
+.crx-selbtn { min-height: 48px; padding: 4px 16px; }
+.crx-sel-half .crx-selbtn { min-height: 52px; padding: 4px 16px 4px 12px; gap: 0; }
+.crx-pair { margin: 0 0 8px; }
+.crx-stat { padding: 8px 12px; min-height: 0; }
+.crx-statv { font-size: 22px; line-height: 26px; }
+.crx-statl { font-size: 11px; line-height: 14px; padding-top: 0; }
+.crx-stats, .crx-stats2 { margin: 0 0 12px; }
+.crx-more { min-height: 32px; padding: 0 12px; margin: 0 0 8px; }
+.crx-reset { padding: 4px 0; }
+.crx-filterrow { margin: 0 0 4px; }
+.crx-hero { padding: 8px 0 12px; margin-bottom: 12px; }
+.crx-herosub { padding-top: 4px; }
+.crx-meet { padding: 12px 0; }
+.crx-poscard { padding: 8px 12px; }
+.crx-collbtn { min-height: 52px; padding: 8px 16px; }
+.crx-scback { min-height: 32px; }
+.crx-viewtoggle .crx-pill { min-height: 32px; }
+.crx-pills { padding: 12px 0 4px; }
+
+/* crx: paired selectors share one row height; labels, names and plus align (gen 53) */
+.crx-pair { align-items: stretch; }
+.crx-pair .crx-sel-half { display: flex; flex-direction: column; }
+.crx-pair .crx-sel-half .crx-selbtn { flex: 1 1 auto; width: 100%; justify-content: flex-start; box-sizing: border-box; }
+.crx-pair .crx-sel-half .crx-chev { top: 29px; transform: none; line-height: 1; }
+
+/* crx: one 16px gap between collapsibles; no stacked margins (gen 53) */
+.crx-section { margin: 0; }
+.crx-coll { margin: 0; }
+
+/* crx: helper line removed; even 12px rhythm around the H2H filters (gen 54) */
+.crx-pair { margin: 0 0 12px; }
+
+/* crx: Notes as a thin, subtle expandable footer line at the very bottom (gen 54) */
+.crx-notesfoot { border-top: 1px solid var(--ds-hairline); margin-top: 4px; }
+.crx-notesfootbtn {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%;
+    min-height: 32px; padding: 6px 2px;
+    background: none; border: none; font: inherit; cursor: pointer;
+    color: var(--ds-ink-4); font-size: 11px; letter-spacing: 0.04em; text-align: left;
+}
+.crx-notesfootbtn .crx-chev { color: var(--ds-ink-4); font-size: 11px; font-weight: 500; }
+.crx-notesfootbody { padding: 4px 0 12px; }
+.crx-notesfootbody p, .crx-notesfootbody li { font-size: 13px; line-height: 20px; }
+
+/* crx: match list view (gen 55). Date primary, venue quiet, scorecard pinned right; no row numbers. */
+.crx-meets .crx-meethead { font-size: 13px; font-weight: 400; margin: 0 0 4px; display: block; }
+.crx-meets .crx-meetbtn { display: flex; align-items: baseline; width: 100%; }
+.crx-meets .crx-meetlabel { flex: 1; min-width: 0; }
+.crx-meets .crx-meetdate { font-weight: 600; color: var(--ds-ink); white-space: nowrap; }
+.crx-meets .crx-meetvenue { color: var(--ds-ink-2); font-weight: 400; min-width: 0; }
+.crx-meets .crx-linkarr { margin-left: auto; padding-left: 12px; white-space: nowrap; flex-shrink: 0; }
+.crx-meets .crx-meetline { font-size: 13px; line-height: 18px; color: var(--ds-ink-2); }
+
+/* crx: direction toggle buttons share the pair selectors' box height (gen 57) */
+.crx-dirtoggle .crx-pill { min-height: 52px; align-items: center; }
+.crx-sel-half .crx-sellabel { line-height: 14px; }
+
+/* crx: compact Basin IND-NZ match rows with tucked detail (gen 59) */
+.crx-bmhead { display: flex; align-items: baseline; gap: 7px; font-size: 13px; font-weight: 400; color: var(--ds-ink-2); }
+.crx-bmhead .crx-meetnum { flex-shrink: 0; }
+.crx-bmhead .crx-meetbtn { flex: 1; min-width: 0; display: flex; align-items: baseline; }
+.crx-bmhead .crx-meetlabel { flex: 1; min-width: 0; }
+.crx-bmhead .crx-meetdate { font-weight: 600; color: var(--ds-ink); white-space: nowrap; }
+.crx-bmhead .crx-meetvenue { color: var(--ds-ink-2); min-width: 0; }
+.crx-bmhead .crx-linkarr { margin-left: auto; padding-left: 12px; white-space: nowrap; flex-shrink: 0; }
+.crx-bmtoggle { background: none; border: 0; padding: 0 0 0 10px; font: inherit; font-size: 15px; line-height: 1; color: var(--ds-ink-2); cursor: pointer; flex-shrink: 0; align-self: flex-start; min-height: 22px; }
+.crx-bmdetail { font-size: 13px; line-height: 18px; color: var(--ds-ink-2); padding: 3px 0 1px; }
+
+/* crx: compact subsection headings (gen 59b) */
+.crx-theme .file-group-heading { font-size: 13px !important; font-weight: 500 !important; line-height: 18px !important; color: var(--ds-ink-2) !important; margin-bottom: 8px; letter-spacing: 0 !important; }
+.crx-theme .file-group-heading * { font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; color: inherit !important; }
+
+/* ===== Approved redesign v3.2 (user-approved 21 Nov): sections, segmented controls, status strip ===== */
+/* theme toggle -> compact segmented control */
+.crx-themetoggle { border: 1px solid var(--ds-hairline); padding: 2px; gap: 0; }
+.crx-themetoggle .crx-pill { border: none; min-height: 28px; padding: 0 12px; font-size: 12px; background: transparent; color: var(--ds-ink-2); }
+.crx-themetoggle .crx-pillon { background: var(--ds-raised); color: var(--ds-ink); font-weight: 600; }
+
+/* sections: hairline structure instead of stacked boxes */
+.crx-coll { border: none; border-top: 1px solid var(--ds-hairline); border-radius: 0; margin: 0; }
+.crx-collbtn { min-height: 44px; padding: 6px 2px; }
+.crx-colltitle { font-size: 15px; font-weight: 650; line-height: 20px; }
+.crx-collsub { font-size: 12px; line-height: 16px; margin-top: 1px; }
+.crx-collbody { padding: 12px 2px 16px; }
+.crx-collbtn .crx-chev { font-weight: 400; color: var(--ds-ink-4); font-size: 15px; }
+
+/* direction toggle -> segmented control, same outer height as selectors */
+.crx-dirtoggle { display: flex; border: 1px solid var(--ds-hairline); padding: 3px; gap: 3px; margin: 2px 0 10px; }
+.crx-dirtoggle .crx-pill { flex: 1; border: none; min-height: 44px; background: transparent; color: var(--ds-ink-2); font-size: 13px; font-weight: 500; padding: 0 6px; }
+.crx-dirtoggle .crx-pillon { background: var(--crx-accent-wash); color: var(--ds-teal); font-weight: 650; border: none; }
+
+/* selectors: filled fields, no border */
+.crx-selbtn { border: none; background: var(--ds-raised); }
+.crx-selbtn .crx-chev { font-weight: 400; color: var(--ds-ink-4); }
+
+/* ===== v2: dashboard polish ===== */
+/* legible glyphs (v1 used ink-4, too faint) */
+.crx-collbtn .crx-chev, .crx-selbtn .crx-chev { color: var(--ds-ink-2); }
+.crx-collbtn .crx-colltitle { color: var(--ds-ink); }
+
+/* live status strip: real feed state, real fixture */
+.crx-statusbar { margin: 6px 0 2px; padding: 9px 2px; border-top: 1px solid var(--ds-hairline); border-bottom: 1px solid var(--ds-hairline); }
+.crx-statusrow { display: flex; align-items: baseline; gap: 8px; font-size: 12.5px; color: var(--ds-ink-2); line-height: 1.5; }
+.crx-statusrow b { color: var(--ds-ink); font-weight: 600; }
+.crx-statusdot { width: 6px; height: 6px; background: var(--ds-ink-4); flex: none; position: relative; top: -1px; }
+.crx-statusnext { margin-top: 3px; padding-left: 14px; }
+
+/* populated H2H: stat strip instead of three floating boxes */
+.crx-hero { padding: 12px 0 10px; margin-bottom: 10px; }
+.crx-stats { display: flex; gap: 0; border: 1px solid var(--ds-hairline); margin: 6px 0 10px; }
+.crx-stats .crx-stat { flex: 1; border: none; border-radius: 0; padding: 10px 14px 9px; }
+.crx-stats .crx-stat + .crx-stat { border-left: 1px solid var(--ds-hairline); }
+.crx-statv { font-size: 24px; font-weight: 650; letter-spacing: -0.02em; }
+.crx-statl { font-size: 10px; }
+
+/* 'More details' as quiet text link */
+.crx-more { background: none; border: none; padding: 4px 2px; font: inherit; font-size: 12.5px; font-weight: 600; color: var(--ds-teal); cursor: pointer; }
+
+/* v2.1: direction track exactly as tall as selector fields (52px total) */
+.crx-dirtoggle .crx-pill { min-height: 46px; }
+
+/* ===== v3: compact single-line filters ===== */
+/* single-line fields: small inline label + value, chevron inline right */
+.crx-sel-half .crx-selbtn { flex-direction: row; align-items: center; gap: 7px; min-height: 42px; padding: 6px 12px; }
+.crx-sel-half .crx-sellabel { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ds-ink-2); flex: none; }
+.crx-sel-half .crx-selvalue { font-size: 13.5px; line-height: 1.25; padding-right: 0; flex: 1 1 auto; min-width: 0; }
+.crx-sel-half .crx-chev, .crx-pair .crx-sel-half .crx-chev { position: static; transform: none; top: auto; margin-left: auto; }
+/* direction track matches new field height: 36 + 2*3 = 42 */
+.crx-dirtoggle .crx-pill { min-height: 36px; }
+.crx-dirtoggle { margin: 2px 0 8px; }
+.crx-pair { gap: 8px; margin: 0 0 10px; }
+
+/* v3.2: filled fields show the value on one line; label returns when empty */
+.crx-sel-half .crx-selbtn.crx-filled .crx-sellabel { display: none; }
+.crx-bstatgrid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px 4px; padding: 8px 0 4px; }
+
+/* ===== Typography unification (gen 73 rev 4, user steer 21 Nov): 3 tiers - site name / section names / details; one sans family, sentence case, no tracking ===== */
+.crx-title { font-size: 20px; font-weight: 600; letter-spacing: normal; }
+.crx-colltitle { font-size: 15px; font-weight: 600; letter-spacing: normal; }
+.crx-collsub { font-size: 13px; letter-spacing: normal; }
+.crx-heroname { font-family: inherit; font-size: 20px; font-weight: 600; letter-spacing: normal; }
+.crx-herosub { font-size: 12px; text-transform: none; letter-spacing: normal; }
+.crx-statl, .crx-posstatl { font-size: 12px; text-transform: none; letter-spacing: normal; }
+.crx-sellabel, .crx-sel-half .crx-sellabel { font-size: 12px; text-transform: none; letter-spacing: normal; }
+.crx-filterlabel, .crx-kicker { text-transform: none; letter-spacing: normal; }
+
+/* ===== Control geometry unification (gen 74 steer 21 Nov): equal-width pill rows, no orphan wraps, 44px controls ===== */
+.crx-viewtoggle { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.crx-viewtoggle .crx-pill { flex: 1 1 30%; min-height: 44px; padding: 4px 8px; font-size: 13px; font-weight: 500; line-height: 16px; white-space: normal; display: inline-flex; align-items: center; justify-content: center; text-align: center; }
+.crx-pstats { margin: 4px 0 12px; }
+
+/* Interaction stability: collapsed sections retain their filter state. */
+.crx-collbody[hidden] { display: none !important; }
+.crx-optlist { overscroll-behavior: contain; }
+.crx-selbtn:focus-visible, .crx-opt:focus-visible, .crx-scback:focus-visible,
+.crx-pill:focus-visible, .crx-collbtn:focus-visible { outline: 2px solid var(--ds-teal); outline-offset: 3px; }
+/* Ground summary: one table rhythm, no fixed-height label wells. */
+.crx-ground-summary { display: flex; flex-direction: column; gap: 0; font-size: 13px; line-height: 20px; }
+.crx-groundbasis { font-size: 12px; line-height: 18px; color: var(--ds-ink-2); margin: 0 0 8px; }
+.crx-ground-summary .crx-filterlabel { font-size: 13px; line-height: 20px; font-weight: 600; padding: 0; margin: 16px 0 6px; color: var(--ds-ink); }
+.crx-ground-summary .crx-stats { margin: 0 0 8px; }
+.crx-ground-summary .crx-stats .crx-stat { padding: 8px 10px; min-height: 0; }
+.crx-ground-summary .crx-statv { font-size: 22px; line-height: 26px; font-weight: 600; }
+.crx-ground-summary .crx-statl { font-size: 12px; line-height: 16px; padding-top: 2px; }
+.crx-groundtable { width: 100%; border-collapse: collapse; margin: 0; table-layout: fixed; font-size: 13px; line-height: 20px; }
+.crx-groundtable th, .crx-groundtable td { text-align: left; vertical-align: top; padding: 8px 10px; border: 1px solid var(--ds-hairline); overflow-wrap: anywhere; }
+.crx-groundtable th { width: 42%; font-weight: 400; color: var(--ds-ink-2); }
+.crx-groundtable td strong { display: block; font-weight: 600; font-size: 18px; line-height: 22px; }
+.crx-grounddetail { display: block; font-size: 13px; line-height: 20px; }
+.crx-recordmeta { display: block; font-size: 12px; line-height: 18px; color: var(--ds-ink-2); }
+.crx-ground-summary .crx-coverage { font-size: 12px; line-height: 18px; margin: 6px 0 0; padding: 0; }
+
+.crx-ground-summary .crx-ground-outcomes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.crx-ground-summary .crx-ground-outcomes .crx-stat { min-width: 0; padding: 8px 6px; }
+@media (max-width: 350px) {
+  .crx-sel-half .crx-selbtn { padding-left: 8px; padding-right: 8px; gap: 4px; }
+  .crx-sel-half .crx-selph { white-space: nowrap; }
+  .crx-sel-half .crx-chev { flex-shrink: 0; }
+}
+
+/* Location hierarchy: serif group titles, compact bold sans subheadings. */
+.crx-theme .crx-location-content .file-group-heading { margin: 24px 0 12px; }
+
+.crx-ground-leaders { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px; }
+.crx-ground-leaders section { min-width: 0; }
+.crx-location-content .crx-ground-leaders .crx-filterlabel { margin-top: 8px; }
+.crx-leader { padding: 10px 0; border-bottom: 1px solid var(--ds-hairline); }
+.crx-leadername { font-size: 13px; font-weight: 600; line-height: 18px; overflow-wrap: normal; }
+.crx-leaderfigures { display: flex; flex-wrap: wrap; gap: 2px 8px; margin-top: 3px; font-size: 12px; line-height: 17px; color: var(--ds-ink-2); }
+.crx-leaderfigures strong { font-weight: 400; white-space: nowrap; }
+.crx-ground-leaders { grid-template-rows: auto repeat(8, auto); }
+.crx-ground-leaders section { display: grid; grid-row: span 9; grid-template-rows: subgrid; }
+.crx-leader { display: flex; flex-direction: column; justify-content: space-between; }
+.crx-leaderfigures { display: grid; gap: 0; }
+.crx-ground-leaders { row-gap: 0; }
+
+/* Site-wide hierarchy. Editorial titles, bold sans subheads, readable names,
+   tabular figures and quieter labels. Geometry and interaction stay unchanged. */
+.crx-title { font-family: Georgia, 'Times New Roman', serif !important; font-size: 28px; line-height: 34px; font-weight: 400; white-space: normal; }
+.crx-colltitle { font-family: Georgia, 'Times New Roman', serif !important; font-size: 24px; line-height: 30px; font-weight: 600; }
+.crx-theme .file-group-heading, .crx-theme .file-group-heading * { font-family: Georgia, 'Times New Roman', serif !important; font-size: 20px !important; line-height: 26px !important; font-weight: 400 !important; color: var(--ds-ink) !important; }
+.crx-filterlabel, .crx-location-content .crx-filterlabel { font-family: var(--crx-font) !important; font-size: 13px; line-height: 18px; font-weight: 700; color: var(--ds-ink); padding: 0; margin: 22px 0 12px; }
+.crx-heroname, .crx-sctitle { font-family: Georgia, 'Times New Roman', serif !important; font-size: 22px; line-height: 28px; font-weight: 400; }
+.crx-sheettitle, .crx-scinnhead, .crx-notetitle, .crx-posname { font-size: 14px; line-height: 20px; font-weight: 700; }
+.crx-leadername, .crx-ctabname, .crx-scplayer { font-weight: 600; }
+.crx-statv, .crx-posstatv, .crx-posbig, .crx-groundtable td strong { font-variant-numeric: tabular-nums; }
+.crx-statv { font-size: 22px; line-height: 28px; font-weight: 600; }
+.crx-statl, .crx-posstatl, .crx-herosub, .crx-collsub { font-size: 12px; line-height: 17px; color: var(--ds-ink-2); font-weight: 400; }
+.crx-leaderfigures { font-size: 12px; line-height: 17px; font-variant-numeric: tabular-nums; }
+.crx-notesfootbtn { color: var(--ds-ink-2); font-size: 13px; font-weight: 700; line-height: 18px; }
+/* One restrained accent identifies subheadings, never ordinary names or totals. */
+.crx-filterlabel, .crx-location-content .crx-filterlabel, .crx-scinnhead, .crx-posname { color: var(--ds-teal); }
+/* Keep short table labels intact on narrow screens; dense tables scroll locally. */
+.crx-phd, .crx-prow { grid-template-columns: minmax(48px,1fr) 36px 50px 42px 58px; gap: 4px; }
+.crx-phd > span:first-child, .crx-prow > span:first-child { white-space: nowrap; }
+.crx-ctab { overflow-x: auto; }
+.crx-ctabname { overflow-wrap: normal; word-break: normal; }
+@media (max-width:350px) { .crx-prow { font-size:15px; } }
+/* Player workspace: one aligned control vocabulary in both branches. */
+.crx-playerhub > .crx-sel { margin-bottom: 12px; }
+.crx-playerhub .crx-profile-scope { display:flex; justify-content:space-between; gap:12px; align-items:baseline; color:var(--ds-ink); font-size:14px; font-weight:600; line-height:20px; margin:18px 0 8px; }
+.crx-profile-scope span { color:var(--ds-ink-2); font-size:12px; font-weight:400; }
+.crx-playerhub .crx-pstats { padding:0 0 12px; margin:0 0 12px; border-bottom:1px solid var(--ds-hairline); }
+.crx-playerhub .crx-bstatgrid { padding:4px 0; gap:12px 8px; }
+.crx-playerhub .crx-viewtoggle { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); border:1px solid var(--ds-hairline); gap:0; padding:3px; margin:10px 0; }
+.crx-playerhub .crx-viewtoggle .crx-pill { border:0; min-height:44px; font-size:12px; line-height:16px; padding:4px 6px; background:transparent; }
+.crx-playerhub .crx-viewtoggle .crx-pillon { background:var(--ds-raised); color:var(--ds-teal); font-weight:700; box-shadow:inset 0 -2px 0 var(--ds-teal); }
+.crx-playerhub .crx-viewtoggle[aria-label="Deeper analysis"] { grid-template-columns:repeat(auto-fit,minmax(0,1fr)); }
+.crx-playerhub .crx-viewtoggle[aria-label="Breakdown"] { grid-template-columns:repeat(3,minmax(0,1fr)); margin-top:6px; }
+.crx-playerhub .crx-pair { gap:8px; margin:12px 0; }
+.crx-playerhub .crx-pair .crx-selbtn { min-height:44px; }
+.crx-breakdown-label { font-size:12px; line-height:17px; font-weight:700; color:var(--ds-teal); margin:14px 0 0; }
+.crx-playerhub .crx-ctab { margin-top:10px; }
+.crx-playerhub .crx-ctabrow { font-size:13px; padding:10px 0; }
+.crx-playerhub .crx-ctabhd { font-size:12px; font-weight:400; }
+.crx-playerhub .crx-viewtoggle[aria-label="Deeper analysis"] { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.crx-playerhub .crx-viewtoggle[aria-label="Deeper analysis"]:has(> :nth-child(3)) { grid-template-columns:repeat(3,minmax(0,1fr)); }
+
+/* Keep section navigation clear of the hosted page's fixed header. */
+.crx-coll, .crx-sc { scroll-margin-top: 88px; }
+.crx-playerhub { scroll-margin-top: 144px; }
+
+.crx-coll { position:relative; }
+.crx-section-anchor { position:absolute; top:-88px; width:1px; height:1px; pointer-events:none; }
+
+.crx-filteredstats .crx-phd, .crx-filteredstats .crx-prow { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.crx-filteredstats .crx-phd > :first-child, .crx-filteredstats .crx-prow > :first-child { display:none; }
+
+/* User-supplied cricket photograph, confined to the site header. */
+.crx-photoheader { position:relative; isolation:isolate; overflow:hidden; min-height:188px; height:clamp(188px,28vw,280px); margin:0 0 24px; display:flex; align-items:flex-end; padding:20px; box-sizing:border-box; }
+.crx-headerphoto { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 65%; z-index:-2; }
+.crx-photoheader::after { content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg,rgba(8,15,8,.02) 28%,rgba(8,15,8,.22) 56%,rgba(8,15,8,.84) 100%); }
+.crx-photoheader .crx-title { color:#fff; margin:0; text-shadow:0 1px 3px rgba(0,0,0,.55); }
+@media(min-width:768px) { .crx-photoheader { padding:24px; } }
+
+/* Lower the title into a quiet footer, away from the players. */
+.crx-photoheader { min-height:224px; height:calc(clamp(188px,28vw,280px) + 36px); padding:0 20px 3px; background:#081008; }
+.crx-headerphoto { height:calc(100% - 36px); object-position:50% 65%; }
+.crx-photoheader::after { background:linear-gradient(180deg,rgba(8,15,8,0) 38%,rgba(8,15,8,.08) 62%,rgba(8,15,8,.64) 82%,#081008 100%); }
+@media(min-width:768px) { .crx-photoheader { padding:0 24px 3px; } }
+@media(max-width:350px) { .crx-photoheader { padding-left:12px; padding-right:12px; } .crx-photoheader .crx-title { font-size:26px; line-height:32px; } }
+/* Replacement photo: keep the batter at narrow widths and heads in the wide crop. */
+@media(max-width:350px) { .crx-headerphoto { object-position:0% 65%; } }
+@media(min-width:768px) { .crx-headerphoto { object-position:50% 35%; } }
+/* The tighter replacement needs more vertical room on wide screens for the full fielding line. */
+@media(min-width:768px) { .crx-photoheader { height:396px; } .crx-headerphoto { object-position:50% 65%; } }
+
+/* Country team matchups share the compact Player control vocabulary. */
+.crx-matchupmodes, .crx-teamcountries { display:grid; gap:0; padding:3px; border:1px solid var(--ds-hairline); margin:0 0 16px; grid-template-columns:repeat(2,minmax(0,1fr)); }
+.crx-teamcountries { grid-template-columns:repeat(3,minmax(0,1fr)); margin-top:18px; }
+.crx-matchupmodes .crx-pill, .crx-teamcountries .crx-pill { min-height:44px; font-size:13px; line-height:18px; padding:5px 7px; border:0; background:transparent; white-space:normal; }
+.crx-matchupmodes .crx-pillon, .crx-teamcountries .crx-pillon { background:var(--ds-raised); color:var(--ds-teal); font-weight:700; box-shadow:inset 0 -2px 0 var(--ds-teal); }
+.crx-teamhub .crx-heroname { margin:22px 0 4px; }
+.crx-teamoutcomes { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px 10px; margin:12px 0; }
+.crx-teamcovered { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:12px 0; }
+.crx-teamhub .crx-groundtable { width:100%; }
+.crx-teamrecords th { width:31%; }
+.crx-teamhub .crx-stat { min-width:0; }
+.crx-teamhub .crx-statl { white-space:normal; }
+@media(min-width:768px) { .crx-teamoutcomes { grid-template-columns:repeat(5,minmax(0,1fr)); } }
+@media(max-width:350px) { .crx-photoheader { min-height:258px; height:258px; } .crx-headerphoto { height:calc(100% - 70px); } }
+/* Keep the title in its own strip at every actual card width, including hosted insets. */
+.crx-photoheader { height:auto; min-height:0; display:block; padding:0; }
+.crx-headerphoto { position:relative; inset:auto; display:block; height:188px; z-index:auto; }
+.crx-photoheader::after { display:none; }
+.crx-photoheader .crx-title { display:block; padding:4px 18px 6px; background:#081008; text-shadow:none; }
+@media(min-width:768px) { .crx-headerphoto { height:360px; } .crx-photoheader .crx-title { padding-left:24px; padding-right:24px; } }
+@media(max-width:350px) { .crx-photoheader .crx-title { padding-left:12px; padding-right:12px; } .crx-headerphoto { height:188px; } }
+/* Team-first comparison: equal selection blocks, then aligned result columns. */
+.crx-teamselectors { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:18px 0 20px; }
+.crx-teamselector { border:1px solid var(--ds-hairline); padding:4px; min-width:0; }
+.crx-selectorlabel { padding:7px 8px; font-size:12px; line-height:17px; color:var(--ds-ink-2); font-weight:700; }
+.crx-teamoption { display:block; width:100%; min-height:44px; padding:7px 5px; border:0; background:transparent; color:var(--ds-ink); font:inherit; font-size:13px; line-height:18px; cursor:pointer; }
+.crx-teamoption.is-selected { color:var(--ds-teal); background:var(--ds-raised); font-weight:700; box-shadow:inset 2px 0 0 var(--ds-teal); }
+.crx-teamoption:focus-visible { outline:2px solid var(--ds-teal); outline-offset:-2px; }
+.crx-teamresults { border-collapse:collapse; table-layout:fixed; width:100%; margin:10px 0 22px; }
+.crx-teamresults th, .crx-teamresults td { border:1px solid var(--ds-hairline); text-align:left; vertical-align:top; padding:9px 7px; overflow-wrap:normal; }
+.crx-teamresults th { color:var(--ds-ink-2); font-size:12px; line-height:17px; font-weight:400; }
+.crx-teamresults td { color:var(--ds-ink); font-size:22px; line-height:28px; font-weight:700; }
+@media(min-width:768px) { .crx-teamresults th, .crx-teamresults td { padding:10px 12px; } }
+.crx-teamselectors { gap:12px; margin-bottom:12px; }
+.crx-teamselectors .crx-sel { margin:0; min-width:0; }
+.crx-teamselectors .crx-selbtn { display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:6px; row-gap:2px; min-height:68px; padding:9px 10px; }
+.crx-teamselectors .crx-sellabel { display:block !important; grid-column:1; font-size:12px; line-height:17px; }
+.crx-teamselectors .crx-selvalue { grid-column:1; min-width:0; font-size:14px; line-height:19px; }
+.crx-teamselectors .crx-chev { grid-column:2; grid-row:1 / span 2; align-self:center; }
+.crx-teamresults.is-filtered th { color:var(--ds-teal); background:var(--ds-raised); }
+
+/* Give record values and metadata the wider column; keep simple metric tables unchanged. */
+.crx-groundtable:has(.crx-grounddetail, .crx-recordmeta) th { width:31%; }
+.crx-groundtable:has(.crx-grounddetail, .crx-recordmeta) th, .crx-groundtable:has(.crx-grounddetail, .crx-recordmeta) td { padding:8px; overflow-wrap:normal; word-break:normal; }
+
+/* Combine country identifiers with their score/name instead of a separate row line. */
+.crx-scoreteam { font-size:13px; line-height:20px; font-weight:400; white-space:nowrap; }
+.crx-namecountry { font-size:12px; line-height:18px; font-weight:400; white-space:nowrap; }
+.crx-teamrecords.crx-careerrecords th { width:27%; }
+.crx-leaderfigures { display:flex; flex-wrap:wrap; gap:0 6px; }
+.crx-leaderfigures > span { white-space:nowrap; }
+
+/* Keep career grouping and its applicable filters in one compact control block. */
+.crx-playerhub .crx-career-controls { margin:12px 0 6px; }
+.crx-playerhub .crx-career-controls > .crx-sel { margin:0; }
+.crx-playerhub .crx-career-controls .crx-pair { margin:8px 0 0; }
+
+/* Next-Test venue analysis. Existing typography and current-match layout stay intact. */
+.crx-hg-venue-toggle,.crx-hg-toggle{display:flex;gap:8px;margin:12px 0 20px;flex-wrap:wrap}
+.crx-hg-venue-toggle>button,.crx-hg-toggle>button{flex:1;min-height:44px;padding:10px 12px;white-space:normal}
+.crx-hg-intro h3{font-family:Georgia,'Times New Roman',serif !important;font-size:20px;font-weight:400;line-height:1.3;margin:8px 0 12px}
+.crx-hg-intro p{margin:8px 0 12px}
+.crx-hg-time{font-size:13px;font-weight:600;color:var(--ds-teal)}
+.crx-hg-heading{margin-top:24px}
+.crx-hg-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 8px;margin:14px 0 22px}
+.crx-hg-stats:has(>div:nth-child(5)){grid-template-columns:repeat(5,minmax(0,1fr))}
+.crx-hg-stats strong{display:block;font-size:19px;font-weight:600;line-height:1.3}
+.crx-hg-stats span{display:block;color:var(--ds-ink-2);font-size:12px;line-height:1.4;margin-top:5px;overflow-wrap:anywhere}
+.crx-hg-table{width:100%;table-layout:fixed}
+.crx-hg-table th{width:31%;overflow-wrap:break-word}
+.crx-hg-table td{overflow-wrap:break-word}
+.crx-hg-table .crx-recordmeta{white-space:normal}
+.crx-hg-innrow{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--ds-hairline);font-size:13px;line-height:1.5}
+.crx-hg-innrow>strong{flex-shrink:0}
+.crx-hg-innrow small{display:block;color:var(--ds-ink-2);font-size:12px}
+.crx-hg-pairname{font-family:Georgia,'Times New Roman',serif !important;font-size:20px;line-height:1.25;margin:20px 0 14px;overflow-wrap:break-word}
+.crx-hg-squadrow,.crx-hg-historybutton{display:block;width:100%;text-align:left;background:transparent;border:0;color:inherit;font:inherit;border-bottom:1px solid var(--ds-hairline);padding:14px 0;min-height:52px;cursor:pointer}
+.crx-hg-squadrow strong,.crx-hg-historybutton strong{display:block;font-size:14px;font-weight:600;line-height:1.5}
+.crx-hg-squadrow span,.crx-hg-historybutton span{display:block;font-size:13px;color:var(--ds-ink-2);line-height:1.6}
+.crx-hg-historybutton span{color:var(--ds-teal);font-weight:600}
+.crx-hg-sources{display:flex;flex-direction:column;gap:12px;font-size:13px}
+.crx-hg-matchdetail{padding:16px 0 24px}
+.crx-hg-scorehead{color:var(--ds-ink-2);font-size:12px}
+.crx-hg-scorerow{display:grid;grid-template-columns:minmax(0,1fr) 30px 36px;gap:8px;padding:10px 0;border-bottom:1px solid var(--ds-hairline);font-size:13px;line-height:1.5}
+.crx-hg-scorerow>:not(:first-child){text-align:right}
+.crx-hg-scorerow small{display:block;color:var(--ds-ink-2);font-size:12px;overflow-wrap:anywhere}
+.crx-hg-bowlrow{display:grid;grid-template-columns:minmax(0,1fr) 38px 30px 22px;gap:6px;padding:10px 0;border-bottom:1px solid var(--ds-hairline);font-size:13px;line-height:1.5}
+.crx-hg-bowlrow>:not(:first-child){text-align:right}
+.crx-hg-historybutton:focus-visible,.crx-hg-squadrow:focus-visible,.crx-hg-toggle button:focus-visible,.crx-hg-venue-toggle button:focus-visible{outline:2px solid var(--ds-teal);outline-offset:3px}
+.crx-hagley .crx-leader{min-width:0}
+@media(min-width:768px){.crx-hg-stats strong{font-size:22px}.crx-hg-squad{display:grid;grid-template-columns:1fr 1fr;gap:0 32px}}
+.crx-dark .crx-hg-toggle .crx-pillon,.crx-dark .crx-hg-venue-toggle .crx-pillon{background:var(--crx-accent-wash);color:var(--ds-teal);border:1px solid var(--ds-teal)}
+.crx-hg-venue-toggle .crx-pill,.crx-hg-toggle .crx-pill{font-family:var(--crx-font);font-size:14px;font-weight:600;border:1px solid var(--ds-hairline)}
+.crx-hg-notes{border-top:1px solid var(--ds-hairline);padding-top:4px;margin-top:18px}
+.crx-hg-notes>summary{cursor:pointer;min-height:44px;line-height:44px;font-size:13px;font-weight:600;color:var(--ds-teal)}
+.crx-hg-notes>summary:focus-visible{outline:2px solid var(--ds-teal);outline-offset:3px}
+.crx-hg-stats strong{white-space:nowrap}
+@media(max-width:400px){.crx-hg-stats:has(>div:nth-child(5)){grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+.crx-hg-stats{column-gap:6px}
+
+/* Single-line title and compact main sections, 22 Nov. */
+.crx-photoheader .crx-title { white-space:nowrap; font-size:clamp(17px,5.65vw,28px); line-height:1.25; }
+.crx-site { min-height:inherit; display:flex; flex-direction:column; }
+.crx-site > .file-card { flex:1; gap:12px !important; }
+.crx-site > .file-card > .crx-notesfoot { margin-top:auto; }
+.crx-site > .file-card > .crx-coll > .crx-collbtn, .crx-site > .file-card > .crx-section > .crx-coll > .crx-collbtn { min-height:44px; padding-top:4px; padding-bottom:4px; }
+
+/* Keep the initial page floor without letting expandable content feed its height back. */
+html, body, #root { min-height:0; }
+.crx-theme { min-height:0; }
+.crx-site { min-height:0; }
+
+/* One statistics vocabulary: shared row renderer, readable regular figures,
+   semibold labels, tabular numerals and the same baseline and rule rhythm. */
+.crx-theme { --crx-data-size:13px; --crx-data-line:20px; --crx-row-space:10px; }
+.crx-theme .crx-ctabrow { font-size:var(--crx-data-size); line-height:var(--crx-data-line); font-weight:400; padding:var(--crx-row-space) 0; gap:4px; align-items:baseline; border-bottom:1px solid var(--ds-hairline); }
+.crx-theme .crx-ctabhd { font-size:12px; line-height:20px; font-weight:400; color:var(--ds-ink-2); }
+.crx-theme .crx-ctabname { font-size:13px; line-height:20px; font-weight:600; color:var(--ds-ink); }
+.crx-theme .crx-ctabval { font-size:13px; line-height:20px; font-weight:400; font-variant-numeric:tabular-nums; }
+.crx-theme .crx-ctabrow > span { min-width:0; }
+.crx-theme .crx-ctabrow > span:not(:first-child) { text-align:right; white-space:nowrap; }
+.crx-theme .crx-ctab { margin:0 0 16px; }
+.crx-playerhub .crx-pstats { padding:0; margin:0 0 12px; border:0; }
+.crx-playerhub .crx-pstats .crx-ctab { margin:0; }
+.crx-theme .crx-statv, .crx-theme .crx-posstatv, .crx-theme .crx-posbig,
+.crx-theme .crx-groundtable td strong { font-size:13px; line-height:20px; font-weight:400; font-variant-numeric:tabular-nums; }
+.crx-theme .crx-statl, .crx-theme .crx-posstatl { font-size:12px; line-height:20px; font-weight:400; letter-spacing:normal; text-transform:none; }
+.crx-theme .crx-scrow { font-size:13px; line-height:20px; padding:10px 0; font-weight:400; }
+.crx-theme .crx-schd { font-size:12px; line-height:20px; font-weight:400; }
+.crx-theme .crx-scr { font-size:13px; font-weight:400; }
+.crx-theme .crx-groundtable th, .crx-theme .crx-groundtable td,
+.crx-theme .crx-teamresults th, .crx-theme .crx-teamresults td { font-size:13px; line-height:20px; padding:10px 8px; }
+.crx-theme .crx-groundtable th, .crx-theme .crx-teamresults th { font-size:12px; font-weight:400; }
+.crx-theme .crx-teamresults td { font-weight:400; font-variant-numeric:tabular-nums; }
+.crx-theme .crx-hg-stats strong { font-size:13px; line-height:20px; font-weight:400; font-variant-numeric:tabular-nums; }
+.crx-theme .crx-hg-stats span { font-size:12px; line-height:20px; margin-top:3px; }
+.crx-theme .crx-hg-scorerow, .crx-theme .crx-hg-bowlrow, .crx-theme .crx-hg-innrow { font-size:13px; line-height:20px; padding:10px 0; }
+.crx-theme .crx-hg-scorehead { font-size:12px; line-height:20px; }
+.crx-theme .crx-hg-scorerow > strong, .crx-theme .crx-hg-bowlrow > strong:not(:first-child), .crx-theme .crx-hg-innrow > strong { font-size:13px; font-weight:400; font-variant-numeric:tabular-nums; }
+.crx-theme .crx-leaderfigures { font-size:13px; line-height:20px; }
+
+/* Player -> branch -> one question. These rules do not affect other sections. */
+.crp-analysis { margin-top:12px; }
+.crp-branches { display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--ds-hairline); padding:3px; margin-bottom:18px; }
+.crp-branches button { min-height:44px; border:0; background:none; color:var(--ds-ink); font:inherit; font-size:12px; line-height:20px; white-space:nowrap; padding:8px 4px; cursor:pointer; }
+.crp-branches button[aria-pressed="true"] { color:var(--ds-teal); background:var(--ds-raised); box-shadow:inset 0 -2px 0 var(--ds-teal); font-weight:600; }
+.crp-scope { font:600 14px/20px var(--crx-font); color:var(--ds-ink); margin:0 0 10px; white-space:nowrap; }
+.crp-table { table-layout:fixed; width:100%; border-collapse:collapse; font-size:clamp(11.5px,3.35vw,13px); line-height:20px; font-variant-numeric:tabular-nums; margin:0 0 18px; }
+.crp-table th, .crp-table td { padding:10px 1px; border-bottom:1px solid var(--ds-hairline); text-align:right; vertical-align:middle; white-space:nowrap; font-weight:400; }
+.crp-table thead th { color:var(--ds-ink-2); font-size:clamp(10px,3vw,12px); }
+.crp-table abbr { border:0; text-decoration:none; }
+.crp-table th span, .crp-table td span { display:block; white-space:nowrap; }
+.crp-table-labeled th:first-child { text-align:left; padding-left:0; }
+.crp-table tbody th { font-weight:600; }
+.crp-table .crp-clickrow { cursor:pointer; }
+.crp-table .crp-clickrow th, .crp-table .crp-clickrow td { padding-top:0; padding-bottom:0; }
+.crp-table .crp-clickrow button { width:100%; min-height:44px; border:0; background:none; font:inherit; font-weight:600; color:var(--ds-teal); text-align:left; padding:0; cursor:pointer; }
+.crp-questions { display:flex; flex-direction:column; margin:10px 0 16px; }
+.crp-questions button { display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:48px; padding:12px 0; background:none; border:0; border-bottom:1px solid var(--ds-hairline); color:var(--ds-ink); font:inherit; font-size:13px; line-height:20px; text-align:left; cursor:pointer; }
+.crp-questions button > span:first-child { white-space:nowrap; }
+.crp-questions button > span:last-child { color:var(--ds-teal); flex:none; }
+.crp-back { min-height:44px; border:0; background:none; color:var(--ds-teal); font:inherit; font-size:12px; font-weight:600; line-height:20px; padding:6px 0; margin:0 0 8px; white-space:nowrap; cursor:pointer; }
+.crp-caption, .crp-key { font-size:11px !important; line-height:18px !important; color:var(--ds-ink-2); white-space:nowrap; margin:6px 0 12px !important; }
+.crp-key { margin:12px 0 4px !important; }
+.crp-subhead { font:600 13px/20px var(--crx-font); color:var(--ds-teal); margin:18px 0 8px; }
+.crp-search { box-sizing:border-box; width:100%; min-height:44px; border:1px solid var(--ds-hairline); background:var(--ds-raised); color:var(--ds-ink); font:inherit; font-size:13px; padding:10px 12px; margin:4px 0; border-radius:0; }
+.crp-analysis button:focus-visible, .crp-search:focus-visible { outline:2px solid var(--ds-teal); outline-offset:2px; }
+
+/* Larger reading scale, approved 22 Nov. Main title and section headings stay unchanged. */
+.crx-theme { --crx-data-size:14px; --crx-data-line:22px; }
+.crx-theme .crx-sellabel, .crx-theme .crx-sel-half .crx-sellabel, .crx-theme .crx-teamselectors .crx-sellabel { font-size:13px; line-height:18px; }
+.crx-theme .crx-selvalue, .crx-theme .crx-sel-half .crx-selvalue, .crx-theme .crx-teamselectors .crx-selvalue, .crx-theme .crx-opt { font-size:16px; line-height:22px; }
+.crx-theme .crx-search { font-size:16px; line-height:22px; }
+.crx-theme .crx-pill, .crx-theme .crx-dirtoggle .crx-pill, .crx-theme .crx-viewtoggle .crx-pill, .crx-theme .crx-matchupmodes .crx-pill, .crx-theme .crx-teamcountries .crx-pill, .crx-theme .crx-hg-toggle .crx-pill, .crx-theme .crx-hg-venue-toggle .crx-pill,
+.crx-theme .crx-more, .crx-theme .crx-reset, .crx-theme .crx-ctabmorebtn, .crx-theme .crx-scback, .crx-theme .crx-sheetdone, .crx-theme .crx-teamoption, .crx-theme .crx-notesfootbtn, .crx-theme .crx-hg-notes > summary,
+.crx-theme .crp-branches button, .crx-theme .crp-questions button, .crx-theme .crp-back { font-size:15px; line-height:22px; }
+.crx-theme .crx-filterlabel, .crx-theme .crx-location-content .crx-filterlabel, .crx-theme .crp-subhead { font-size:15px; line-height:22px; }
+.crx-theme .crx-sheettitle, .crx-theme .crx-scinnhead, .crx-theme .crx-notetitle, .crx-theme .crx-posname, .crx-theme .crp-scope { font-size:16px; line-height:24px; }
+.crx-theme .crx-ctabname, .crx-theme .crx-ctabval, .crx-theme .crx-statv, .crx-theme .crx-posstatv, .crx-theme .crx-posbig, .crx-theme .crx-scr,
+.crx-theme .crx-groundtable td strong, .crx-theme .crx-hg-stats strong, .crx-theme .crx-leaderfigures,
+.crx-theme .crx-scrow, .crx-theme .crx-hg-scorerow, .crx-theme .crx-hg-bowlrow, .crx-theme .crx-hg-innrow, .crx-theme .crx-hg-scorerow > strong, .crx-theme .crx-hg-bowlrow > strong, .crx-theme .crx-hg-innrow > strong,
+.crx-theme .crx-groundtable td, .crx-theme .crx-teamresults td, .crx-theme .crx-grounddetail, .crx-theme .crx-scoreteam,
+.crx-theme .crx-meets .crx-meethead, .crx-theme .crx-meets .crx-meetline, .crx-theme .crx-bmhead, .crx-theme .crx-bmdetail, .crx-theme .crx-hint, .crx-theme .crx-notebody, .crx-theme .crx-hg-intro p, .crx-theme .crx-hg-sources,
+.crx-theme .crx-collbody p, .crx-theme .crx-collbody li, .crx-theme .crx-notesfootbody p, .crx-theme .crx-notesfootbody li, .crx-theme .crx-scline { font-size:14px; line-height:22px; }
+.crx-theme .crx-hg-stats span, .crx-theme .crx-statl, .crx-theme .crx-posstatl, .crx-theme .crx-herosub, .crx-theme .crx-collsub, .crx-theme .crx-recordmeta, .crx-theme .crx-namecountry,
+.crx-theme .crx-scout, .crx-theme .crx-scov, .crx-theme .crx-scsub, .crx-theme .crx-delovn, .crx-theme .crx-dellt, .crx-theme .crx-delph, .crx-theme .crx-delinn, .crx-theme .crx-optnone, .crx-theme .crx-groundbasis, .crx-theme .crx-ground-summary .crx-coverage, .crx-theme .crx-hg-scorerow small, .crx-theme .crx-hg-innrow small { font-size:13px; line-height:20px; }
+.crx-theme .crx-groundtable th, .crx-theme .crx-teamresults th, .crx-theme .crx-ctabhd, .crx-theme .crx-schd, .crx-theme .crx-hg-scorehead { font-size:12px; line-height:20px; }
+.crx-theme .crp-table { font-size:14px; line-height:22px; }
+.crx-theme .crp-table thead th { font-size:12px; }
+.crx-theme .crp-caption { font-size:13px !important; line-height:20px !important; }
+.crx-theme .crp-search { font-size:16px; line-height:22px; }
+@media(max-width:350px) { .crx-theme .crp-table { font-size:13px; } }
+/* Full names remain readable on one line when the selected text grows. */
+@media(max-width:400px) { .crx-theme .crx-pair { grid-template-columns:1fr; } }
+
+.crx-theme .crx-groundtable tbody th { font-size:13px; line-height:20px; }
+/* Dense comparison rows keep clear column boundaries at the larger text size. */
+.crx-theme .crp-table-labeled td, .crx-theme .crp-table-labeled thead th:not(:first-child) { box-shadow:inset 1px 0 var(--ds-hairline); }
+
+/* Landing controls are composed as one compact group, including wider phones. */
+.crx-site > .file-card > .crx-section { margin-bottom:0; }
+.crx-photoheader { margin-bottom:16px; }
+.crx-section > .crx-coll > .crx-collbody { padding:4px 2px 8px; }
+.crx-theme .crx-matchupmodes { margin-bottom:8px; }
+.crx-theme .crx-matchupmodes .crx-pill { white-space:nowrap; }
+.crx-section .crx-dirtoggle { margin:0 0 8px; }
+.crx-section .crx-pair { margin-bottom:8px; }
+.crx-theme .crx-section .crx-sel-half .crx-selbtn { min-height:48px; padding:10px 12px; gap:12px; }
+.crx-theme .crx-section .crx-sel-half .crx-selvalue { white-space:nowrap; }
+@media(max-width:600px) { .crx-theme .crx-section .crx-pair { grid-template-columns:1fr; } }
+
+/* User-requested centered table headers, identities and figures across sections. */
+.crx-theme table th, .crx-theme table td,
+.crx-theme .crp-table th, .crx-theme .crp-table td,
+.crx-theme .crp-table .crp-clickrow button,
+.crx-theme .crx-ctabrow > span, .crx-theme .crx-ctabrow > span:not(:first-child),
+.crx-theme .crx-phd > span, .crx-theme .crx-prow > span,
+.crx-theme .crx-scrow > span, .crx-theme .crx-scrow > span:not(:first-child),
+.crx-theme .crx-hg-scorerow > *, .crx-theme .crx-hg-bowlrow > *, .crx-theme .crx-hg-innrow > *,
+.crx-theme .crx-stat, .crx-theme .crx-bstatgrid > div, .crx-theme .crx-posstats > div, .crx-theme .crx-hg-stats > div,
+.crx-theme .crx-delover > * { text-align:center; }
+.crx-theme .crx-hg-innrow { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:8px; }
+/* Direction controls match one field, never the combined height of a stacked pair. */
+.crx-theme .crx-section .crx-dirtoggle { height:52px; min-height:0; box-sizing:border-box; }
+.crx-theme .crx-section .crx-dirtoggle .crx-pill { min-height:44px; }
+.crx-theme .crx-section .crx-sel-half .crx-selbtn { min-height:52px; }
+/* Match the existing 12px section rhythm after the final empty picker. */
+.crx-section > .crx-coll > .crx-collbody { padding-bottom:0; }
+.crx-section .crx-pair:last-child { margin-bottom:0; }
+.crx-theme .crx-leader, .crx-theme .crx-ground-leaders section > h3, .crx-theme .crx-ground-leaders section > h4 { text-align:center; }
+.crx-theme .crx-leaderfigures { justify-content:center; }
+
+/* Country/stadium hierarchy. Nested stadium summaries own their metric tracks. */
+.crx-theme .crp-table .crp-country-chevron { display:inline-block; width:18px; height:18px; flex:none; }
+.crx-theme .crp-table .crp-country-chevron[data-expanded="true"] { transform:rotate(90deg); }
+.crx-theme .crp-table .crp-clickrow button { display:flex; align-items:center; justify-content:center; gap:4px; min-height:52px; }
+.crx-theme .crp-table .crp-clickrow button[aria-expanded="true"] { background:var(--ds-raised); }
+.crx-theme .crp-table .crp-ground-picker-row > td { padding:10px 0 6px; box-shadow:none; }
+.crx-theme .crp-ground-picker { padding:0 0 0 8px; border-left:2px solid var(--ds-teal); }
+.crx-theme .crp-ground-picker .crx-selbtn { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 8px; padding:8px 10px; min-height:66px; }
+.crx-theme .crp-ground-picker .crx-sellabel { grid-column:1 / -1; text-align:left; }
+.crx-theme .crp-ground-picker .crx-selvalue { grid-column:1; text-align:left; white-space:normal; }
+.crx-theme .crp-ground-picker .crx-chev { grid-column:2; grid-row:2; }
+.crx-theme .crp-ground-picker .crx-opt span { white-space:normal; text-align:left; }
+.crx-theme .crp-table .crp-ground-stat-row > th, .crx-theme .crp-table .crp-ground-stat-row > td { background:var(--ds-raised); padding-top:10px; padding-bottom:12px; }
+.crx-theme .crp-table .crp-ground-stat-row > th { font-size:12px; }
+.crx-theme .crp-method-summary { font-size:14px; line-height:22px; margin:6px 0 10px; }
+.crx-theme .crp-method-summary strong { font-weight:600; }
+.crx-theme .crp-method-unavailable > th { color:var(--ds-ink-2); font-weight:400; }
+
+/* A selected stadium keeps its own headings beside the data, even deep in a country list. */
+.crx-theme .crp-table .crp-ground-title-row > th { font-size:16px; line-height:24px; padding:8px 0 4px; border-bottom:0; }
+.crx-theme .crp-table .crp-ground-head-row > th { font-size:12px; line-height:20px; color:var(--ds-ink-2); font-weight:400; padding:5px 1px; background:var(--ds-raised); }
+/* Stadium identities include their city without reducing the approved type size. */
+.crx-theme .crx-section .crx-sel[data-selector="Venue"] .crx-selvalue { white-space:normal; overflow-wrap:anywhere; }
+/* Opponent and place remain in a single expanded table row. */
+.crx-theme .crp-table .crp-joint-controls td { padding:10px 0 12px; }
+.crx-theme .crp-place-filters { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:4px; margin:8px 0 12px; }
+.crx-theme .crp-place-filters button { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:44px; padding:4px 1px; font-size:15px; line-height:20px; color:var(--ds-ink-2); background:transparent; border:1px solid var(--ds-hairline); }
+.crx-theme .crp-place-filters button small { font-size:13px; line-height:18px; }
+.crx-theme .crp-place-filters button[aria-pressed="true"] { color:var(--ds-teal); border-color:var(--ds-teal); font-weight:600; background:var(--ds-raised); }
+.crx-theme .crp-table .crp-joint-empty td { padding:12px 0; font-size:13px; line-height:20px; white-space:normal; }
+
+/* Shared place scope controls every opponent row in both analysis branches. */
+.crx-theme .crp-opponent-scope { margin-bottom:12px; }
+.crx-theme .crp-table .crp-joint-controls td:empty { padding:0; }
+.crx-theme .crp-table .crp-ground-title-row > th { white-space:normal; overflow-wrap:anywhere; }
+/* All totals stand apart; individual opponents, stadiums and type rows keep their scale. */
+.crx-theme .crp-table .crp-aggregate > td,
+.crx-theme .crp-table .crp-aggregate > th { font-size:15px; font-weight:600; }
+.crx-theme .crp-table .crp-aggregate > td { padding-left:0; padding-right:0; }
+@media(max-width:350px) {
+ .crx-theme .crp-table .crp-aggregate > td,
+ .crx-theme .crp-table .crp-aggregate > th { font-size:14px; }
+}
+.crx-theme .crp-opponent-scope .crp-caption { white-space:normal; }
+
+/* One inset owns the selected opponent's stadium control and result. */
+.crx-theme .crp-table .crp-expanded > th,
+.crx-theme .crp-table .crp-expanded > td { background:var(--ds-raised); }
+.crx-theme .crp-table .crp-inset-row > td { padding:0; border-bottom:0; box-shadow:none; white-space:normal; }
+.crx-theme .crp-inset-panel { box-sizing:border-box; margin:4px 0 12px 8px; padding:6px 0 8px 10px; border:0; border-left:1px solid var(--ds-teal); border-bottom:1px solid var(--ds-hairline); border-radius:0; background:transparent; }
+.crx-theme .crp-inset-header { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:2px 8px; margin:0 0 4px; }
+.crx-theme .crp-inset-header h4 { margin:0; font:600 14px/20px var(--crx-font); text-align:left; }
+.crx-theme .crp-inset-header > span { font-size:13px; line-height:20px; color:var(--ds-ink-2); white-space:normal; }
+.crx-theme .crp-ground-picker.crp-inset-picker { padding:0; border:0; margin:0 0 4px; }
+.crx-theme .crp-inset-picker .crx-selbtn { min-height:44px; padding:8px 10px; gap:0 8px; background:var(--ds-raised); border:0; border-radius:4px; }
+.crx-theme .crp-inset-picker .crx-sellabel { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+.crx-theme .crp-inset-picker .crx-chev { grid-row:1; }
+.crx-theme .crp-inset-panel .crp-inset-table { margin:0; }
+.crx-theme .crp-table-labeled .crp-inset-table thead th { padding:2px 0; border:0; box-shadow:none; text-align:center; }
+.crx-theme .crp-inset-panel .crp-inset-table .crp-joint-stat-row > td { padding:4px 0 2px; border:0; box-shadow:none; text-align:center; }
+.crx-theme .crp-inset-panel .crp-inset-empty { margin:6px 0 0; font-size:13px; line-height:20px; text-align:left; white-space:normal; color:var(--ds-ink-2); }
+
+/* Three primary entry cards; Notes stays a separate quiet footer. */
+.crx-theme .crx-coll { border:0; background:transparent; }
+.crx-theme .crx-site > .file-card > .crx-coll > .crx-collbtn,
+.crx-theme .crx-site > .file-card > .crx-section > .crx-coll > .crx-collbtn { box-sizing:border-box; min-height:56px; padding:12px 14px; gap:12px; border:1px solid var(--ds-hairline); background:var(--ds-raised); }
+.crx-theme .crx-collbtn .crx-colltitle { font-size:21px; line-height:28px; }
+.crx-theme .crx-collbtn > .crx-chev { display:flex; align-items:center; justify-content:center; box-sizing:border-box; width:28px; height:28px; flex:none; border:1px solid var(--ds-hairline); background:var(--ds-page); font-size:18px; line-height:24px; }
+.crx-theme .crx-collbtn[aria-expanded="true"] { border-color:var(--ds-teal); }
+.crx-theme .crx-collbtn[aria-expanded="true"] .crx-colltitle,
+.crx-theme .crx-collbtn[aria-expanded="true"] > .crx-chev { color:var(--ds-teal); font-weight:600; }
+.crx-theme .crx-collbtn:hover { border-color:var(--ds-ink-2); }
+.crx-theme .crx-site > .file-card { padding-bottom:0; }
+.crx-theme .crx-site > .file-card > .crx-notesfoot { margin-top:auto; padding:0; border-top:1px solid var(--ds-hairline); }
+.crx-theme .crx-notesfootbtn { min-height:44px; padding:4px 0; font-size:12px; line-height:18px; font-weight:400; color:var(--ds-ink-2); }
+
+/* Compact analysis navigation without reducing its touch target or type size. */
+.crx-theme .crp-branches { margin-bottom:6px; }
+.crx-theme .crp-back { display:flex; align-items:center; min-height:44px; padding:0; margin:0 0 2px; }
+.crx-theme .crp-scope { margin-bottom:6px; }
+
+/* Selected Copper Stadium,22 Nov. Inner geometry and data are unchanged. */
+.crx-theme, .crx-dark, .crx-theme .file-card, .crx-dark .file-card {
+ --crx-font:Arial, Helvetica, sans-serif;
+ --ds-page:#43281d; --ds-raised:#513323;
+ --ds-ink:#faebd7; --ds-ink-2:#c6a78c; --ds-ink-4:#b18d70;
+ --ds-hairline:#d2a07330; --ds-teal:#e4c6a3; --ds-red:#f19d86;
+ --ds-muted:#c6a78c; --crx-accent-wash:rgba(228,198,163,.13);
+ --crx-edge:24px; color:var(--ds-ink); background:var(--ds-page);
+}
+body:has(.crx-dark) { background:#43281d; }
+.crx-theme .crx-opton { background:var(--crx-accent-wash); }
+.crx-theme .crx-site > .file-card { padding-top:0; }
+.crx-theme .crx-photoheader { width:calc(100% + 2 * var(--crx-edge)); margin:0 calc(-1 * var(--crx-edge)) 24px; padding:0; height:auto; min-height:0; display:block; background:transparent; }
+.crx-theme .crx-stadium-photo { position:relative; width:100%; }
+.crx-theme .crx-stadium-photo::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 65%,#43281db3 94%,#43281d); pointer-events:none; }
+.crx-theme .crx-headerphoto { display:block; position:relative; inset:auto; width:100%; height:auto; object-fit:contain; filter:saturate(.78) contrast(1.04); }
+.crx-theme .crx-photoheader .crx-title { margin:0 var(--crx-edge); padding:16px 0 20px; border-bottom:1px solid #d2a0733b; background:transparent; color:#fff0dc; font-size:clamp(17px,5.55vw,21.65px); line-height:1.15; letter-spacing:-.5px; white-space:nowrap; text-align:center; }
+.crx-theme .crx-site > .file-card > .crx-coll > .crx-collbtn,
+.crx-theme .crx-site > .file-card > .crx-section > .crx-coll > .crx-collbtn { position:relative; min-height:56px; height:56px; padding:0 0 0 16px; gap:0; overflow:hidden; border:1px solid #d2a07369; background:linear-gradient(115deg,#603d2b,#513323); box-shadow:inset 0 1px #ffe3c411; }
+.crx-theme .crx-collbtn > span:first-child { flex:1; min-width:0; }
+.crx-theme .crx-collbtn .crx-colltitle { font-size:clamp(18px,5.12vw,20px); line-height:22px; font-weight:400; letter-spacing:-.25px; white-space:nowrap; }
+.crx-theme .crx-homeart { display:flex; align-items:center; justify-content:center; width:60px; height:44px; flex:none; color:#d3ae89; opacity:.65; }
+.crx-theme .crx-homeart svg { display:block; width:51px; height:42px; }
+.crx-theme .crx-collbtn > .crx-chev { width:35px; height:44px; border:0; background:none; color:#e4c6a3; font:400 22px/1 Arial,sans-serif !important; }
+.crx-theme .crx-collbtn[aria-expanded="true"] { border-color:var(--ds-teal); }
+.crx-theme .crx-collbtn[aria-expanded="true"] .crx-colltitle { color:var(--ds-teal); }
+.crx-theme .crx-notesfootbtn { color:#c6a78c; }
+@media(min-width:768px) {
+ .crx-theme, .crx-theme .file-card { --crx-edge:36px; }
+ .crx-theme .crx-headerphoto { height:360px; object-fit:cover; object-position:50% 65%; }
+ .crx-theme .crx-photoheader .crx-title { font-size:28px; line-height:35px; }
+}
+
+/* Requested side-by-side country records, scoped to these two tables only. */
+.crx-theme .crx-teamcompare { table-layout:fixed; width:100%; }
+.crx-theme .crx-teamcompare th[scope] { width:auto; }
+.crx-theme .crx-teamcompare th, .crx-theme .crx-teamcompare td { text-align:center; vertical-align:top; padding:8px 4px; }
+.crx-theme .crx-teamcompare .crx-grounddetail, .crx-theme .crx-teamcompare .crx-recordmeta { overflow-wrap:anywhere; word-break:normal; }
+
+/* Native top-layer pickers use the hosted viewer's visible-viewport sizing. */
+.crx-picker-dialog {
+    position: fixed; inset: 0; margin: auto; box-sizing: border-box;
+    width: calc(100% - 32px); max-width: 560px;
+    height: min(360px, calc(var(--instinct-modal-height, 100dvh) - 24px)); max-height: calc(100dvh - 32px);
+    color: var(--ds-ink); overflow: hidden;
+}
+.crx-picker-dialog::backdrop { background: rgba(10,10,12,.45); }
+.crx-picker-dialog .crx-sheethead, .crx-picker-dialog .crx-search { flex-shrink: 0; }
+.crx-picker-dialog .crx-opt { flex-shrink: 0; min-height: 44px; }
+
+/* Matchup team controls share the player-control row geometry. */
+.crx-theme .crx-section .crx-team-pickerrows .crx-sellabel { display: block; }
+
+/* One tap-row scale for the same picker interaction across sections. */
+.crx-theme .crx-selbtn, .crx-theme .crp-inset-picker .crx-selbtn { min-height:52px; padding:10px 12px; gap:12px; }

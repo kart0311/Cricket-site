@@ -1,0 +1,233 @@
+{
+  "id": "nz-ind",
+  "title": "NZ v IND",
+  "subtitle": "2nd Test · Hagley Oval, Christchurch",
+  "homeTeam": "New Zealand",
+  "squadStatus": "named",
+  "squadNote": "India and New Zealand squads as on the main page. The pre-ticked XI is the site's expected XI, not a confirmed team.",
+  "venues": [
+    {
+      "key": "hagley",
+      "name": "Hagley Oval",
+      "city": "Christchurch",
+      "match": [
+        "hagley",
+        "christchurch"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "n": 2,
+      "venue": "hagley",
+      "label": "2nd Test",
+      "dates": "27 Nov-1 Dec 2026",
+      "start": "2026-11-26T22:00:00Z",
+      "days": 5,
+      "time": "First ball 11:00 NZDT · 03:30 IST",
+      "date": "2026-11-27"
+    }
+  ],
+  "squads": [
+    {
+      "name": "Yashasvi Jaiswal",
+      "team": "India",
+      "raw": "YBK Jaiswal",
+      "likely": true
+    },
+    {
+      "name": "KL Rahul",
+      "team": "India",
+      "raw": "KL Rahul",
+      "likely": true
+    },
+    {
+      "name": "Devdutt Padikkal",
+      "team": "India",
+      "raw": "D Padikkal",
+      "likely": true
+    },
+    {
+      "name": "Shubman Gill",
+      "team": "India",
+      "raw": "Shubman Gill",
+      "likely": true
+    },
+    {
+      "name": "Rishabh Pant",
+      "team": "India",
+      "raw": "RR Pant",
+      "role": "Wicketkeeper",
+      "likely": true
+    },
+    {
+      "name": "Washington Sundar",
+      "team": "India",
+      "raw": "Washington Sundar",
+      "style": "Spin",
+      "likely": true
+    },
+    {
+      "name": "Dhruv Jurel",
+      "team": "India",
+      "raw": "Dhruv Jurel",
+      "role": "Wicketkeeper",
+      "likely": true
+    },
+    {
+      "name": "Akash Deep",
+      "team": "India",
+      "raw": "Akash Deep",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Anshul Kamboj",
+      "team": "India",
+      "raw": "A Kamboj",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Prasidh Krishna",
+      "team": "India",
+      "raw": "M Prasidh Krishna",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Jasprit Bumrah",
+      "team": "India",
+      "raw": "JJ Bumrah",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Tom Latham",
+      "team": "New Zealand",
+      "raw": "TWM Latham",
+      "likely": true
+    },
+    {
+      "name": "Devon Conway",
+      "team": "New Zealand",
+      "raw": "DP Conway",
+      "likely": true
+    },
+    {
+      "name": "Henry Nicholls",
+      "team": "New Zealand",
+      "raw": "HM Nicholls",
+      "likely": true
+    },
+    {
+      "name": "Rachin Ravindra",
+      "team": "New Zealand",
+      "raw": "R Ravindra",
+      "style": "Spin",
+      "likely": true
+    },
+    {
+      "name": "Daryl Mitchell",
+      "team": "New Zealand",
+      "raw": "DJ Mitchell",
+      "likely": true
+    },
+    {
+      "name": "Tom Blundell",
+      "team": "New Zealand",
+      "raw": "TA Blundell",
+      "role": "Wicketkeeper",
+      "likely": true
+    },
+    {
+      "name": "Glenn Phillips",
+      "team": "New Zealand",
+      "raw": "GD Phillips",
+      "style": "Spin",
+      "likely": true
+    },
+    {
+      "name": "Nathan Smith",
+      "team": "New Zealand",
+      "raw": "NG Smith",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Kyle Jamieson",
+      "team": "New Zealand",
+      "raw": "KA Jamieson",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Matt Henry",
+      "team": "New Zealand",
+      "raw": "MJ Henry",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Jacob Duffy",
+      "team": "New Zealand",
+      "raw": "JA Duffy",
+      "style": "Pace",
+      "likely": true
+    },
+    {
+      "name": "Ravindra Jadeja",
+      "team": "India",
+      "raw": "RA Jadeja",
+      "style": "Spin",
+      "likely": false
+    },
+    {
+      "name": "Mohammed Siraj",
+      "team": "India",
+      "raw": "Mohammed Siraj",
+      "style": "Pace",
+      "likely": false
+    },
+    {
+      "name": "Sai Sudharsan",
+      "team": "India",
+      "raw": "B Sai Sudharsan",
+      "likely": false
+    },
+    {
+      "name": "Nitish Kumar Reddy",
+      "team": "India",
+      "raw": "Nithish Kumar Reddy",
+      "style": "Pace",
+      "likely": false
+    },
+    {
+      "name": "Dean Foxcroft",
+      "team": "New Zealand",
+      "raw": "D Foxcroft",
+      "style": "Spin",
+      "likely": false
+    },
+    {
+      "name": "Blair Tickner",
+      "team": "New Zealand",
+      "raw": "BM Tickner",
+      "style": "Pace",
+      "likely": false
+    },
+    {
+      "name": "Will Young",
+      "team": "New Zealand",
+      "raw": "WA Young",
+      "likely": false
+    },
+    {
+      "name": "Gurnoor Brar",
+      "team": "India",
+      "raw": "Gurnoor Brar",
+      "style": "Pace",
+      "likely": false
+    }
+  ]
+}

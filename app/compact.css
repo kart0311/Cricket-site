@@ -1,0 +1,221 @@
+/* Compact layout: four tabs, short header, folded details. Loaded last. */
+.crx-theme .crx-photoheader { margin-bottom:0; }
+.crx-theme .crx-headerphoto { height:92px; object-fit:cover; object-position:50% 62%; }
+.crx-theme .crx-photoheader .crx-title { padding:10px 0 12px; }
+@media(min-width:768px) { .crx-theme .crx-headerphoto { height:132px; } }
+
+.crx-theme .crx-tabs { position:sticky; top:0; z-index:30; display:flex; background:var(--ds-page); border-bottom:1px solid var(--ds-hairline); margin:0 0 14px; }
+.crx-theme .crx-tabs .crx-tab { flex:1 1 0; min-width:0; min-height:48px; padding:0 4px; font-size:13.5px; font-weight:600; line-height:16px; color:var(--ds-ink-2); background:none; border:0; border-bottom:3px solid transparent; text-align:center; cursor:pointer; }
+.crx-theme .crx-tabs .crx-tab.crx-tabon { color:var(--ds-ink); border-bottom-color:var(--ds-teal); }
+.crx-theme .crx-tabs .crx-tab:focus-visible { outline:2px solid var(--ds-teal); outline-offset:-3px; }
+.crx-theme .crx-tabtop { height:0; scroll-margin-top:52px; }
+.crx-theme .crx-tabpanel[hidden] { display:none !important; }
+.crx-theme .crx-credit { margin:18px 0 8px; padding:0 4px; font-size:12px; line-height:18px; color:var(--ds-ink-4); }
+
+/* Play analysis: tighter, folded */
+.crx-theme .crx-pa { gap:10px; margin:0 0 12px; }
+.crx-theme .crx-pa-fold { background:var(--ds-raised); border:1px solid var(--ds-hairline); }
+.crx-theme .crx-pa-fold > summary { list-style:none; cursor:pointer; min-height:44px; padding:0 14px; display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:14px; font-weight:600; color:var(--ds-ink); }
+.crx-theme .crx-pa-fold > summary::-webkit-details-marker { display:none; }
+.crx-theme .crx-pa-fold > summary::after { content:'+'; font-weight:400; color:var(--ds-ink-2); font-size:18px; line-height:1; }
+.crx-theme .crx-pa-fold[open] > summary::after { content:'−'; }
+.crx-theme .crx-pa-fold > summary em { font-style:normal !important; font-weight:400; font-size:12.5px; color:var(--ds-ink-2); margin-left:auto; text-align:right; }
+.crx-theme .crx-pa-fold > summary:focus-visible { outline:2px solid var(--ds-teal); outline-offset:-2px; }
+.crx-theme .crx-pa-fold[open] { padding-bottom:14px; }
+.crx-theme .crx-pa-fold > :not(summary) { margin-left:14px; margin-right:14px; margin-top:10px; }
+.crx-theme .crx-pa-fold > .crx-ov-tabs { margin-top:12px; }
+.crx-theme .crx-pa-squad { padding:0; }
+.crx-theme .crx-pa-fold.crx-pa-more { background:transparent; border-width:1px 0 0; margin-top:12px; }
+.crx-theme .crx-pa-fold.crx-pa-more > summary { padding:0; }
+.crx-theme .crx-pa-fold.crx-pa-more > :not(summary) { margin-left:0; margin-right:0; }
+.crx-theme .crx-pa-more-btn { min-height:44px; padding:0 14px; border:1px solid var(--ds-hairline) !important; font-size:13px; color:var(--ds-ink-2); text-align:center; }
+.crx-theme .crx-pa-block { padding:12px 14px 2px; }
+.crx-theme .crx-pa-row { padding:9px 0 10px; row-gap:5px; }
+.crx-theme .crx-pa-hint { font-size:12.5px; line-height:18px; }
+
+/* ranked lists: one line per player, tap to open */
+.crx-theme .crx-pa-list { gap:8px; }
+.crx-theme .crx-pa-block { padding:0; }
+.crx-theme .crx-pa-block > summary { list-style:none; cursor:pointer; padding:11px 36px 11px 14px; position:relative; display:flex; flex-direction:column; gap:6px; min-height:44px; }
+.crx-theme .crx-pa-block > summary::-webkit-details-marker { display:none; }
+.crx-theme .crx-pa-block > summary::after { content:'+'; position:absolute; right:14px; top:11px; font-size:18px; line-height:1; color:var(--ds-ink-2); }
+.crx-theme .crx-pa-block[open] > summary::after { content:'−'; }
+.crx-theme .crx-pa-block > summary:focus-visible { outline:2px solid var(--ds-teal); outline-offset:-2px; }
+.crx-theme .crx-pa-sumname { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+.crx-theme .crx-pa-sumname strong { font-family:Georgia,'Times New Roman',serif !important; font-weight:400; font-size:17px; color:var(--ds-ink); }
+.crx-theme .crx-pa-sumname i { font-style:normal !important; font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--ds-ink-2); }
+.crx-theme .crx-pa-picks { display:flex; flex-wrap:wrap; gap:4px 14px; font-size:13px; color:var(--ds-ink); }
+.crx-theme .crx-pa-pick { display:inline-flex; align-items:center; gap:6px; }
+.crx-theme .crx-pa-pick i { width:8px; height:8px; background:var(--ds-ink-4); flex:none; }
+.crx-theme .crx-pa-pick em { font-style:normal !important; font-size:12px; color:var(--ds-ink-2); }
+.crx-theme .crx-pa-pick.crx-pa-strong-edge i { background:var(--ds-teal); }
+.crx-theme .crx-pa-pick.crx-pa-edge i { background:var(--ds-teal); opacity:.55; }
+.crx-theme .crx-pa-pick.crx-pa-batter-ahead i { background:#e66767; }
+.crx-theme .crx-pa-ground { margin:0 14px 2px; padding-top:8px; border-top:1px solid var(--ds-hairline); font-size:12.5px; color:var(--ds-ink-2); }
+.crx-theme .crx-pa-block > ul { margin:0 14px; }
+.crx-theme .crx-pa-block > ul > .crx-pa-row:first-child { border-top:0; }
+.crx-theme .crx-pa-squad { display:block; }
+.crx-theme .crx-pa-fold.crx-ground-fold { margin:10px 0 0; }
+.crx-theme .crx-pa-fold.crx-ground-fold > div { margin-top:4px; }
+.crx-theme .crx-matchupmodes { flex-wrap:nowrap; }
+.crx-theme .crx-matchupmodes .crx-pill { flex:1 1 0; min-width:0; padding:4px 4px; }
+
+/* ===== Four sections: Player matchup | Country matchup | Player analysis | Ground analysis ===== */
+.crx-theme .crx-tabs .crx-tab { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:6px 2px; min-height:52px; font-size:14px; line-height:17px; font-weight:600; }
+.crx-theme .crx-tabs .crx-tab span + span { font-weight:400; font-size:12px; line-height:15px; color:var(--ds-ink-2); }
+.crx-theme .crx-tabs .crx-tab.crx-tabon span + span { color:var(--ds-ink); }
+.crx-theme .crx-matchupmodes, .crx-theme .crx-wheremodes { flex-wrap:nowrap; margin:6px 0 14px; }
+.crx-theme .crx-matchupmodes .crx-pill, .crx-theme .crx-wheremodes .crx-pill { flex:1 1 0; min-width:0; padding:0 4px; font-size:13px; }
+.crx-theme .crx-stats.crx-stats4 { grid-template-columns:repeat(4, minmax(0, 1fr)); gap:6px; }
+.crx-theme .crx-stats4 .crx-stat { min-width:0; padding:10px 4px; }
+.crx-theme .crx-stats4 .crx-statv { font-size:22px; line-height:26px; }
+.crx-theme .crx-stats4 .crx-statl { font-size:11.5px; line-height:15px; overflow-wrap:anywhere; }
+.crx-theme .crx-hint { margin:18px 2px; font-size:14px; line-height:21px; color:var(--ds-ink-2); }
+.crx-theme .crx-hero { padding:6px 0 10px; margin-bottom:10px; }
+.crx-theme .crx-outkinds { display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 10px; margin:0 0 12px; padding:0 2px; font-size:14px; line-height:21px; }
+.crx-theme .crx-outkinds span { color:var(--ds-ink-2); }
+.crx-theme .crx-outkinds strong { font-weight:600; color:var(--ds-ink); }
+.crx-theme .crx-pa-fold.crx-filters, .crx-theme .crx-pa-fold.crx-morenums, .crx-theme .crx-pa-fold.crx-morerec { margin:0 0 12px; }
+.crx-theme .crx-pa-fold.crx-filters .crx-pair { margin-top:2px; }
+.crx-theme .crx-pa-fold .crx-stats2 { margin-bottom:0; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:6px; }
+.crx-theme .crx-pa-fold .crx-stats2 .crx-statv { font-size:19px; }
+.crx-theme button.crx-pa-more-btn { display:block; width:100%; margin:10px 0 14px; background:transparent; cursor:pointer; }
+.crx-theme .crx-meets .crx-meet { padding:10px 0; }
+.crx-theme .crx-matchres { font-weight:600; color:var(--ds-ink); }
+.crx-theme .crx-scoreline { color:var(--ds-ink-2); font-size:13px; font-variant-numeric:tabular-nums; }
+.crx-theme .crx-teamhub .crx-heroname { margin:6px 0 0; }
+.crx-theme .crx-teamhub .crx-groundtable { margin-bottom:4px; }
+.crx-theme .crx-pa-fold .crx-groundtable { width:auto; }
+
+/* Ground analysis */
+.crx-theme .crx-hg-intro h3 { margin:6px 0 4px; }
+.crx-theme .crx-hg-intro p { margin:0 0 6px; }
+.crx-theme .crx-hg-stats { margin:8px 0 6px; gap:6px; }
+.crx-theme .crx-hg-bars { display:flex; flex-direction:column; gap:7px; margin:8px 0 6px; }
+.crx-theme .crx-hg-bar { display:grid; grid-template-columns:104px minmax(0, 1fr) 78px; align-items:center; gap:10px; font-size:13px; line-height:18px; }
+.crx-theme .crx-hg-barname { color:var(--ds-ink); }
+.crx-theme .crx-hg-bartrack { display:block; height:8px; background:var(--ds-hairline); }
+.crx-theme .crx-hg-bartrack i { display:block; height:100%; background:var(--ds-teal); }
+.crx-theme .crx-hg-barnum { text-align:right; color:var(--ds-ink-2); font-variant-numeric:tabular-nums; }
+.crx-theme .crx-hg-top { display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); gap:6px 18px; margin:6px 0 8px; }
+.crx-theme .crx-hg-top h4 { margin:0 0 4px; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ds-ink-2); }
+.crx-theme .crx-hg-topRow { display:flex; justify-content:space-between; align-items:baseline; gap:8px; padding:6px 0; border-top:1px solid var(--ds-hairline); font-size:13.5px; line-height:19px; }
+.crx-theme .crx-hg-topName { min-width:0; overflow-wrap:anywhere; }
+.crx-theme .crx-hg-topName em { font-style:normal !important; font-size:11px; color:var(--ds-ink-2); margin-left:3px; }
+.crx-theme .crx-hg-topRow strong { font-weight:600; font-variant-numeric:tabular-nums; }
+.crx-theme .crx-hagley .crx-filterlabel.crx-hg-heading { margin:16px 0 4px; padding:0; }
+
+/* Player analysis */
+.crx-theme .crp-inline { margin:6px 0 6px; }
+.crx-theme .crp-subhead { margin:14px 0 4px; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ds-ink-2); }
+.crx-theme .crp-inlinefacts { margin:6px 0 0; }
+.crx-theme .crp-inline .crp-method-summary { margin:2px 0 8px; }
+.crx-theme .crx-viewtoggle.crx-matchupmodes { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:0; }
+.crx-theme .crx-viewtoggle.crx-wheremodes { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:0; }
+.crx-theme .crx-wheremodes .crx-pill, .crx-theme .crx-matchupmodes .crx-pill { min-height:44px; }
+.crx-theme .crx-pair .crx-sel-half .crx-selbtn.crx-filled .crx-sellabel { display:inline; }
+.crx-theme .crx-pair .crx-sel-half .crx-sellabel { min-width:46px; }
+.crx-theme .crx-hg-intro { margin:0 0 4px; }
+.crx-theme .crx-hg-intro .crx-hg-time { margin:12px 0 0; }
+.crx-theme .crx-hg-scores { display:flex; flex-direction:column; margin:6px 0 4px; border-top:1px solid var(--ds-hairline); }
+.crx-theme .crx-hg-score { display:grid; grid-template-columns:minmax(0, 1fr) auto; column-gap:12px; align-items:baseline; padding:9px 2px; border-bottom:1px solid var(--ds-hairline); font-size:14px; line-height:20px; }
+.crx-theme .crx-hg-score > span { color:var(--ds-ink-2); }
+.crx-theme .crx-hg-score > strong { font-weight:600; font-variant-numeric:tabular-nums; text-align:right; }
+.crx-theme .crx-hg-score > em { grid-column:1 / -1; font-style:normal !important; font-size:12.5px; line-height:18px; color:var(--ds-ink-2); text-align:right; }
+
+/* ===== India-wide screens ===== */
+.crx-theme .crx-twomodes { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:0; margin:6px 0 14px; }
+.crx-theme .crx-twomodes .crx-pill { min-height:44px; padding:0 4px; font-size:13px; }
+.crx-theme .crx-fine { margin:6px 2px 12px; font-size:12.5px; line-height:18px; color:var(--ds-ink-2); }
+.crx-theme .crx-ov { margin:8px 0 2px; display:flex; flex-direction:column; gap:7px; }
+.crx-theme .crx-ovrow { display:grid; grid-template-columns:64px minmax(0, 1fr); align-items:center; gap:8px; }
+.crx-theme .crx-ovn { font-size:12px; color:var(--ds-ink-2); }
+.crx-theme .crx-ovballs { display:flex; flex-wrap:wrap; gap:4px; }
+.crx-theme .crx-ovb { min-width:26px; height:26px; padding:0 5px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--ds-hairline); font-size:13px; line-height:1; font-variant-numeric:tabular-nums; color:var(--ds-ink); }
+.crx-theme .crx-ovb.crx-ovout { background:#e66767; border-color:#e66767; color:#fff; font-weight:700; }
+.crx-theme .crx-tot { margin:6px 0 10px; }
+.crx-theme .crx-tot thead th { width:auto; font-size:12px; font-weight:600; color:var(--ds-ink-2); }
+.crx-theme .crx-tot tbody th { width:32%; }
+.crx-theme .crx-tot td strong { font-size:17px; }
+.crx-theme .crx-plt thead th:not(:first-child), .crx-theme .crx-plt td { text-align:right; font-variant-numeric:tabular-nums; }
+.crx-theme .crx-plt tbody th { width:auto; }
+.crx-theme .crx-plt th, .crx-theme .crx-plt td { padding:7px 8px; }
+.crx-theme .crx-hg-top.crx-one { grid-template-columns:minmax(0, 1fr); }
+.crx-theme .crx-pa-fold .crx-hg-top { margin-left:0; margin-right:0; }
+.crx-theme .crx-playercard .crx-pa-fold { margin:0 0 10px; }
+.crx-theme .crx-hg-scores .crx-hg-score { padding-left:0; padding-right:0; }
+
+/* ---- stat tiles -------------------------------------------------------- */
+/* A tile row says how many tiles it holds (crx-tiles4, crx-tiles8 ...), so the row wraps onto a second
+   line instead of squeezing eight tiles into one. Without this, long values overlap each other and
+   labels break mid-word ("Innin gs"). */
+.crx-stats.crx-tiles { display: grid; gap: 6px; border: none; margin: 6px 0 14px; }
+.crx-stats.crx-tiles > .crx-stat {
+    min-width: 0; border: 1px solid var(--ds-hairline); border-radius: 12px;
+    padding: 10px 8px 9px; min-height: 0; display: flex; flex-direction: column; justify-content: flex-start;
+}
+.crx-stats.crx-tiles > .crx-stat + .crx-stat { border-left: 1px solid var(--ds-hairline); }
+.crx-stats.crx-tiles .crx-statv {
+    font-size: 21px; line-height: 26px; font-weight: 650; letter-spacing: -0.02em;
+    overflow-wrap: anywhere; word-break: normal;
+}
+.crx-stats.crx-tiles .crx-statl {
+    font-size: 11px; line-height: 14px; padding-top: 2px;
+    overflow-wrap: normal; word-break: normal; hyphens: none;
+}
+.crx-stats.crx-tiles1 { grid-template-columns: minmax(0, 1fr); }
+.crx-stats.crx-tiles2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.crx-stats.crx-tiles3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.crx-stats.crx-tiles4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.crx-stats.crx-tiles5, .crx-stats.crx-tiles6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.crx-stats.crx-tiles7, .crx-stats.crx-tiles8 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.crx-stats.crx-tiles9, .crx-stats.crx-tiles10 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+/* phones: fewer columns, so a long number still has room */
+@media (max-width: 480px) {
+    .crx-stats.crx-tiles7, .crx-stats.crx-tiles8, .crx-stats.crx-tiles9, .crx-stats.crx-tiles10 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .crx-stats.crx-tiles .crx-statv { font-size: 19px; line-height: 24px; }
+}
+@media (max-width: 360px) {
+    .crx-stats.crx-tiles4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .crx-stats.crx-tiles5, .crx-stats.crx-tiles6 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .crx-stats.crx-tiles .crx-statl { font-size: 10.5px; }
+}
+
+/* Next Test bowler rows: on a phone the verdict column was taking nearly the whole row, leaving the
+   name a sliver and pushing the PACE/SPIN badge off the edge. Give the name a floor and let the
+   verdict shrink, and let the badge drop to its own line when the name is long. */
+.crx-theme .crx-pa-who { flex-wrap: wrap; row-gap: 2px; }
+.crx-theme .crx-pa-who strong { min-width: 0; }
+.crx-theme .crx-pa-who i { flex: none; }
+@media (max-width: 767px) {
+    .crx-theme .crx-pa-row { grid-template-columns: minmax(108px, 1fr) minmax(0, auto); }
+}
+@media (max-width: 360px) {
+    .crx-theme .crx-pa-row { grid-template-columns: minmax(96px, 1fr) minmax(0, auto); }
+}
+
+/* Split tables (By opponent, By ground): size columns to their contents instead of forcing five equal
+   columns, and never break a word in half -- "Tests" was coming out as "Tes ts". */
+/* No .crx-theme prefix: these tables also appear on screens outside the themed wrapper.
+   Fixed layout with a set width for the figure columns, so the table is always exactly as wide as the
+   page: the name column takes whatever is left and wraps at spaces, and no word is ever cut in half. */
+.crx-plt.crx-plt.crx-plt { table-layout: fixed; width: 100%; max-width: 100%; margin-left: 0; margin-right: 0; }
+.crx-plt th, .crx-plt td { overflow-wrap: normal; word-break: normal; hyphens: none; padding: 7px 5px; }
+.crx-plt thead th:not(:first-child), .crx-plt td { white-space: nowrap; width: 4.6em; }
+.crx-plt tbody th { width: auto; white-space: normal; overflow-wrap: break-word; }
+@media (max-width: 420px) {
+    .crx-plt { font-size: 12.5px; }
+    .crx-plt th, .crx-plt td { padding: 7px 3px; }
+    .crx-plt thead th:not(:first-child), .crx-plt td { width: 4.3em; }
+}
+/* Phones narrower than any current iPhone: there is not enough room for a name column plus four
+   figures, so the table scrolls sideways instead of cutting words in half. */
+@media (max-width: 340px) {
+    .crx-plt { font-size: 11.5px; }
+    .crx-plt th, .crx-plt td { padding: 7px 2px; }
+    .crx-plt thead th:not(:first-child), .crx-plt td { width: 3.9em; }
+    .crx-plt.crx-plt.crx-plt { display: block; overflow-x: auto; width: 100%; }
+    .crx-plt tbody th { white-space: nowrap; overflow-wrap: normal; }
+}
+
+}

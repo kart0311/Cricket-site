@@ -1,0 +1,27 @@
+/* Base styles for the stand-in UI kit. Loaded BEFORE the source style.css so the source wins. */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; color: var(--ds-ink, #faebd7); background: #43281d; font-size: 15px; line-height: 1.5; }
+h1, h2, h3, p { margin: 0; }
+button, input { font: inherit; color: inherit; }
+img { max-width: 100%; }
+
+.file-card {
+    display: flex; flex-direction: column;
+    width: 100%; max-width: 760px; margin: 0 auto;
+    padding: 24px var(--crx-edge, 24px);
+    color: var(--ds-ink);
+}
+.file-group { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.file-group-heading { font-size: 20px; font-weight: 400; line-height: 26px; }
+.file-text { display: flex; flex-direction: column; gap: 12px; }
+.file-paragraph { font-size: 15px; line-height: 22px; color: var(--ds-ink); }
+.file-caption { font-size: 13px; line-height: 19px; color: var(--ds-ink-2); }
+.file-textlink { color: var(--ds-teal); text-decoration: underline; text-underline-offset: 2px; }
+.file-rows { display: flex; flex-direction: column; }
+.file-row { display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid var(--ds-hairline); }
+.file-row:last-child { border-bottom: 1px solid var(--ds-hairline); }
+.file-row-num { flex: none; width: 1.6em; color: var(--ds-ink-2); font-variant-numeric: tabular-nums; }
+.file-row-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.file-row-name { font-weight: 600; }
+.file-row-detail { color: var(--ds-ink-2); font-size: 13px; line-height: 19px; }

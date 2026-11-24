@@ -1,0 +1,4 @@
+# This page is reachable by anyone with the link, but it is not meant to be found
+# through search engines.
+User-agent: *
+Disallow: /

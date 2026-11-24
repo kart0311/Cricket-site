@@ -1,0 +1,5 @@
+node_modules/
+dist/
+refresh/.cache/
+data/history/*.csv
+app/indiaData.ts

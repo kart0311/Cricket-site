@@ -1,0 +1,87 @@
+/* Play analysis. Loaded after overview.css; reuses its tabs, panels, tiles and kicker styles. */
+.crx-theme :where(.crx-pa button) { background:none; border:0; padding:0; margin:0; color:inherit; text-align:left; cursor:pointer; font:inherit; }
+.crx-theme .crx-pa button:focus-visible { outline:2px solid var(--ds-teal); outline-offset:2px; }
+.crx-theme .crx-pa { display:flex; flex-direction:column; gap:14px; margin:0 0 28px; scroll-margin-top:12px; }
+.crx-theme .crx-pa-title { margin:2px 0 0; }
+.crx-theme .crx-pa-lede, .crx-theme .crx-pa-hint, .crx-theme .crx-pa-note { margin:0; font-size:13px; line-height:19px; color:var(--ds-ink-2); }
+.crx-theme .crx-pa-note { margin-top:4px; max-width:70ch; }
+.crx-theme .crx-pa-lede { max-width:75ch; }
+.crx-theme .crx-pa code { font-family:ui-monospace,Menlo,monospace !important; font-size:12.5px; background:rgba(0,0,0,.22); padding:1px 6px; color:var(--ds-ink); }
+
+/* Test picker */
+.crx-theme .crx-pa-fixtures { display:flex; gap:6px; overflow-x:auto; padding:2px 0 4px; scrollbar-width:thin; }
+.crx-theme .crx-pa-fx { flex:0 0 152px; display:grid; gap:1px; padding:10px 12px; border:1px solid var(--ds-hairline) !important; color:var(--ds-ink-2); min-height:44px; }
+.crx-theme .crx-pa-fx b { font-size:13.5px; color:var(--ds-ink); font-weight:600; }
+.crx-theme .crx-pa-fx span { font-size:13px; color:var(--ds-ink); }
+.crx-theme .crx-pa-fx em { font-style:normal !important; font-size:12px; color:var(--ds-ink-2); }
+.crx-theme .crx-pa-fx u { text-decoration:none; font-size:11.5px; color:var(--ds-ink-4); margin-top:2px; }
+.crx-theme .crx-pa-fx.on { background:rgba(228,198,163,.13); border-color:var(--ds-teal) !important; }
+.crx-theme .crx-pa-t-on { color:#e66767 !important; font-weight:600; }
+.crx-theme .crx-pa-t-up { color:var(--ds-teal); }
+
+/* ground card */
+.crx-theme .crx-pa-card .crx-ov-h { margin:2px 0 4px; }
+.crx-theme .crx-pa-livebar { margin-top:10px; padding:9px 12px; background:rgba(0,0,0,.18); font-size:13px; color:var(--ds-ink); }
+.crx-theme .crx-pa-tiles > div { min-width:0; }
+.crx-theme .crx-pa-two { display:grid; grid-template-columns:1fr; gap:6px 28px; }
+.crx-theme .crx-pa-mini { list-style:none; margin:4px 0 0; padding:0; }
+.crx-theme .crx-pa-mini li { display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:12px; padding:7px 0; border-top:1px solid var(--ds-hairline); font-size:13.5px; color:var(--ds-ink); }
+.crx-theme .crx-pa-mini b { font-variant-numeric:tabular-nums; font-weight:600; text-align:right; }
+.crx-theme .crx-pa-mini em { grid-column:1 / -1; font-style:normal !important; font-size:12px; color:var(--ds-ink-2); }
+
+/* squads */
+.crx-theme .crx-pa-squad { background:var(--ds-raised); border:1px solid var(--ds-hairline); padding:16px 16px 14px; display:flex; flex-direction:column; gap:14px; }
+.crx-theme .crx-pa-squadhead { display:flex; flex-direction:column; gap:10px; }
+.crx-theme .crx-pa-teams { display:grid; grid-template-columns:1fr; gap:14px 28px; }
+.crx-theme .crx-pa-teamname { display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--ds-ink); margin-bottom:8px; }
+.crx-theme .crx-pa-teamname i { display:inline-block; width:10px; height:10px; }
+.crx-theme .crx-pa-teamname span { margin-left:auto; font-size:12px; font-weight:400; color:var(--ds-ink-2); }
+.crx-theme .crx-pa-chips { display:flex; flex-wrap:wrap; gap:6px; }
+.crx-theme .crx-pa-chip { min-height:40px; padding:0 11px; display:inline-flex; align-items:center; gap:7px; border:1px solid var(--ds-hairline) !important; font-size:13px; color:var(--ds-ink-4); }
+.crx-theme .crx-pa-chip i { font-style:normal !important; font-size:10.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--ds-ink-4); }
+.crx-theme .crx-pa-chip.on { background:rgba(228,198,163,.13); border-color:var(--ds-teal) !important; color:var(--ds-ink); }
+.crx-theme .crx-pa-chip.on i { color:var(--ds-ink-2); }
+.crx-theme .crx-pa-chip:not(.on) { text-decoration:line-through; text-decoration-color:rgba(210,160,115,.35); }
+
+/* key duels */
+.crx-theme .crx-pa-keys { list-style:none; margin:8px 0 0; padding:0; }
+.crx-theme .crx-pa-keys li { padding:11px 0; border-top:1px solid var(--ds-hairline); font-size:14.5px; line-height:21px; color:var(--ds-ink); }
+.crx-theme .crx-pa-keys strong { font-weight:600; }
+.crx-theme .crx-pa-keyv { display:block; font-size:12.5px; line-height:18px; color:var(--ds-ink-2); }
+.crx-theme .crx-pa-controls { display:flex; flex-direction:column; gap:8px; }
+
+/* ranked lists */
+.crx-theme .crx-pa-list, .crx-theme .crx-pa-list ul { list-style:none; margin:0; padding:0; }
+.crx-theme .crx-pa-list { display:flex; flex-direction:column; gap:12px; }
+.crx-theme .crx-pa-block { background:var(--ds-raised); border:1px solid var(--ds-hairline); padding:14px 14px 4px; }
+.crx-theme .crx-pa-bhead { display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 10px; margin-bottom:6px; }
+.crx-theme .crx-pa-bhead strong { font-family:Georgia,'Times New Roman',serif !important; font-weight:400; font-size:17px; color:var(--ds-ink); }
+.crx-theme .crx-pa-bhead i, .crx-theme .crx-pa-who i { font-style:normal !important; font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--ds-ink-2); border:1px solid var(--ds-hairline); padding:0 5px; }
+.crx-theme .crx-pa-bhead span { flex-basis:100%; font-size:12.5px; color:var(--ds-ink-2); }
+.crx-theme .crx-pa-row { display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"who verdict" "meter meter" "ev ev"; column-gap:12px; row-gap:6px; padding:11px 0 12px; border-top:1px solid var(--ds-hairline); }
+.crx-theme .crx-pa-who { grid-area:who; display:flex; align-items:baseline; gap:8px; min-width:0; font-size:14.5px; color:var(--ds-ink); }
+.crx-theme .crx-pa-who strong { font-weight:600; }
+.crx-theme .crx-pa-meter { grid-area:meter; }
+.crx-theme .crx-pa-track { position:relative; display:block; height:10px; background:rgba(0,0,0,.22); }
+.crx-theme .crx-pa-fill { position:absolute; left:0; top:0; bottom:0; border-radius:0 4px 4px 0 !important; }
+.crx-theme .crx-pa-avg { position:absolute; left:41.667%; top:-3px; bottom:-3px; width:2px; background:var(--ds-ink); opacity:.85; }
+.crx-theme .crx-pa-verdict { grid-area:verdict; text-align:right; display:flex; flex-direction:column; line-height:17px; }
+.crx-theme .crx-pa-verdict b { font-size:13.5px; font-weight:600; color:var(--ds-ink); }
+.crx-theme .crx-pa-verdict span { font-size:12px; color:var(--ds-ink-2); font-variant-numeric:tabular-nums; }
+.crx-theme .crx-pa-ev { grid-area:ev; font-size:12.5px; line-height:18px; color:var(--ds-ink-2); font-variant-numeric:tabular-nums; }
+.crx-theme .crx-pa-conf { font-style:normal !important; font-weight:600; color:var(--ds-ink); }
+.crx-theme .crx-pa-c-projected, .crx-theme .crx-pa-c-thin { color:var(--ds-ink-4); font-weight:400; }
+.crx-theme .crx-pa-batter-ahead .crx-pa-verdict b::before { content:'↓ '; }
+.crx-theme .crx-pa-strong-edge .crx-pa-verdict b::before, .crx-theme .crx-pa-edge .crx-pa-verdict b::before { content:'↑ '; }
+.crx-theme .crx-pa-empty code { white-space:nowrap; }
+
+@media (min-width:720px) {
+    .crx-theme .crx-pa-two { grid-template-columns:1fr 1fr; }
+    .crx-theme .crx-pa-teams { grid-template-columns:1fr 1fr; }
+    .crx-theme .crx-pa-squadhead { flex-direction:row; justify-content:space-between; align-items:flex-start; }
+    .crx-theme .crx-pa-controls { flex-direction:row; flex-wrap:wrap; gap:8px 24px; }
+    .crx-theme .crx-pa-fixtures { overflow:visible; }
+    .crx-theme .crx-pa-fx { flex:1 1 0; }
+    .crx-theme .crx-pa-row { grid-template-columns:170px minmax(0,1fr) 190px; grid-template-areas:"who meter verdict" "ev ev ev"; align-items:center; }
+    .crx-theme .crx-pa-verdict { text-align:right; }
+}
