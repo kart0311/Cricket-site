@@ -1,6 +1,6 @@
 // Small presentation pieces: team badges, a bar chart that sits under the stat tiles, and a results strip.
 // Everything is plain HTML so it scales with the page and needs no chart library.
-import React from 'react';
+import React, { useState } from 'react';
 import { CODE } from './india';
 
 export type Tone = 'ind' | 'opp' | 'neu';
@@ -37,4 +37,13 @@ export function ResultStrip({ items, oppCode }: { items: { k: 'ind' | 'opp' | 'd
         </div>
         <div className="crx-stripkey"><span className="crx-rs-ind">India</span><span className="crx-rs-opp">{oppCode}</span><span className="crx-rs-draw">Drawn / other</span></div>
     </figure>;
+}
+
+// A small round "i" that opens a note underneath, for the fine print that used to sit between sections.
+export function Info({ children, label = 'About these numbers' }: { children: any; label?: string }) {
+    const [open, setOpen] = useState(false);
+    return <>
+        <button type="button" className="crx-info" aria-expanded={open} aria-label={label} onClick={() => setOpen(!open)}>i</button>
+        {open && <span className="crx-infotext crx-noabbr">{children}</span>}
+    </>;
 }

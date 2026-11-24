@@ -216,10 +216,10 @@ export function PlayAnalysis() {
             <p className="crx-pa-note">Start from the two players' career rates, blend in what happened between them (a meeting counts fully once it passes about 90 balls), then nudge up or down, at most 40%, for each player's record at this ground. The label compares the result with how often that batter normally gets out. "Projected" means the pair have not met. Solid is 150+ balls together, Some 60+, Thin fewer. It is a guide, not a forecast; pitch and conditions on the day can override it.</p>
         </details>
 
-        <div className="crx-ov-foot">
+        <details className="crx-datanote"><summary>About this data</summary><p className="crx-fine">
             {model.source === 'cricsheet'
                 ? <>Data: Cricsheet (cricsheet.org), ODC-By 1.0, {model.matches} men's Tests up to {fmtDate(model.through)}; refreshed {new Date(model.generated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}.</>
                 : <>Data: the site's own matchup records. Run the refresh to widen it with Cricsheet (cricsheet.org, ODC-By 1.0).</>}
-        </div>
+        </p></details>
     </section>;
 }

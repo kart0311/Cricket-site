@@ -75,6 +75,9 @@ function Selector({ label, value, options, open, onToggle, onChange, sort = true
 export function App() {
     const [pageFloor] = useState(() => typeof window === 'undefined' ? 0 : window.innerHeight);
     const [matchupMode, setMatchupMode] = useState('one');
+    // Once someone picks a player, opponent or ground, the big header slims down so the results are on screen.
+    const [picked, setPicked] = useState(false);
+    const [compact, setCompact] = useState(false);
     const [tab, setTab] = useState('matchups');
     const tabTopRef = useRef<HTMLDivElement>(null);
     const pickTab = (id: string) => {
@@ -82,7 +85,8 @@ export function App() {
         requestAnimationFrame(() => { const a = tabTopRef.current; if (a && a.getBoundingClientRect().top < 0) a.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior }); });
     };
     const dark = true;
-    return countryView(<div className={'crx-theme' + (dark ? ' crx-dark' : '')}>
+    return countryView(<div className={'crx-theme' + (dark ? ' crx-dark' : '') + (compact ? ' crx-compact' : '')}
+        onClick={(e) => { if (!picked && (e.target as HTMLElement).closest?.('.crx-opt')) { setPicked(true); setCompact(true); } }}>
     <div className="crx-site" style={{ minHeight: pageFloor }}>
     <FileCard>
         <section className="crx-section">
@@ -94,6 +98,7 @@ export function App() {
                     <h1 className="crx-title crx-noabbr"><span className="crx-title1">Indian Cricket</span><span className="crx-title2">Beyond the Scoreboard</span></h1>
                     <p className="crx-mastsub crx-noabbr">{MASTHEAD_LINE}</p>
                 </div>
+                {picked && <button type="button" className="crx-hdrtoggle" aria-expanded={!compact} aria-label={compact ? 'Show the photo and intro' : 'Hide the photo and intro'} onClick={() => setCompact(!compact)}>{compact ? '▾' : '▴'}</button>}
             </header>
             <nav className="crx-tabs" role="tablist" aria-label="Sections">
                 {TABS.map(([id, a, b]) => <button key={id} type="button" role="tab" id={'crx-tab-' + id} aria-selected={tab === id} aria-controls={'crx-panel-' + id} aria-label={a + ' ' + b} className={'crx-tab' + (tab === id ? ' crx-tabon' : '')} onClick={() => pickTab(id)}><span>{a}</span><span>{b}</span></button>)}

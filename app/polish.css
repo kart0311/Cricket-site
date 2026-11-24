@@ -79,3 +79,44 @@
     .crx-theme .crx-photoheader .crx-title { font-size: clamp(32px, 3.4vw, 44px); }
     .crx-theme .crx-mastsub { max-width: 34ch; }
 }
+
+/* ---- slim header once something is picked ---- */
+.crx-theme .crx-photoheader { position: relative; }
+.crx-theme .crx-hdrtoggle {
+    position: absolute; right: var(--crx-edge); bottom: 8px; z-index: 2; width: 36px; height: 36px; border: 1px solid var(--ds-hairline);
+    border-radius: 18px !important; background: rgba(67,40,29,.85); color: var(--ds-ink-2); font-size: 14px; line-height: 1; cursor: pointer;
+}
+.crx-theme .crx-hdrtoggle:focus-visible { outline: 2px solid #c6a78c; outline-offset: 2px; }
+.crx-theme.crx-compact .crx-headerphoto { height: 74px; object-fit: cover; object-position: 50% 58%; }
+.crx-theme.crx-compact .crx-stadium-photo::after { background: linear-gradient(180deg, transparent 20%, rgba(67,40,29,.75) 75%, var(--ds-page) 100%); }
+.crx-theme.crx-compact .crx-masthead { padding: 6px var(--crx-edge) 10px; }
+.crx-theme.crx-compact .crx-photoheader .crx-title { font-size: clamp(17px, 5.2vw, 22px); line-height: 1.2; padding-right: 44px; }
+.crx-theme.crx-compact .crx-title1, .crx-theme.crx-compact .crx-title2 { display: inline; }
+.crx-theme.crx-compact .crx-title1::after { content: " · "; color: var(--ds-ink-4); }
+.crx-theme.crx-compact .crx-mastsub { display: none; }
+.crx-theme.crx-compact .crx-hdrtoggle { bottom: 8px; }
+@media (min-width: 1000px) {
+    .crx-theme.crx-compact .crx-photoheader { grid-template-columns: 230px minmax(0, 1fr); margin-bottom: 4px; }
+    .crx-theme.crx-compact .crx-headerphoto { height: auto; object-fit: contain; }
+    .crx-theme.crx-compact .crx-stadium-photo::after { background: linear-gradient(90deg, transparent 60%, var(--ds-page) 100%); }
+    .crx-theme.crx-compact .crx-photoheader .crx-title { font-size: 26px; }
+    .crx-theme.crx-compact .crx-masthead { padding: 0 var(--crx-edge) 0 6px; }
+}
+
+/* ---- tap-to-open notes (the little "i") ---- */
+.crx-theme .crx-info {
+    display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; margin: 0 0 0 8px; padding: 0;
+    border: 1px solid var(--ds-ink-4); border-radius: 50% !important; background: none; color: var(--ds-ink-2);
+    font: italic 600 12px/1 Georgia, 'Times New Roman', serif; cursor: pointer; vertical-align: 1px; text-transform: none; letter-spacing: normal;
+}
+.crx-theme .crx-info[aria-expanded="true"] { background: var(--ds-raised); color: var(--ds-ink); border-color: var(--ds-ink-2); }
+.crx-theme .crx-info:focus-visible { outline: 2px solid #c6a78c; outline-offset: 2px; }
+.crx-theme .crx-infotext { display: block; margin: 8px 0 2px; font-size: 12.5px; line-height: 18px; font-weight: 400; color: var(--ds-ink-2); text-transform: none; letter-spacing: normal; max-width: 60ch; }
+
+/* ---- one-line summary ---- */
+.crx-theme .crx-verdict {
+    margin: 4px 0 16px; padding: 2px 0 2px 12px; border-left: 3px solid var(--tone, var(--ds-teal));
+    font-size: 15.5px; line-height: 23px; color: var(--ds-ink);
+}
+.crx-theme .crx-verdict .crx-caveat { display: block; margin-top: 4px; font-style: normal; font-size: 13px; line-height: 19px; color: #e6b87f; }
+.crx-theme .crx-datanote .crx-fine { margin: 0 2px 12px; }
