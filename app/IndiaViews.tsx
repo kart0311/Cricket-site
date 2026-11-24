@@ -6,7 +6,7 @@ import { Badge, Info, MiniBars, ResultStrip, type Tone } from './charts';
 import { makeCard, saveCard } from './shareCard';
 import {
     BAT, BOWL, CODE, CODE_LETTER, CODE_NAME, GROUNDS, GROUND_AGG, INNINGS_NAME, PAIRS, PAIRS_FROM, PLAYERS, TEAMS, TESTS,
-    BOWL_KINDS, addStats, ballToken, batAgg, batByMatch, batByPlayer, batHand, bowlAgg, bowlByMatch, bowlByPlayer, bowlKind, creditedBy, emptyStats, fmtDate, fmtKinds, isSpinKind,
+    BOWL_KINDS, KIND_NAME, CREDITED_LETTERS, addStats, ballToken, batAgg, batByMatch, batByPlayer, batHand, bowlAgg, bowlByMatch, bowlByPlayer, bowlKind, creditedBy, emptyStats, fmtDate, fmtKinds, isSpinKind,
     groundName, groundShort, isHome, isIndia, kindCounts, n1, oppOf, parseBalls, playerSpan, ratio, resultText, scoreLine, winnerOf, yearOf,
     type BatRow, type BowlRow, type Over, type PairStats, type Test,
 } from './india';
@@ -35,10 +35,17 @@ function Fold({ label, note, children, cls = '' }: { label: string; note?: strin
 }
 const Label = ({ children, info }: { children: any; info?: any }) => <div className="crx-filterlabel">{children}{info && <Info>{info}</Info>}</div>;
 const Hint = ({ children }: { children: any }) => <p className="crx-hint">{children}</p>;
+// whole-number percentages that add up to exactly 100 (largest remainder)
+function pcts(ns: number[]): number[] {
+    const t = ns.reduce((a, b) => a + b, 0) || 1; const raw = ns.map((n) => 100 * n / t); const fl = raw.map(Math.floor);
+    let left = 100 - fl.reduce((a, b) => a + b, 0);
+    raw.map((r, i) => [r - fl[i], i]).sort((a, b) => b[0] - a[0]).forEach(([, i]) => { if (left > 0 && ns[i] > 0) { fl[i]++; left--; } });
+    return fl;
+}
 function Bars({ rows, tone }: { rows: [string, number][]; tone?: Tone }) {
-    const total = rows.reduce((a, r) => a + r[1], 0) || 1;
-    return <div className={'crx-hg-bars' + (tone ? ' crx-t-' + tone : '')}>{rows.filter((r) => r[1] > 0).map(([l, n]) =>
-        <div className="crx-hg-bar" key={l}><span className="crx-hg-barname">{l}</span><span className="crx-hg-bartrack" aria-hidden="true"><i style={{ width: Math.max(2, Math.round(100 * n / total)) + '%' }} /></span><span className="crx-hg-barnum">{n1(n)} · {Math.round(100 * n / total)}%</span></div>)}</div>;
+    const shown = rows.filter((r) => r[1] > 0); const total = rows.reduce((a, r) => a + r[1], 0) || 1; const pc = pcts(shown.map((r) => r[1]));
+    return <div className={'crx-hg-bars' + (tone ? ' crx-t-' + tone : '')}>{shown.map(([l, n], i) =>
+        <div className="crx-hg-bar" key={l}><span className="crx-hg-barname">{l}</span><span className="crx-hg-bartrack" aria-hidden="true"><i style={{ width: Math.max(2, Math.round(100 * n / total)) + '%' }} /></span><span className="crx-hg-barnum">{n1(n)} · {pc[i]}%</span></div>)}</div>;
 }
 function ShowMore({ open, onToggle, total, shown, what }: { open: boolean; onToggle: () => void; total: number; shown: number; what: string }) {
     if (total <= shown) return null;
@@ -100,6 +107,23 @@ export function IndiaMatchup({ Selector }: any) {
     }
     const tests = new Set(shown.map((x) => x.m)).size;
     const hasCard = shown.some((x) => x.card);
+    const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
+    const howRows: [string, number][] = Object.entries(stats.kinds).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]).map(([l, n]) => [cap(KIND_NAME[l] || l), n]);
+    // every dismissal in the current selection, newest first: how, when, where
+    const dismissals: { key: string; date: string; place: string; how: string; note: string }[] = [];
+    for (const x of shown) {
+        const t = TESTS[x.m]; const place = `${groundShort(t.g)} · ${INNINGS_NAME[x.inn]}`;
+        if (x.over) {
+            let faced = 0, scored = 0;
+            for (const o of x.over) for (const b of o.balls) {
+                faced++; if (b.kind && CREDITED_LETTERS.has(b.kind)) dismissals.push({ key: `${x.m}-${x.inn}-${o.over}-${faced}`, date: fmtDate(t.d), place, how: cap(KIND_NAME[b.kind] || b.kind), note: `Over ${o.over} · ${faced === 1 ? 'first ball from him' : `after ${scored} ${scored === 1 ? 'run' : 'runs'} off ${faced - 1} balls from him`}` });
+                scored += b.runs;
+            }
+        } else if (x.card && x.card[0] > 0) {
+            const l = CODE_LETTER[x.card[0]];
+            if (l && CREDITED_LETTERS.has(l)) dismissals.push({ key: `${x.m}-${x.inn}-c`, date: fmtDate(t.d), place, how: cap(CODE_NAME[x.card[0]]), note: `Out for ${x.card[1]}${x.card[2] >= 0 ? ` off ${x.card[2]} balls` : ''} in the innings` });
+        }
+    }
     // Runs the batter scored in each meeting that has ball-by-ball detail, oldest first; a dot marks a dismissal.
     const verdict = (() => {
         if (bowler == null || batter == null || (stats.balls === 0 && stats.outs === 0)) return null;
@@ -135,7 +159,7 @@ export function IndiaMatchup({ Selector }: any) {
                 sub: `${plural(tests, 'Test')}${yrs ? ' · ' + (yrs[0] === yrs[1] ? yrs[0] : yrs[0] + ' to ' + yrs[1]) : ''}${filt ? ' · ' + filt : ''}${hasCard ? ' · some scorecard only' : ''}`,
                 verdict: verdict ? verdict.line : '', caveat: verdict ? verdict.small : '',
                 tiles: [[n1(stats.balls), 'Balls'], [n1(stats.runs), stats.runs === 1 ? 'Run' : 'Runs'], [String(stats.outs), stats.outs === 1 ? 'Dismissal' : 'Dismissals'], [String(tests), tests === 1 ? 'Test' : 'Tests']],
-                kinds: stats.outs > 0 ? fmtKinds(stats.kinds) : '',
+                howOut: howRows.map(([label, n]) => ({ label, n })),
                 smalls: stats.balls > 0 ? [[String(ratio(stats.runs * 100, stats.balls, 1)), 'Strike rate'], [Math.round(100 * stats.dots / stats.balls) + '%', 'Dot balls'], [String(stats.fours), 'Fours'], [String(stats.sixes), 'Sixes']] : null,
                 bars: meetBars.map((b) => ({ v: b.v, out: b.out })), years: yrs, rows, site: 'kart0311.github.io/Cricket-site',
             });
@@ -172,7 +196,19 @@ export function IndiaMatchup({ Selector }: any) {
             {verdict && <p className="crx-verdict crx-noabbr">{verdict.line}{verdict.small && <em className="crx-caveat"> {verdict.small}</em>}</p>}
             <div className="crx-split"><div className="crx-col">
             <Tiles rows={[['Balls', n1(stats.balls)], [stats.runs === 1 ? 'Run' : 'Runs', n1(stats.runs)], [stats.outs === 1 ? 'Dismissal' : 'Dismissals', stats.outs], [tests === 1 ? 'Test' : 'Tests', tests]]} />
-            <div className="crx-outkinds">{stats.outs > 0 ? <><span>Got out</span><strong>{fmtKinds(stats.kinds)}</strong></> : <span>{stats.balls ? `Not dismissed in ${plural(stats.balls, 'ball')}` : 'No dismissals'}</span>}</div>
+            {stats.outs > 0
+                ? <div className="crx-howout">
+                    <Label>How {sur(bowler!)} got {sur(batter!)} out</Label>
+                    <Bars rows={howRows} tone={toneOf(bowler)} />
+                    <Fold label="Each dismissal" note={String(dismissals.length)} cls="crx-dismissals">
+                        <div className="crx-dlist">{dismissals.map((d) => <div className="crx-dis" key={d.key}>
+                            <div className="crx-dishead"><b>{d.date}</b><span className={'crx-diskind crx-t-' + toneOf(bowler)}>{d.how}</span></div>
+                            <div className="crx-displace">{d.place}</div>
+                            <div className="crx-disnote">{d.note}</div>
+                        </div>)}</div>
+                    </Fold>
+                </div>
+                : <div className="crx-outkinds"><span>{stats.balls ? `Not dismissed in ${plural(stats.balls, 'ball')}` : 'No dismissals'}</span></div>}
             {meetBars.length > 1 && <MiniBars items={meetBars} tone={toneOf(batter)} title="Runs in each meeting" note="dot = dismissed" foot={[yearOf(TESTS[shown[shown.length - 1].m].d), yearOf(TESTS[shown[0].m].d)]} />}
             {stats.balls > 0 && <Fold label="More numbers" cls="crx-morenums">
                 <Tiles rows={[['Strike rate', ratio(stats.runs * 100, stats.balls, 1)], ['Dots', stats.dots], ['Dot %', Math.round(100 * stats.dots / stats.balls) + '%'], ['Fours', stats.fours], ['Sixes', stats.sixes], ['Runs per out', stats.outs ? ratio(stats.runs, stats.outs, 1) : '–']]} />

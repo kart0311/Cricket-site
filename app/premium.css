@@ -79,3 +79,20 @@
 .crx-theme table { border:0 !important; border-collapse:collapse; }
 .crx-theme table th, .crx-theme table td { border:0 !important; border-bottom:1px solid var(--crx-hair) !important; background:none !important; }
 .crx-theme table tr:last-child td { border-bottom:0 !important; }
+
+/* how the batter got out */
+.crx-theme .crx-howout { margin-top:6px; }
+.crx-theme .crx-howout .crx-filterlabel { margin-top:26px; }
+.crx-theme .crx-hg-bar { grid-template-columns:96px minmax(0,1fr) 74px; font-size:14px; gap:12px; }
+.crx-theme .crx-hg-bartrack { height:10px; border-radius:5px; background:rgba(250,235,215,.1); overflow:hidden; }
+.crx-theme .crx-hg-bartrack i { border-radius:5px; }
+.crx-theme .crx-hg-bars.crx-t-ind .crx-hg-bartrack i { background:#f2a652; }
+.crx-theme .crx-hg-bars.crx-t-opp .crx-hg-bartrack i { background:#6fc1d8; }
+.crx-theme .crx-dismissals { margin-top:10px; }
+.crx-theme .crx-dis { padding:14px 2px; border-top:1px solid var(--crx-hair); }
+.crx-theme .crx-dishead { display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+.crx-theme .crx-dishead b { font-size:15px; color:#fff1de; }
+.crx-theme .crx-diskind { font-family:Georgia,'Times New Roman',serif; font-size:17px; }
+.crx-theme .crx-diskind.crx-t-ind { color:var(--crx-gold); } .crx-theme .crx-diskind.crx-t-opp { color:var(--crx-blue); }
+.crx-theme .crx-displace { font-size:12.5px; color:var(--crx-faint); margin-top:3px; }
+.crx-theme .crx-disnote { font-size:13.5px; color:#e8d3b7; margin-top:5px; }

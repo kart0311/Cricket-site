@@ -8,7 +8,7 @@ export type CardModel = {
     sub: string;                       // e.g. "8 Tests · 2020 to 2025 · All grounds"
     verdict: string; caveat: string;
     tiles: [string, string][];         // four big boxes; the third is highlighted
-    kinds: string;                     // e.g. "caught 3 · bowled 1", empty when nobody was dismissed
+    howOut: { label: string; n: number }[]; // how the batter got out, most common first; empty when nobody was dismissed
     smalls: [string, string][] | null; // four small numbers, or null when there is no ball-by-ball detail
     bars: { v: number; out: boolean }[]; years: [number, number] | null;
     rows: { date: string; place: string; line: string; out: boolean }[];
@@ -91,15 +91,29 @@ export async function makeCard(m: CardModel): Promise<Blob> {
     const gap = 14, bw = (W - 144 - gap * 3) / 4;
     m.tiles.forEach(([v, l], i) => {
         const x = 72 + i * (bw + gap), hot = i === 2;
-        rr(c, x, y, bw, 124, 14); c.fillStyle = hot ? 'rgba(242,166,82,.12)' : 'rgba(255,255,255,.05)'; c.fill();
+        rr(c, x, y, bw, 108, 14); c.fillStyle = hot ? 'rgba(242,166,82,.12)' : 'rgba(255,255,255,.05)'; c.fill();
         c.strokeStyle = hot ? COL.ind : COL.box; c.lineWidth = 2; c.stroke();
-        c.textAlign = 'center'; c.fillStyle = hot ? '#ffc27e' : COL.ink; c.font = `700 60px ${SANS}`; c.fillText(v, x + bw / 2, y + 68);
-        c.fillStyle = COL.soft; c.font = `21px ${SANS}`; c.fillText(l, x + bw / 2, y + 102);
+        c.textAlign = 'center'; c.fillStyle = hot ? '#ffc27e' : COL.ink; c.font = `700 60px ${SANS}`; c.fillText(v, x + bw / 2, y + 62);
+        c.fillStyle = COL.soft; c.font = `21px ${SANS}`; c.fillText(l, x + bw / 2, y + 90);
     });
-    y += 124 + 18;
-    if (m.kinds) {
-        c.textAlign = 'left'; c.fillStyle = COL.faint; c.font = `19px ${SANS}`; const lw = spaced(c, 'Got out', 72, y + 26, 3);
-        c.fillStyle = COL.ink; c.font = `600 24px ${SANS}`; c.fillText(m.kinds, 72 + lw + 20, y + 26); y += 50;
+    y += 108 + 16;
+    if (m.howOut.length) {
+        const total = m.howOut.reduce((t, k) => t + k.n, 0); const raw = m.howOut.map((k) => 100 * k.n / total), pc = raw.map(Math.floor); let left = 100 - pc.reduce((a, b) => a + b, 0); raw.map((r, i) => [r - pc[i], i]).sort((a, b) => b[0] - a[0]).forEach(([, i]) => { if (left > 0) { pc[i]++; left--; } }); const pal = ['#f2a652', '#6fc1d8', '#e6c9a0', '#c98a63', '#9fc7a6', '#b9a2dc'];
+        c.textAlign = 'left'; c.fillStyle = COL.faint; c.font = `19px ${SANS}`; spaced(c, `How ${m.bowler.split(' ').slice(-1)[0]} got ${m.batter.split(' ').slice(-1)[0]} out`, 72, y + 22, 3);
+        const bx = 72, bw2 = W - 144, by = y + 38; let sx = bx;
+        m.howOut.forEach((k, i) => {
+            const w = Math.max(6, Math.round(bw2 * k.n / total)); c.fillStyle = pal[i % pal.length];
+            const first = i === 0, last = i === m.howOut.length - 1;
+            rr(c, sx, by, Math.min(w, bx + bw2 - sx), 14, first || last ? 7 : 0); c.fill(); sx += w + 3;
+        });
+        let lx = 72, ly = by + 44; c.font = `22px ${SANS}`;
+        m.howOut.forEach((k, i) => {
+            const txt = `${k.label} ${k.n} (${pc[i]}%)`; const tw = c.measureText(txt).width + 34;
+            if (lx + tw > W - 72) { lx = 72; ly += 32; }
+            c.fillStyle = pal[i % pal.length]; c.beginPath(); c.arc(lx + 6, ly - 7, 6, 0, Math.PI * 2); c.fill();
+            c.fillStyle = COL.ink; c.textAlign = 'left'; c.fillText(txt, lx + 20, ly); lx += tw + 14;
+        });
+        y = ly + 26;
     } else y += 4;
     if (m.smalls) {
         y += 8;
@@ -107,12 +121,12 @@ export async function makeCard(m: CardModel): Promise<Blob> {
             const cx = 72 + i * (bw + gap) + bw / 2; c.textAlign = 'center';
             c.fillStyle = COL.ink; c.font = `700 32px ${SANS}`; c.fillText(v, cx, y + 26); c.fillStyle = COL.soft; c.font = `20px ${SANS}`; c.fillText(l, cx, y + 54);
         });
-        y += 76;
+        y += 70;
     }
 
     // chart: runs in each meeting
     if (m.bars.length > 1) {
-        const ch = 190; rr(c, 72, y, W - 144, ch, 14); c.fillStyle = 'rgba(0,0,0,.18)'; c.fill(); c.strokeStyle = COL.box; c.lineWidth = 2; c.stroke();
+        const ch = m.howOut.length ? 156 : 190; rr(c, 72, y, W - 144, ch, 14); c.fillStyle = 'rgba(0,0,0,.18)'; c.fill(); c.strokeStyle = COL.box; c.lineWidth = 2; c.stroke();
         c.textAlign = 'left'; c.fillStyle = COL.ink; c.font = `600 22px ${SANS}`; c.fillText('Runs in each meeting', 96, y + 36);
         c.textAlign = 'right'; c.fillStyle = COL.soft; c.font = `22px ${SANS}`; c.fillText('dot = dismissed', W - 96, y + 36);
         const base = y + ch - 40, top = y + 62, ah = base - top - 14, n = m.bars.length, areaW = W - 192, g = 7;
@@ -129,8 +143,7 @@ export async function makeCard(m: CardModel): Promise<Blob> {
     }
 
     // most recent meetings, as many whole rows as fit above the footer
-    c.textAlign = 'left'; c.fillStyle = COL.faint; c.font = `19px ${SANS}`; spaced(c, 'Most recent meetings', 72, y + 18, 3);
-    y += 30;
+    if (m.rows.length && y + 30 + 74 <= footTop - 6 - off) { c.textAlign = 'left'; c.fillStyle = COL.faint; c.font = `19px ${SANS}`; spaced(c, 'Most recent meetings', 72, y + 18, 3); y += 30; } else m = { ...m, rows: [] };
     for (const r of m.rows) {
         if (y + 74 > footTop - 6 - off) break;
         c.fillStyle = COL.line; c.fillRect(72, y, W - 144, 2);
