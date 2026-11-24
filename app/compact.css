@@ -255,3 +255,11 @@
     .crx-theme .crx-masthead { padding: 18px var(--crx-edge) 20px; }
     .crx-theme .crx-mastsub { font-size: 14px; line-height: 21px; }
 }
+
+/* Filters panel: long ground names wrap instead of running over the +, and each row reads as a field */
+.crx-theme .crx-pa-fold .crx-sel-half .crx-selbtn { background:rgba(0,0,0,.2); min-height:48px; height:auto; padding:8px 12px; gap:12px; }
+.crx-theme .crx-pa-fold .crx-sel-half .crx-sellabel { min-width:56px; }
+.crx-theme .crx-pa-fold .crx-sel-half .crx-selvalue { white-space:normal; overflow-wrap:anywhere; min-width:0; line-height:20px; }
+.crx-theme .crx-pa-fold .crx-sel-half .crx-chev { flex:none; }
+/* Line up the values of stacked pickers (Bowler / Batter) */
+.crx-theme .crx-section .crx-selbtn .crx-sellabel { min-width:52px; }
