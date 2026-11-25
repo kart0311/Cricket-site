@@ -4,6 +4,11 @@ name: Find stadium photo candidates
 # and saves thumbnails + contact sheets on the `photos-preview` branch so they can be reviewed before use.
 on:
   workflow_dispatch:
+    inputs:
+      only:
+        description: Optional regex of ground names to scan
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -29,6 +34,8 @@ jobs:
           done
       - run: node refresh/refresh.mjs
       - run: node tools/photoscan.mjs
+        env:
+          ONLY: ${{ inputs.only }}
       - name: Save on the photos-preview branch
         run: |
           git config user.name "github-actions"
@@ -40,4 +47,4 @@ jobs:
           cp /tmp/keep/* .
           git add -A
           git commit -m "Stadium photo candidates"
-          git push -f origin photos-new:photos-preview
+          git push -f origin photos-new:${{ inputs.only && 'photos-preview2' || 'photos-preview' }}

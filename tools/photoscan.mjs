@@ -12,14 +12,24 @@ await build({ entryPoints: [join(tmp, 'entry.ts')], bundle: true, format: 'esm',
 const { GROUNDS, TESTS, isIndia } = await import(pathToFileURL(join(tmp, 'g.mjs')).href);
 
 const count = new Map(); for (const t of TESTS) if (isIndia(t)) count.set(t.g, (count.get(t.g) || 0) + 1);
-const grounds = [...count.entries()].map(([i, n]) => ({ i, n, ...GROUNDS[i] })).sort((a, b) => b.n - a.n);
+const ONLY = process.env.ONLY ? new RegExp(process.env.ONLY, 'i') : null;
+const grounds = [...count.entries()].map(([i, n]) => ({ i, n, ...GROUNDS[i] })).filter((g) => !ONLY || ONLY.test(g.name)).sort((a, b) => b.n - a.n);
 const UA = { 'User-Agent': 'IndianCricketBeyondTheScoreboard/1.0 (https://github.com/kart0311/Cricket-site; hobby stats site)' };
 const OK = /^(CC0|Public domain|PD|CC[ -]BY(-SA)?\b)/i; const BAD = /\b(NC|ND)\b|non-?commercial/i;
-const BADNAME = /logo|map|flag|ticket|scorecard|plan|diagram|poster|stamp|coin|crest|svg|screenshot|sketch|painting|\.png/i;
+const BADNAME = /rugby|football|soccer|united|logo|map|flag|ticket|scorecard|plan|diagram|poster|stamp|coin|crest|svg|screenshot|sketch|painting|\.png/i;
 const strip = (h) => String(h || '').replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
 async function api(params) { const u = 'https://commons.wikimedia.org/w/api.php?format=json&origin=*&' + new URLSearchParams(params); for (let k = 0; k < 4; k++) { const r = await fetch(u, { headers: UA }); if (r.ok) return r.json(); await new Promise((s) => setTimeout(s, 1500 * (k + 1))); } throw new Error('api ' + u); }
 
 const ALIAS = {
+    'Narendra Modi': ['Narendra Modi Stadium cricket Ahmedabad', 'Narendra Modi Stadium', 'Sardar Patel Gujarat Stadium Motera'],
+    'Old Trafford': ['Old Trafford Cricket Ground', 'Emirates Old Trafford cricket'],
+    'Headingley': ['Headingley Cricket Ground', 'Headingley Stadium cricket Test'],
+    'Trent Bridge': ['Trent Bridge Cricket Ground', 'Trent Bridge cricket Nottingham'],
+    'Newlands': ['Newlands Cricket Ground Cape Town', 'Newlands cricket stadium'],
+    'WACA': ['WACA Ground cricket Perth', 'Western Australian Cricket Association Ground'],
+    'SuperSport Park': ['SuperSport Park Centurion cricket', 'Centurion Park cricket'],
+    'Kingsmead': ['Kingsmead Cricket Ground Durban'],
+    'Lal Bahadur': ['Lal Bahadur Shastri Stadium cricket Hyderabad Fateh Maidan'],
     'Chepauk': ['M. A. Chidambaram Stadium', 'Chepauk Stadium Chennai', 'Chepauk cricket'],
     'Jamtha': ['Vidarbha Cricket Association Stadium', 'VCA Stadium Jamtha Nagpur', 'Jamtha stadium'],
     'Holkar': ['Holkar Stadium Indore', 'Holkar Cricket Stadium'],
