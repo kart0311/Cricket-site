@@ -19,9 +19,22 @@ const BADNAME = /logo|map|flag|ticket|scorecard|plan|diagram|poster|stamp|coin|c
 const strip = (h) => String(h || '').replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
 async function api(params) { const u = 'https://commons.wikimedia.org/w/api.php?format=json&origin=*&' + new URLSearchParams(params); for (let k = 0; k < 4; k++) { const r = await fetch(u, { headers: UA }); if (r.ok) return r.json(); await new Promise((s) => setTimeout(s, 1500 * (k + 1))); } throw new Error('api ' + u); }
 
+const ALIAS = {
+    'Chepauk': ['M. A. Chidambaram Stadium', 'Chepauk Stadium Chennai', 'Chepauk cricket'],
+    'Jamtha': ['Vidarbha Cricket Association Stadium', 'VCA Stadium Jamtha Nagpur', 'Jamtha stadium'],
+    'Holkar': ['Holkar Stadium Indore', 'Holkar Cricket Stadium'],
+    'Sawai Mansingh': ['Sawai Mansingh Stadium Jaipur'],
+    'Barsapara': ['Barsapara Cricket Stadium', 'ACA Stadium Guwahati', 'Barsapara stadium Guwahati'],
+    'JSCA': ['JSCA International Stadium Complex Ranchi', 'JSCA Stadium Ranchi', 'Ranchi cricket stadium'],
+    'Motera': ['Narendra Modi Stadium', 'Sardar Patel Stadium Motera', 'Motera stadium Ahmedabad'],
+    'Gujarat Stadium': ['Sardar Patel Gujarat Stadium Navrangpura'],
+    'Harare': ['Harare Sports Club'], 'Rawalpindi': ['Rawalpindi Cricket Stadium'],
+};
 const result = [];
 for (const g of grounds) {
-    const queries = [`${g.name} ${g.city}`, `${g.name} stadium`];
+    const plain = g.name.replace(/\s*\(.*?\)/g, '').trim(); const parens = (g.name.match(/\(([^)]*)\)/) || [])[1];
+    const extra = Object.entries(ALIAS).filter(([k]) => g.name.includes(k)).flatMap(([, v]) => v);
+    const queries = [...new Set([`${plain} ${g.city}`, `${plain} stadium`, ...(parens ? [`${parens} ${g.city}`] : []), ...extra])];
     const seen = new Map();
     for (const q of queries) {
         let d; try { d = await api({ action: 'query', generator: 'search', gsrsearch: q + ' filetype:bitmap', gsrnamespace: '6', gsrlimit: '20', prop: 'imageinfo', iiprop: 'url|size|mime|extmetadata', iiurlwidth: '900' }); } catch (e) { console.log('skip', q, e.message); continue; }
@@ -29,15 +42,17 @@ for (const g of grounds) {
             const ii = p.imageinfo?.[0]; if (!ii || seen.has(p.title)) continue;
             const m = ii.extmetadata || {}; const lic = strip(m.LicenseShortName?.value);
             if (!OK.test(lic) || BAD.test(lic) || BADNAME.test(p.title)) continue;
-            if (ii.mime !== 'image/jpeg' || ii.width < 1000 || ii.width < ii.height * 1.25) continue;
+            if (ii.mime !== 'image/jpeg' || ii.width < 800 || ii.width < ii.height * 1.2) continue;
             const text = (p.title + ' ' + strip(m.ImageDescription?.value)).toLowerCase();
-            const key = g.name.toLowerCase().split(/[ ,(]/).filter((w) => w.length > 3 && !['stadium', 'cricket', 'ground', 'international', 'association'].includes(w));
-            const score = (key.some((w) => text.includes(w)) ? 2 : 0) + (text.includes(g.city.toLowerCase()) ? 1 : 0) + (/stadium|ground|oval|park/.test(text) ? 1 : 0);
+            const key = [...g.name.toLowerCase().split(/[ ,()]/), ...extra.flatMap((e) => e.toLowerCase().split(' '))].filter((w) => w.length > 3 && !['stadium', 'cricket', 'ground', 'international', 'association', 'complex'].includes(w));
+            const score = (key.some((w) => text.includes(w)) ? 2 : 0) + (text.includes(g.city.toLowerCase()) ? 1 : 0) + (/stadium|ground|oval|park|cricket/.test(text) ? 1 : 0);
             seen.set(p.title, { title: p.title, license: lic, author: strip(m.Artist?.value), page: ii.descriptionurl, thumb: ii.thumburl, w: ii.width, h: ii.height, score });
         }
         await new Promise((s) => setTimeout(s, 400));
     }
-    const cands = [...seen.values()].filter((c) => c.score >= 2).sort((a, b) => b.score - a.score || b.w - a.w).slice(0, 5);
+    let pool = [...seen.values()]; let cands = pool.filter((c) => c.score >= 2);
+    if (cands.length < 2) cands = pool.filter((c) => c.score >= 1);
+    console.log('  raw', pool.length); cands = cands.sort((a, b) => b.score - a.score || b.w - a.w).slice(0, 5);
     result.push({ ground: g.name, city: g.city, country: g.country, tests: g.n, cands });
     console.log(g.n, g.name, '|', g.city, '→', cands.length, 'candidates');
 }
