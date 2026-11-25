@@ -1,6 +1,5 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FileCard } from '@instinct/files';
-import { PlayAnalysis } from './PlayAnalysis';
 import { IndiaCountry, IndiaGrounds, IndiaMatchup, IndiaPlayers, MatchupCoverage } from './IndiaViews';
 import { countryView, displayText } from './countryLabels';
 import headerPhoto from './photos/cricket-header.jpg';
@@ -15,7 +14,6 @@ const MASTHEAD_LINE = (() => {
 })();
 
 const TABS: [string, string, string][] = [['matchups', 'Player', 'matchup'], ['countries', 'Country', 'matchup'], ['players', 'Player', 'analysis'], ['grounds', 'Ground', 'analysis']];
-const SUBVIEWS: [string, string][] = [['one', 'Head to head'], ['next', 'Next Test']];
 
 function Selector({ label, value, options, open, onToggle, onChange, sort = true, placeholder, title, half, searchable = true, tone }: any) {
     const current = options.find((o: any) => o.value === value);
@@ -74,7 +72,6 @@ function Selector({ label, value, options, open, onToggle, onChange, sort = true
 
 export function App() {
     const [pageFloor] = useState(() => typeof window === 'undefined' ? 0 : window.innerHeight);
-    const [matchupMode, setMatchupMode] = useState('one');
     // Once someone picks a player, opponent or ground, the big header slims down so the results are on screen.
     const [picked, setPicked] = useState(false);
     const [compact, setCompact] = useState(false);
@@ -106,11 +103,7 @@ export function App() {
             <div className="crx-tabtop" ref={tabTopRef} aria-hidden="true" />
 
             <div className="crx-tabpanel" role="tabpanel" id="crx-panel-matchups" aria-labelledby="crx-tab-matchups" hidden={tab !== 'matchups'}>
-                <div className="crx-viewtoggle crx-twomodes" role="group" aria-label="Player matchup view">
-                    {SUBVIEWS.map(([id, label]) => <button key={id} type="button" aria-pressed={matchupMode === id} className={'crx-pill' + (matchupMode === id ? ' crx-pillon' : '')} onClick={() => setMatchupMode(id)}>{label}</button>)}
-                </div>
-                <div hidden={matchupMode !== 'next'}><PlayAnalysis /></div>
-                <div hidden={matchupMode !== 'one'}><IndiaMatchup Selector={Selector} /></div>
+                <IndiaMatchup Selector={Selector} />
             </div>
             <div className="crx-tabpanel" role="tabpanel" id="crx-panel-countries" aria-labelledby="crx-tab-countries" hidden={tab !== 'countries'}>
                 <IndiaCountry Selector={Selector} />
@@ -122,7 +115,7 @@ export function App() {
                 <IndiaGrounds Selector={Selector} />
             </div>
         </section>
-        {!(tab === 'matchups' && matchupMode === 'next') && <details className="crx-datanote"><summary>About this data</summary>
+        {<details className="crx-datanote"><summary>About this data</summary>
             {tab === 'matchups' && <p className="crx-fine"><MatchupCoverage /></p>}
             <p className="crx-credit">Ball-by-ball data: Cricsheet (cricsheet.org), ODC-By 1.0. Scorecard history since 1932: public Test dataset compiled from ESPNcricinfo records. Computed from match data, not official totals.</p>
         </details>}

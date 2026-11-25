@@ -160,3 +160,6 @@
 .crx-theme .crx-hg-top section { border-radius:16px !important; }
 .crx-theme .crx-chip { border-radius:999px !important; }
 .crx-theme .crx-verdict::before { border-radius:0 4px 4px 0 !important; }
+
+/* with the Next Test switch gone, give the first picker some air under the tabs */
+.crx-theme #crx-panel-matchups { padding-top:18px; }
