@@ -4,3 +4,5 @@ refresh/.cache/
 data/history/*.csv
 app/indiaData.ts
 .card-tmp/
+public/stadiums/
+app/stadiumPhotos.generated.json

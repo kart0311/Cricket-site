@@ -48,6 +48,16 @@ jobs:
       - name: Download the latest matches and rebuild the database
         run: node refresh/refresh.mjs
 
+      - name: Cache stadium photos
+        uses: actions/cache@v4
+        with:
+          path: public/stadiums
+          key: stadium-photos-${{ hashFiles('app/stadiumPhotos.manifest.json') }}
+
+      - name: Fetch stadium photos (Wikimedia Commons, free licences)
+        continue-on-error: true
+        run: node refresh/photos.mjs
+
       - name: Check the numbers still add up
         run: node refresh/selftest.mjs
 

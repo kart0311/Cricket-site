@@ -4,6 +4,8 @@ import React, { useMemo, useState } from 'react';
 import { countryView } from './countryLabels';
 import { Badge, Info, MiniBars, ResultStrip, type Tone } from './charts';
 import { makeCard, saveCard } from './shareCard';
+import photosJson from './stadiumPhotos.generated.json';
+const PHOTOS = photosJson as unknown as Record<string, { file: string; author: string; license: string; page: string }>;
 import {
     BAT, BOWL, CODE, CODE_LETTER, CODE_NAME, GROUNDS, GROUND_AGG, INNINGS_NAME, PAIRS, PAIRS_FROM, PLAYERS, TEAMS, TESTS,
     BOWL_KINDS, KIND_NAME, CREDITED_LETTERS, addStats, ballToken, batAgg, batByMatch, batByPlayer, batHand, bowlAgg, bowlByMatch, bowlByPlayer, bowlKind, creditedBy, emptyStats, fmtDate, fmtKinds, isSpinKind,
@@ -478,7 +480,9 @@ function GroundCard({ g, allInd, setAllInd }: { g: number; allInd: boolean; setA
     const iw = ind.filter((t) => winnerOf(t) === 0).length; const il = ind.filter((t) => typeof t.res === 'number' && t.res !== 0).length; const idr = ind.filter((t) => t.res === 'draw').length;
     const yrs = ts.length ? `${yearOf(ts[0].d)}–${yearOf(ts[ts.length - 1].d)}` : '';
     const Top = ({ title, rows, unit }: { title: string; rows: any[]; unit: (r: any) => string }) => <section><h4>{title}</h4>{rows.map((r) => <div className="crx-hg-topRow" key={r[0]}><span className="crx-hg-topName">{r[0]}<em>{r[1]} {r[1] === 1 ? 'inns' : 'inns'}</em></span><strong>{unit(r)}</strong></div>)}</section>;
+    const photo = PHOTOS[GROUNDS[g].name + '|' + GROUNDS[g].city];
     return <div>
+        {photo && <figure className="crx-gphoto"><img src={photo.file} alt={`${GROUNDS[g].name}, ${GROUNDS[g].city}`} loading="lazy" decoding="async" onError={(e) => { const f = e.currentTarget.parentElement; if (f) f.style.display = 'none'; }} /><figcaption>Photo: {photo.author || 'Wikimedia Commons contributor'} · <a href={photo.page} target="_blank" rel="noopener noreferrer">{photo.license}</a> · Wikimedia Commons</figcaption></figure>}
         <div className="crx-hero"><div className="crx-heroname">{GROUNDS[g].name}</div><div className="crx-herosub">{[GROUNDS[g].city, GROUNDS[g].country].filter(Boolean).join(', ')} · {plural(ts.length, 'Test')} {yrs}</div></div>
         {done.length > 0 && <p className="crx-verdict crx-noabbr">{plural(done.length, 'Test')} here: {batFirst} won by the side batting first, {chase} by the side chasing, {draws} drawn{avgFirst > 0 ? `. First innings average ${avgFirst}` : ''}.{ind.length > 0 ? ` India have won ${iw} of ${ind.length} here.` : ''}{decided.length < 5 && <em className="crx-caveat"> Few results, so take this lightly.</em>}</p>}
         <div className="crx-split"><div className="crx-col">
