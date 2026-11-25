@@ -418,8 +418,9 @@ function PlayerCard({ p }: { p: number }) {
     const kindRows = [1, 2, 3, 4, 5, 6, 7, 8].map((c) => [KIND_LABELS[c - 1], kinds[c]] as [string, number]).filter((r) => (isBat || r[0] !== 'Run out'));
     // How the dismissals split by the other player's style: bowler type when batting, batting hand when bowling.
     const styleCount = new Map<string, number>();
-    if (isBat) { for (const r of bat) if (r[7] > 0 && r[7] !== 5) { const k = r[8] >= 0 ? bowlKind(PLAYERS[r[8]]?.bowl || '') : '?'; styleCount.set(k, (styleCount.get(k) || 0) + 1); } }
-    else { for (const r of credited) { const k = batHand(PLAYERS[r[2]]?.bat || ''); styleCount.set(k, (styleCount.get(k) || 0) + 1); } }
+    const inWhere = (m: number) => where === 'all' || ((where === 'in') === (GROUNDS[TESTS[m].g]?.country === 'India'));
+    if (isBat) { for (const r of bat) if (inWhere(r[0]) && r[7] > 0 && r[7] !== 5) { const k = r[8] >= 0 ? bowlKind(PLAYERS[r[8]]?.bowl || '') : '?'; styleCount.set(k, (styleCount.get(k) || 0) + 1); } }
+    else { for (const r of credited) if (inWhere(r[0])) { const k = batHand(PLAYERS[r[2]]?.bat || ''); styleCount.set(k, (styleCount.get(k) || 0) + 1); } }
     const styleRows: [string, number][] = isBat
         ? BOWL_KINDS.map(([k, l]) => [l, styleCount.get(k) || 0] as [string, number])
         : ['Right-hand bat', 'Left-hand bat', 'Not known'].map((l) => [l, styleCount.get(l) || 0] as [string, number]);
@@ -477,14 +478,14 @@ function PlayerCard({ p }: { p: number }) {
         </>}
         <Label>{isBat ? 'How he gets out' : 'How he takes wickets'}</Label>
         {kindRows.some((r) => r[1] > 0) ? <Bars rows={kindRows} tone={tone} /> : <p className="crx-fine">No dismissals recorded.</p>}
-        <Label info={styleRows.some((r) => r[1] > 0) ? styleNote : undefined}>{isBat ? 'What kind of bowler gets him out' : 'Which batters he gets out'}</Label>
-        {styleRows.some((r) => r[1] > 0)
-            ? <Bars rows={styleRows} tone={tone} />
-            : <p className="crx-fine">No dismissals with a known {isBat ? 'bowling' : 'batting'} style.</p>}
-        {(() => { const sp = isBat ? splits.bat : splits.bowl; const any = [...sp.entries()].some(([k, v]) => k !== '?' && v.balls >= 30); if (!any && where === 'all') return null; return <>
-            <Label info={`Built from the ball-by-ball record of India's Tests since ${fmtDate(PAIRS_FROM)}. ${isBat ? 'Average is runs per dismissal by the bowler (run outs are left out).' : 'Average is runs conceded per wicket.'}`}>{isBat ? 'Against pace and spin' : 'Against right and left-handers'}</Label>
+        {(() => {
+            const sp = isBat ? splits.bat : splits.bowl; const anyBall = [...sp.entries()].some(([k, v]) => k !== '?' && v.balls >= 30); const anyOut = styleRows.some((r) => r[1] > 0);
+            if (!anyBall && !anyOut && where === 'all') return null;
+            return <>
+            <Label info={`${anyBall ? `The two panels use the ball-by-ball record of India's Tests since ${fmtDate(PAIRS_FROM)}; average is ${isBat ? 'runs per dismissal by the bowler (run outs left out)' : 'runs conceded per wicket'}. ` : ''}The list below counts every dismissal on record. ${styleNote}`}>{isBat ? 'Against pace and spin' : 'Against right and left-handers'}</Label>
             <Pills label="Where" cls="crx-twomodes" value={where} onChange={setWhere} items={[['all', 'Everywhere'], ['in', 'In India'], ['out', 'Away']]} />
-            <SplitPanels stats={sp} isBat={isBat} name={sn} tone={tone} />
+            {anyBall && <SplitPanels stats={sp} isBat={isBat} name={sn} tone={tone} />}
+            {anyOut ? <Fold label={isBat ? 'By type of bowler' : 'By batting hand'} note={`${n1(styleKnown)} dismissals`}><Bars rows={styleRows} tone={tone} /></Fold> : <p className="crx-fine">No dismissals with a known {isBat ? 'bowling' : 'batting'} style{where !== 'all' ? ' here' : ''}.</p>}
         </>; })()}
         </div><div className="crx-col">
         {topList.length > 0 && <>

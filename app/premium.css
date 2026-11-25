@@ -316,3 +316,5 @@
 .crx-theme .crx-splitrows b { font-weight:500; color:#fff1de; font-variant-numeric:tabular-nums; }
 .crx-theme .crx-splitempty p { margin:8px 0 0; font-size:12.5px; color:var(--crx-faint); }
 .crx-theme .crx-splitline { margin:10px 2px 0; }
+.crx-theme .crx-splitgrid { align-items:start; }
+.crx-theme .crx-pa-fold .crx-hg-bars { background:none !important; box-shadow:none !important; padding:2px 0 6px !important; border-radius:0 !important; }
