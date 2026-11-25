@@ -206,3 +206,31 @@
 @media (min-width:700px) { .crx-theme .crx-quickrow { grid-template-columns:repeat(3,1fr); } }
 .crx-theme .crx-mastfacts { border-radius:18px !important; }
 .crx-theme .crx-title1, .crx-theme .crx-title2 { font-family:inherit !important; }
+
+/* ===== Boxes everywhere: every block of information sits in a soft rounded panel ===== */
+.crx-theme .crx-mini { background:rgba(255,255,255,.05) !important; border-radius:18px !important; padding:18px 18px 14px !important; margin:12px 0 4px !important; box-shadow:inset 0 0 0 1px rgba(250,235,215,.08) !important; }
+.crx-theme .crx-mini figcaption { color:#ecc18a; font-weight:700; }
+.crx-theme .crx-pa-fold { background:rgba(255,255,255,.05) !important; border-radius:18px !important; margin:12px 0 0 !important; padding:0 18px; border-top:0 !important; box-shadow:inset 0 0 0 1px rgba(250,235,215,.08); }
+.crx-theme .crx-pa-fold > summary { min-height:56px; }
+.crx-theme .crx-pa-fold[open] { padding-bottom:14px; }
+.crx-theme .crx-filters { border-bottom:0 !important; }
+
+/* tables (totals, ground and opponent lists) */
+.crx-theme table { width:100%; border-collapse:separate !important; border-spacing:0; background:rgba(255,255,255,.05) !important; border-radius:18px; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(250,235,215,.08); margin:6px 0 4px; }
+.crx-theme table th { color:#ecc18a; font-size:11px; letter-spacing:.1em; text-transform:uppercase; padding-top:14px; padding-bottom:10px; }
+.crx-theme table th:first-child, .crx-theme table td:first-child { padding-left:18px; }
+.crx-theme table th:last-child, .crx-theme table td:last-child { padding-right:18px; }
+
+/* meetings, Tests and dismissals: one card each */
+.crx-theme .crx-meet, .crx-theme .crx-dis { background:rgba(255,255,255,.05) !important; border:0 !important; border-radius:16px !important; padding:16px 18px !important; margin:0 0 10px !important; box-shadow:inset 0 0 0 1px rgba(250,235,215,.08) !important; }
+.crx-theme .crx-meets { margin-top:6px; }
+.crx-theme .crx-dismissals { margin-top:10px; }
+
+/* the how-out and other bar lists */
+.crx-theme .crx-hg-bars { background:rgba(255,255,255,.05); border-radius:18px; padding:16px 18px; box-shadow:inset 0 0 0 1px rgba(250,235,215,.08); }
+.crx-theme .crx-hg-bar:last-child { margin-bottom:0; }
+
+/* quiet panels for the selected pair / country caption area */
+.crx-theme .crx-pa-more-btn { background:rgba(255,255,255,.04) !important; }
+.crx-theme .crx-hg-bars { border-radius:18px !important; border:0 !important; }
+.crx-theme .crx-filters.crx-pa-fold { margin-bottom:10px !important; }
