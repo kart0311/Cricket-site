@@ -97,6 +97,13 @@ export function IndiaMatchup({ Selector }: any) {
     const bowlerOpts = useMemo(() => opts(batter != null ? [...BY_BATTER.get(batter)!.keys()] : [...BY_BOWLER.keys()], BY_BATTER, batter), [batter]);
     const batterOpts = useMemo(() => opts(bowler != null ? [...BY_BOWLER.get(bowler)!.keys()] : [...BY_BATTER.keys()], BY_BOWLER, bowler), [bowler]);
     const pair = bowler != null && batter != null ? PAIRS[bowler + ',' + batter] : null;
+    // the most-played duels, one per bowler and one per batter, for the home page
+    const popular = useMemo(() => {
+        const all = Object.entries(PAIRS).map(([k, v]: [string, any]) => { const [b, t] = k.split(',').map(Number); return [b, t, v.m.length + v.c.length] as [number, number, number]; }).sort((x, y) => y[2] - x[2]);
+        const out: [number, number, number][] = []; const ub = new Set<number>(), ut = new Set<number>();
+        for (const r of all) { if (ub.has(r[0]) || ut.has(r[1])) continue; ub.add(r[0]); ut.add(r[1]); out.push(r); if (out.length === 6) break; }
+        return out;
+    }, []);
     const meets = useMemo(() => {
         if (!pair) return [];
         const out: { m: number; inn: number; over?: Over[]; card?: [number, number, number] }[] = [];
@@ -188,6 +195,7 @@ export function IndiaMatchup({ Selector }: any) {
                 options={[...(batter != null ? [{ value: null, label: 'Pick a player' }] : []), ...batterOpts]} />
         </div>
         {!pair && <Hint>{bowler != null ? 'Now pick a batter.' : batter != null ? 'Now pick a bowler.' : 'Pick a bowler and a batter. One side is always an Indian player, the other from the opposition.'}</Hint>}
+        {bowler == null && batter == null && popular.length > 0 && <div className="crx-quick"><div className="crx-quicktitle">Or start with a famous duel</div><div className="crx-quickrow">{popular.map(([b, t, n]) => <button type="button" className="crx-quickbtn" key={b + '-' + t} onClick={() => { setBowler(b); setBatter(t); }}><span className="crx-qb">{sur(b)}</span><em>to</em><span className="crx-qt">{sur(t)}</span><small>{n} {n === 1 ? 'meeting' : 'meetings'}</small></button>)}</div></div>}
         {pair && <Fold label="Filters" note={`${groundLabel} · ${innLabel}`} cls="crx-filters">
             <div className="crx-pair">
                 <Selector half label="Ground" value={ground} options={groundOpts} sort={false} open={open === 'ground'} onToggle={() => toggle('ground')} onChange={(v: number) => { setGround(v); setOpen(null); setAll(false); }} />

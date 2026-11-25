@@ -3,14 +3,14 @@ import { FileCard } from '@instinct/files';
 import { IndiaCountry, IndiaGrounds, IndiaMatchup, IndiaPlayers, MatchupCoverage } from './IndiaViews';
 import { countryView, displayText } from './countryLabels';
 import headerPhoto from './photos/cricket-header.jpg';
-import { TESTS, isIndia, n1, yearOf } from './india';
+import { GROUNDS, TESTS, isIndia, n1, yearOf } from './india';
 
 // One line under the masthead, counted from the data rather than typed in, so it stays true
 // as the daily refresh adds matches.
-const MASTHEAD_LINE = (() => {
+const MASTHEAD_FACTS: [string, string][] = (() => {
     const bb = TESTS.filter((t) => isIndia(t) && t.bb).length;
     const first = TESTS[0] ? yearOf(TESTS[0].d) : '1877';
-    return `${n1(TESTS.length)} Tests since ${first}, and ball-by-ball detail for ${n1(bb)} of India's.`;
+    return [[n1(TESTS.length), 'Tests since ' + first], [n1(bb), 'India Tests ball by ball'], [n1(GROUNDS.length), 'grounds']];
 })();
 
 const TABS: [string, string, string][] = [['matchups', 'Player', 'matchup'], ['countries', 'Country', 'matchup'], ['players', 'Player', 'analysis'], ['grounds', 'Ground', 'analysis']];
@@ -83,7 +83,7 @@ export function App() {
     };
     const dark = true;
     return countryView(<div className={'crx-theme' + (dark ? ' crx-dark' : '') + (compact ? ' crx-compact' : '')}
-        onClick={(e) => { if (!picked && (e.target as HTMLElement).closest?.('.crx-opt')) { setPicked(true); setCompact(true); } }}>
+        onClick={(e) => { if (!picked && (e.target as HTMLElement).closest?.('.crx-opt, .crx-quickbtn')) { setPicked(true); setCompact(true); } }}>
     <div className="crx-site" style={{ minHeight: pageFloor }}>
     <FileCard>
         <section className="crx-section">
@@ -93,7 +93,7 @@ export function App() {
                 </div>
                 <div className="crx-masthead">
                     <h1 className="crx-title crx-noabbr"><span className="crx-title1">Indian Cricket</span><span className="crx-title2">Beyond the Scoreboard</span></h1>
-                    <p className="crx-mastsub crx-noabbr">{MASTHEAD_LINE}</p>
+                    <div className="crx-mastfacts">{MASTHEAD_FACTS.map(([v, l]) => <div key={l}><strong>{v}</strong><span>{l}</span></div>)}</div>
                 </div>
                 {picked && <button type="button" className="crx-hdrtoggle" aria-expanded={!compact} aria-label={compact ? 'Show the photo and intro' : 'Hide the photo and intro'} onClick={() => setCompact(!compact)}>{compact ? '▾' : '▴'}</button>}
             </header>
