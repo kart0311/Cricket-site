@@ -40,6 +40,11 @@ const ALIAS = {
     'Gujarat Stadium': ['Sardar Patel Gujarat Stadium Navrangpura'],
     'Harare': ['Harare Sports Club'], 'Rawalpindi': ['Rawalpindi Cricket Stadium'],
 };
+const CATS = {
+    'Narendra Modi': ['Narendra Modi Stadium'], 'Old Trafford': ['Old Trafford Cricket Ground'], 'WACA': ['WACA Ground'],
+    'SuperSport Park': ['SuperSport Park'], 'JSCA': ['JSCA International Stadium Complex'], 'Barsapara': ['Barsapara Cricket Stadium'],
+    'Jamtha': ['Vidarbha Cricket Association Stadium'],
+};
 const result = [];
 for (const g of grounds) {
     const plain = g.name.replace(/\s*\(.*?\)/g, '').trim(); const parens = (g.name.match(/\(([^)]*)\)/) || [])[1];
@@ -60,9 +65,21 @@ for (const g of grounds) {
         }
         await new Promise((s) => setTimeout(s, 400));
     }
+    const cats = Object.entries(CATS).filter(([k]) => g.name.includes(k)).flatMap(([, v]) => v);
+    for (const cat of cats) {
+        try {
+            const d = await api({ action: 'query', generator: 'categorymembers', gcmtitle: 'Category:' + cat, gcmtype: 'file', gcmlimit: '60', prop: 'imageinfo', iiprop: 'url|size|mime|extmetadata', iiurlwidth: '900' });
+            for (const p of Object.values(d.query?.pages || {})) {
+                const ii = p.imageinfo?.[0]; if (!ii || seen.has(p.title)) continue;
+                const m = ii.extmetadata || {}; const lic = strip(m.LicenseShortName?.value);
+                if (!OK.test(lic) || BAD.test(lic) || BADNAME.test(p.title) || ii.mime !== 'image/jpeg' || ii.width < 800 || ii.width < ii.height * 1.2) continue;
+                seen.set(p.title, { title: p.title, license: lic, author: strip(m.Artist?.value), page: ii.descriptionurl, thumb: ii.thumburl, w: ii.width, h: ii.height, score: 5 });
+            }
+        } catch (e) { console.log('cat fail', cat, e.message); }
+    }
     let pool = [...seen.values()]; let cands = pool.filter((c) => c.score >= 2);
     if (cands.length < 2) cands = pool.filter((c) => c.score >= 1);
-    console.log('  raw', pool.length); cands = cands.sort((a, b) => b.score - a.score || b.w - a.w).slice(0, 5);
+    console.log('  raw', pool.length); cands = cands.sort((a, b) => b.score - a.score || b.w - a.w).slice(0, cats.length ? 10 : 5);
     result.push({ ground: g.name, city: g.city, country: g.country, tests: g.n, cands });
     console.log(g.n, g.name, '|', g.city, '→', cands.length, 'candidates');
 }
@@ -75,7 +92,7 @@ writeFileSync(join(out, 'candidates.json'), JSON.stringify(result, null, 1));
 const { chromium } = await import('playwright'); const br = await chromium.launch(); const pg = await br.newPage({ viewport: { width: 1500, height: 900 } });
 const per = 6; for (let s = 0; s * per < result.length; s++) {
     const rows = result.slice(s * per, s * per + per).map((r, k) => `<div class="r"><h3>#${s * per + k} ${r.ground} · ${r.city} (${r.tests} Tests)</h3><div class="c">${r.cands.map((c, ci) => `<figure><img src="g${s * per + k}-${ci}.jpg"><figcaption>${ci}: ${c.license}</figcaption></figure>`).join('') || '<i>no candidates</i>'}</div></div>`).join('');
-    writeFileSync(join(out, `sheet${s}.html`), `<style>body{margin:0;background:#222;color:#eee;font:14px sans-serif}.r{padding:6px 10px}h3{margin:4px 0}.c{display:flex;gap:8px}figure{margin:0;width:285px}img{width:285px;height:150px;object-fit:cover;display:block}figcaption{font-size:12px}</style>${rows}`);
+    writeFileSync(join(out, `sheet${s}.html`), `<style>body{margin:0;background:#222;color:#eee;font:14px sans-serif}.r{padding:6px 10px}h3{margin:4px 0}.c{display:flex;gap:8px;flex-wrap:wrap}figure{margin:0;width:285px}img{width:285px;height:150px;object-fit:cover;display:block}figcaption{font-size:12px}</style>${rows}`);
     await pg.goto(pathToFileURL(join(out, `sheet${s}.html`)).href); await pg.waitForTimeout(500); await pg.screenshot({ path: join(out, `sheet${s}.jpg`), type: 'jpeg', quality: 80, fullPage: true });
 }
 await br.close(); console.log('done', result.length, 'grounds');
