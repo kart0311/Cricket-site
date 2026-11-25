@@ -303,3 +303,16 @@
 .crx-theme .crx-stats.crx-tiles5 .crx-stat, .crx-theme .crx-stats.crx-tiles6 .crx-stat, .crx-theme .crx-stats.crx-tiles7 .crx-stat, .crx-theme .crx-stats.crx-tiles8 .crx-stat, .crx-theme .crx-stats.crx-tiles9 .crx-stat, .crx-theme .crx-stats.crx-tiles10 .crx-stat { border:0 !important; padding:9px 2px 8px !important; }
 .crx-theme .crx-stats.crx-tiles5, .crx-theme .crx-stats.crx-tiles6, .crx-theme .crx-stats.crx-tiles7, .crx-theme .crx-stats.crx-tiles8, .crx-theme .crx-stats.crx-tiles9, .crx-theme .crx-stats.crx-tiles10 { gap:0; padding:6px 0; }
 .crx-theme .crx-pa-fold .crx-stats { border-top:0 !important; margin-top:2px !important; }
+
+/* ===== Against pace and spin ===== */
+.crx-theme .crx-splitgrid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:4px; }
+.crx-theme .crx-splitbox { padding:13px 14px 11px; border-radius:18px !important; background:rgba(255,255,255,.05); box-shadow:inset 0 0 0 1px rgba(250,235,215,.08); min-width:0; }
+.crx-theme .crx-splithead { font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#ecc18a; }
+.crx-theme .crx-splitbig { margin-top:8px; font-family:Georgia,'Times New Roman',serif; font-size:32px; line-height:1; color:#fff1de; font-variant-numeric:tabular-nums; }
+.crx-theme .crx-splitbig small { display:block; margin-top:5px; font-family:inherit; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--crx-faint); font-family:system-ui,-apple-system,Arial,sans-serif; }
+.crx-theme .crx-splitrows { margin-top:10px; border-top:1px solid var(--crx-hair); padding-top:6px; }
+.crx-theme .crx-splitrows > div { display:flex; justify-content:space-between; align-items:baseline; padding:3px 0; font-size:13px; }
+.crx-theme .crx-splitrows span { color:var(--crx-faint); font-size:12px; }
+.crx-theme .crx-splitrows b { font-weight:500; color:#fff1de; font-variant-numeric:tabular-nums; }
+.crx-theme .crx-splitempty p { margin:8px 0 0; font-size:12.5px; color:var(--crx-faint); }
+.crx-theme .crx-splitline { margin:10px 2px 0; }

@@ -338,12 +338,68 @@ export function IndiaPlayers({ Selector }: any) {
     </div>);
 }
 
+// ---- Against pace and spin (batters) / against right- and left-handers (bowlers), from the ball-by-ball meetings ----
+let PAIR_IDX: { bat: Map<number, [number, any][]>; bowl: Map<number, [number, any][]> } | null = null;
+function pairIdx() {
+    if (!PAIR_IDX) {
+        const bat = new Map<number, [number, any][]>(); const bowl = new Map<number, [number, any][]>();
+        for (const [k, v] of Object.entries(PAIRS) as [string, any][]) {
+            if (!v.m.length) continue; const [b, t] = k.split(',').map(Number);
+            if (!bat.has(t)) bat.set(t, []); bat.get(t)!.push([b, v]);
+            if (!bowl.has(b)) bowl.set(b, []); bowl.get(b)!.push([t, v]);
+        }
+        PAIR_IDX = { bat, bowl };
+    }
+    return PAIR_IDX;
+}
+type Split = { key: string; label: string; st: PairStats };
+function splitStats(p: number, isBat: boolean, where: string): Map<string, PairStats> {
+    const out = new Map<string, PairStats>();
+    for (const [other, v] of (isBat ? pairIdx().bat : pairIdx().bowl).get(p) || []) {
+        const key = isBat ? (isSpinKind(bowlKind(PLAYERS[other]?.bowl || '')) ? 'spin' : bowlKind(PLAYERS[other]?.bowl || '') === '?' ? '?' : 'pace')
+            : (PLAYERS[other]?.bat === 'LHB' ? 'lh' : PLAYERS[other]?.bat === 'RHB' ? 'rh' : '?');
+        for (const m of v.m as [number, number, string][]) {
+            if (where !== 'all') { const inIndia = GROUNDS[TESTS[m[0]].g]?.country === 'India'; if ((where === 'in') !== inIndia) continue; }
+            let st = out.get(key); if (!st) { st = emptyStats(); out.set(key, st); }
+            addStats(st, parseBalls(m[2]));
+        }
+    }
+    return out;
+}
+const f1 = (x: number) => (Number.isFinite(x) ? x.toFixed(1) : '–');
+const SplitPanels = ({ stats, isBat, name, tone }: { stats: Map<string, PairStats>; isBat: boolean; name: string; tone: string }) => {
+    const defs: [string, string][] = isBat ? [['pace', 'Against pace'], ['spin', 'Against spin']] : [['rh', 'To right-handers'], ['lh', 'To left-handers']];
+    const rows = defs.map(([k, l]) => { const st = stats.get(k); return { k, l, st }; });
+    const ok = rows.filter((r) => r.st && r.st.balls >= 60);
+    const av = (st: PairStats) => (st.outs ? st.runs / st.outs : NaN);
+    let line = '';
+    if (ok.length === 2) {
+        const [a, b] = ok.map((r) => r.st!); const aa = av(a), bb = av(b);
+        if (isBat && Number.isFinite(aa) && Number.isFinite(bb)) line = `${name} averages ${f1(aa)} against pace and ${f1(bb)} against spin${Math.abs(aa - bb) < 0.1 * Math.max(aa, bb) ? ', so there is little between them' : aa > bb ? ', so pace has been the easier job' : ', so spin has been the easier job'}.`;
+        if (!isBat && Number.isFinite(aa) && Number.isFinite(bb)) line = `${name} averages ${f1(aa)} per wicket against right-handers and ${f1(bb)} against left-handers.`;
+    }
+    return <>
+        <div className="crx-splitgrid">{rows.map(({ k, l, st }) => st && st.balls >= 30 ? <div className={'crx-splitbox crx-splitbox-' + k} key={k}>
+            <div className="crx-splithead">{l}</div>
+            <div className="crx-splitbig">{st.outs ? f1(av(st)) : '–'}<small>{isBat ? 'average' : 'per wicket'}</small></div>
+            <div className="crx-splitrows">
+                <div><span>{isBat ? 'Strike rate' : 'Economy'}</span><b>{isBat ? f1(100 * st.runs / st.balls) : f1(6 * st.runs / st.balls)}</b></div>
+                <div><span>Dot balls</span><b>{Math.round(100 * st.dots / st.balls)}%</b></div>
+                <div><span>{isBat ? 'Out' : 'Wickets'}</span><b>{st.outs}</b></div>
+                <div><span>{isBat ? 'Balls faced' : 'Balls bowled'}</span><b>{n1(st.balls)}</b></div>
+            </div></div> : <div className="crx-splitbox crx-splitempty" key={k}><div className="crx-splithead">{l}</div><p>Too few balls on record.</p></div>)}</div>
+        {line && <p className="crx-fine crx-splitline">{line}</p>}
+    </>;
+};
+
 function PlayerCard({ p }: { p: number }) {
     const pl = PLAYERS[p];
     const bat = (batByPlayer.get(p) || []) as BatRow[]; const bowl = (bowlByPlayer.get(p) || []) as BowlRow[];
     const wk = bowl.reduce((a, r) => a + r[5], 0); const rn = bat.reduce((a, r) => a + r[3], 0);
     const [branch, setBranch] = useState(bat.length === 0 || (bowl.length > 0 && wk * 25 > rn) ? 'bowl' : 'bat');
     const [rec, setRec] = useState(false);
+    const [where, setWhere] = useState('all');
+    const splits = useMemo(() => ({ bat: splitStats(p, true, where), bowl: splitStats(p, false, where) }), [p, where]);
     const span = playerSpan(p);
     const ba = batAgg(bat); const bo = bowlAgg(bowl);
     const isBat = branch === 'bat';
@@ -425,6 +481,11 @@ function PlayerCard({ p }: { p: number }) {
         {styleRows.some((r) => r[1] > 0)
             ? <Bars rows={styleRows} tone={tone} />
             : <p className="crx-fine">No dismissals with a known {isBat ? 'bowling' : 'batting'} style.</p>}
+        {(() => { const sp = isBat ? splits.bat : splits.bowl; const any = [...sp.entries()].some(([k, v]) => k !== '?' && v.balls >= 30); if (!any && where === 'all') return null; return <>
+            <Label info={`Built from the ball-by-ball record of India's Tests since ${fmtDate(PAIRS_FROM)}. ${isBat ? 'Average is runs per dismissal by the bowler (run outs are left out).' : 'Average is runs conceded per wicket.'}`}>{isBat ? 'Against pace and spin' : 'Against right and left-handers'}</Label>
+            <Pills label="Where" cls="crx-twomodes" value={where} onChange={setWhere} items={[['all', 'Everywhere'], ['in', 'In India'], ['out', 'Away']]} />
+            <SplitPanels stats={sp} isBat={isBat} name={sn} tone={tone} />
+        </>; })()}
         </div><div className="crx-col">
         {topList.length > 0 && <>
             <Label>{isBat ? 'Dismissed most often by' : 'Dismissed most often'}</Label>
