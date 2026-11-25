@@ -36,7 +36,9 @@ function Pills({ label, items, value, onChange, cls }: { label: string; items: [
 function Fold({ label, note, children, cls = '' }: { label: string; note?: string; children: any; cls?: string }) {
     return <details className={'crx-pa-fold ' + cls}><summary>{label}{note && <em>{note}</em>}</summary>{children}</details>;
 }
-const Label = ({ children, info }: { children: any; info?: any }) => <div className="crx-filterlabel">{children}{info && <Info>{info}</Info>}</div>;
+// each kind of section gets its own colour, picked from the heading text
+const secColour = (t: string) => /out\b|wickets fall|takes wickets|gets out|dismiss/i.test(t) ? 'rose' : /result|tests ·|meetings|india here/i.test(t) ? 'gold' : /score|total/i.test(t) ? 'sky' : /top|most/i.test(t) ? 'sage' : 'plum';
+const Label = ({ children, info }: { children: any; info?: any }) => { const txt = [].concat(children).map((c: any) => typeof c === 'string' ? c : '').join(' '); return <div className={'crx-filterlabel crx-sec crx-c-' + secColour(txt)}><i aria-hidden="true" />{children}{info && <Info>{info}</Info>}</div>; };
 const Hint = ({ children }: { children: any }) => <p className="crx-hint">{children}</p>;
 // whole-number percentages that add up to exactly 100 (largest remainder)
 function pcts(ns: number[]): number[] {
@@ -486,8 +488,8 @@ function GroundCard({ g, allInd, setAllInd }: { g: number; allInd: boolean; setA
         {photo && <figure className="crx-gphoto"><img src={photo.file} alt={`${GROUNDS[g].name}, ${GROUNDS[g].city}`} loading="lazy" decoding="async" onError={(e) => { const f = e.currentTarget.parentElement; if (f) f.style.display = 'none'; }} /><figcaption>Photo: {photo.author || 'Wikimedia Commons contributor'} · <a href={photo.page} target="_blank" rel="noopener noreferrer">{photo.license}</a> · Wikimedia Commons</figcaption></figure>}
         <div className="crx-hero"><div className="crx-heroname">{GROUNDS[g].name}</div><div className="crx-herosub">{[GROUNDS[g].city, GROUNDS[g].country].filter(Boolean).join(', ')} · {plural(ts.length, 'Test')} {yrs}</div></div>
         {info && <div className="crx-ginfo">
-            {info.team && <div><span>Home side</span><strong>{info.team}</strong></div>}
-            {info.stars.length > 0 && <div><span>Names from here</span><strong>{info.stars.slice(0, 4).join(' · ')}</strong></div>}
+            {info.team && <div className="crx-gi-team"><span>Home side</span><strong>{info.team}</strong></div>}
+            {info.stars.length > 0 && <div className="crx-gi-names"><span>Names from here</span><strong>{info.stars.slice(0, 4).map((n) => <b className="crx-chip" key={n}>{n}</b>)}</strong></div>}
         </div>}
         {done.length > 0 && <p className="crx-verdict crx-noabbr">{plural(done.length, 'Test')} here: {batFirst} won by the side batting first, {chase} by the side chasing, {draws} drawn{avgFirst > 0 ? `. First innings average ${avgFirst}` : ''}.{ind.length > 0 ? ` India have won ${iw} of ${ind.length} here.` : ''}{decided.length < 5 && <em className="crx-caveat"> Few results, so take this lightly.</em>}</p>}
         <div className="crx-split"><div className="crx-col">

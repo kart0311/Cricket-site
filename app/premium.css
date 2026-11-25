@@ -104,8 +104,59 @@
 .crx-theme .crx-gphoto figcaption a { color:#f2c48a; text-decoration:underline; text-underline-offset:2px; text-decoration-color:rgba(242,196,138,.4); }
 @media (min-width:1000px) { .crx-theme .crx-gphoto img { aspect-ratio:21/9; } }
 
-/* home side + names on Ground analysis */
-.crx-theme .crx-ginfo { display:grid; gap:14px; margin:6px 0 4px; padding:14px 0 2px; border-top:1px solid var(--crx-line, rgba(255,255,255,.1)); }
-.crx-theme .crx-ginfo > div > span { display:block; font-size:10.5px !important; font-weight:600; line-height:1.2; letter-spacing:.14em !important; text-transform:uppercase; color:var(--crx-faint); margin-bottom:5px; }
-.crx-theme .crx-ginfo > div > strong { display:block; font-weight:500; font-size:15px !important; line-height:1.45; color:var(--crx-text, #f3e9dc); }
-@media (min-width:700px) { .crx-theme .crx-ginfo { grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:28px; } }
+/* ---- Colour system: every kind of section has its own colour ---- */
+.crx-theme { --c-gold:#f2a652; --c-sky:#6fc1d8; --c-rose:#ee8f7e; --c-sage:#a6d08c; --c-plum:#c4a8ee; }
+.crx-theme .crx-c-gold { --c:var(--c-gold); } .crx-theme .crx-c-sky { --c:var(--c-sky); } .crx-theme .crx-c-rose { --c:var(--c-rose); } .crx-theme .crx-c-sage { --c:var(--c-sage); } .crx-theme .crx-c-plum { --c:var(--c-plum); }
+
+/* section headings: coloured bar + coloured title + fading rule */
+.crx-theme .crx-sec { display:flex; align-items:center; gap:10px; margin:38px 0 14px !important; padding-bottom:10px; font-size:13px !important; font-weight:700 !important; letter-spacing:.13em !important; color:var(--c) !important; border-bottom:1px solid transparent; border-image:linear-gradient(90deg, color-mix(in srgb, var(--c) 55%, transparent), transparent 70%) 1; }
+.crx-theme .crx-sec > i { flex:none; width:5px; height:18px; border-radius:3px; background:var(--c); }
+.crx-theme .crx-sec .crx-info, .crx-theme .crx-sec button { color:var(--c); }
+
+/* the one-line story becomes a highlighted callout */
+.crx-theme .crx-verdict { position:relative; margin:22px 0 28px !important; padding:20px 22px 20px 26px !important; border-radius:18px; background:linear-gradient(135deg, rgba(242,166,82,.16), rgba(242,166,82,.05)) !important; font-size:19px !important; box-shadow:inset 0 0 0 1px rgba(242,166,82,.18); }
+.crx-theme .crx-verdict::before { content:''; position:absolute; left:0; top:16px; bottom:16px; width:4px; border-radius:0 4px 4px 0; background:var(--c-gold); }
+
+/* number strips: a soft panel with coloured figures */
+.crx-theme .crx-stats { border:0 !important; border-radius:18px; background:rgba(255,255,255,.055) !important; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(250,235,215,.07); }
+.crx-theme .crx-stat:nth-child(1) .crx-statv { color:var(--c-gold); }
+.crx-theme .crx-stat:nth-child(2) .crx-statv { color:var(--c-sky); }
+.crx-theme .crx-stat:nth-child(3) .crx-statv { color:var(--c-rose) !important; font-weight:300 !important; }
+.crx-theme .crx-stat:nth-child(4) .crx-statv { color:var(--c-sage); }
+.crx-theme .crx-stat:nth-child(5) .crx-statv { color:var(--c-plum); }
+.crx-theme .crx-stat:nth-child(6) .crx-statv { color:#f1d9a6; }
+
+/* score list: tinted panel with colour-coded figures */
+.crx-theme .crx-hg-scores { border:0 !important; border-radius:18px; background:rgba(111,193,216,.07); padding:4px 18px; box-shadow:inset 0 0 0 1px rgba(111,193,216,.14); }
+.crx-theme .crx-hg-score { border-bottom:1px solid rgba(250,235,215,.09) !important; padding:13px 0 !important; }
+.crx-theme .crx-hg-score:last-child { border-bottom:0 !important; }
+.crx-theme .crx-hg-score > strong { font-family:Georgia,'Times New Roman',serif; font-size:19px; font-weight:400 !important; color:var(--c-sky); }
+
+/* top players: two panels, each with its own coloured heading */
+.crx-theme .crx-hg-top { gap:12px !important; }
+.crx-theme .crx-hg-top section { padding:14px 16px 8px; border-radius:16px; background:rgba(166,208,140,.07); box-shadow:inset 0 0 0 1px rgba(166,208,140,.15); }
+.crx-theme .crx-hg-top section:nth-child(2) { background:rgba(238,143,126,.07); box-shadow:inset 0 0 0 1px rgba(238,143,126,.16); }
+.crx-theme .crx-hg-top h4 { color:var(--c-sage) !important; font-size:11px !important; letter-spacing:.14em !important; font-weight:700 !important; margin-bottom:6px !important; }
+.crx-theme .crx-hg-top section:nth-child(2) h4 { color:var(--c-rose) !important; }
+.crx-theme .crx-hg-top section.crx-t-ind h4 { color:var(--c-gold) !important; } .crx-theme .crx-hg-top section.crx-t-opp h4 { color:var(--c-sky) !important; }
+.crx-theme .crx-hg-topRow { border-top:1px solid rgba(250,235,215,.09) !important; }
+.crx-theme .crx-hg-topRow strong { font-family:Georgia,'Times New Roman',serif; font-weight:400; font-size:16px; color:#fff1de; }
+@media (max-width:420px) { .crx-theme .crx-hg-top { grid-template-columns:1fr !important; } }
+
+/* home side + names */
+.crx-theme .crx-ginfo { display:grid; gap:12px; margin:10px 0 6px; }
+.crx-theme .crx-ginfo > div { padding:15px 18px 16px; border-radius:18px; }
+.crx-theme .crx-gi-team { background:rgba(111,193,216,.09); box-shadow:inset 0 0 0 1px rgba(111,193,216,.2); }
+.crx-theme .crx-gi-names { background:rgba(242,166,82,.09); box-shadow:inset 0 0 0 1px rgba(242,166,82,.2); }
+.crx-theme .crx-ginfo > div > span { display:block; font-size:10.5px !important; font-weight:700; letter-spacing:.15em !important; text-transform:uppercase; margin-bottom:9px; }
+.crx-theme .crx-gi-team > span { color:var(--c-sky); } .crx-theme .crx-gi-names > span { color:var(--c-gold); }
+.crx-theme .crx-ginfo > div > strong { display:flex; flex-wrap:wrap; gap:8px; font-weight:500; font-size:16px !important; line-height:1.4; color:#fff1de; }
+.crx-theme .crx-gi-team > strong { font-family:Georgia,'Times New Roman',serif; font-weight:400 !important; font-size:19px !important; }
+.crx-theme .crx-chip { font-weight:500; font-size:13.5px; padding:6px 13px; border-radius:999px; background:rgba(242,166,82,.16); color:#ffd9a8; box-shadow:inset 0 0 0 1px rgba(242,166,82,.3); }
+@media (min-width:700px) { .crx-theme .crx-ginfo { grid-template-columns:minmax(0,1fr) minmax(0,1.6fr); } }
+
+/* rounded corners win over the older square-corner rules */
+.crx-theme .crx-verdict, .crx-theme .crx-stats, .crx-theme .crx-hg-scores, .crx-theme .crx-ginfo > div { border-radius:18px !important; }
+.crx-theme .crx-hg-top section { border-radius:16px !important; }
+.crx-theme .crx-chip { border-radius:999px !important; }
+.crx-theme .crx-verdict::before { border-radius:0 4px 4px 0 !important; }
