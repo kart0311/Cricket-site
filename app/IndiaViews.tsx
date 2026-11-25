@@ -422,7 +422,8 @@ function PlayerCard({ p }: { p: number }) {
     if (isBat) { for (const r of bat) if (inWhere(r[0]) && r[7] > 0 && r[7] !== 5) { const k = r[8] >= 0 ? bowlKind(PLAYERS[r[8]]?.bowl || '') : '?'; styleCount.set(k, (styleCount.get(k) || 0) + 1); } }
     else { for (const r of credited) if (inWhere(r[0])) { const k = batHand(PLAYERS[r[2]]?.bat || ''); styleCount.set(k, (styleCount.get(k) || 0) + 1); } }
     const styleRows: [string, number][] = isBat
-        ? BOWL_KINDS.map(([k, l]) => [l, styleCount.get(k) || 0] as [string, number])
+        ? ([['Right-arm pace', ['rf', 'rm']], ['Left-arm pace', ['lf', 'lm']], ['Off spin', ['off']], ['Leg spin', ['leg']], ['Left-arm spin', ['sla']], ['Left-arm wrist spin', ['law']], ['Not known', ['?']]] as [string, string[]][])
+            .map(([l, ks]) => [l, ks.reduce((a, k) => a + (styleCount.get(k) || 0), 0)] as [string, number])
         : ['Right-hand bat', 'Left-hand bat', 'Not known'].map((l) => [l, styleCount.get(l) || 0] as [string, number]);
     const styleKnown = isBat
         ? [...styleCount.entries()].filter(([k]) => k !== '?').reduce((a, b) => a + b[1], 0)
