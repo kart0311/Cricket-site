@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { countryView } from './countryLabels';
 import { Badge, Info, MiniBars, ResultStrip, type Tone } from './charts';
 import { makeCard, saveCard } from './shareCard';
+import { groundInfo } from './groundInfo';
 import photosJson from './stadiumPhotos.generated.json';
 const PHOTOS = photosJson as unknown as Record<string, { file: string; author: string; license: string; page: string }>;
 import {
@@ -471,7 +472,6 @@ function GroundCard({ g, allInd, setAllInd }: { g: number; allInd: boolean; setA
         for (const i of t.inns) { if (!hi || i[1] > hi[0]) hi = [i[1], t, i[0]]; if (i[2] >= 10 && (!lo || i[1] < lo[0])) lo = [i[1], t, i[0]]; }
         if (t.by && t.by[0] === 'w' && typeof t.res === 'number') { const last = [...t.inns].reverse().find((i) => i[0] === t.res); if (last && (!ch || last[1] > ch[0])) ch = [last[1], t, t.res]; }
     }
-    const totalsBars = done.filter((t) => t.inns[0]).slice(-40).map((t) => ({ v: t.inns[0][1], label: `${fmtDate(t.d)} · ${CODE[t.inns[0][0]]} ${t.inns[0][1]}` }));
     const rowDetail = (x: [number, Test, number] | null) => x ? `${CODE[x[2]]} v ${CODE[x[2] === x[1].a ? x[1].b : x[1].a]} · ${yearOf(x[1].d)}` : '';
     const A = GROUND_AGG[g];
     const dis = A ? (A.k as number[]).reduce((a, b) => a + b, 0) : 0;
@@ -480,15 +480,19 @@ function GroundCard({ g, allInd, setAllInd }: { g: number; allInd: boolean; setA
     const iw = ind.filter((t) => winnerOf(t) === 0).length; const il = ind.filter((t) => typeof t.res === 'number' && t.res !== 0).length; const idr = ind.filter((t) => t.res === 'draw').length;
     const yrs = ts.length ? `${yearOf(ts[0].d)}–${yearOf(ts[ts.length - 1].d)}` : '';
     const Top = ({ title, rows, unit }: { title: string; rows: any[]; unit: (r: any) => string }) => <section><h4>{title}</h4>{rows.map((r) => <div className="crx-hg-topRow" key={r[0]}><span className="crx-hg-topName">{r[0]}<em>{r[1]} {r[1] === 1 ? 'inns' : 'inns'}</em></span><strong>{unit(r)}</strong></div>)}</section>;
+    const info = groundInfo(GROUNDS[g].name, GROUNDS[g].city, GROUNDS[g].country);
     const photo = PHOTOS[GROUNDS[g].name + '|' + GROUNDS[g].city];
     return <div>
         {photo && <figure className="crx-gphoto"><img src={photo.file} alt={`${GROUNDS[g].name}, ${GROUNDS[g].city}`} loading="lazy" decoding="async" onError={(e) => { const f = e.currentTarget.parentElement; if (f) f.style.display = 'none'; }} /><figcaption>Photo: {photo.author || 'Wikimedia Commons contributor'} · <a href={photo.page} target="_blank" rel="noopener noreferrer">{photo.license}</a> · Wikimedia Commons</figcaption></figure>}
         <div className="crx-hero"><div className="crx-heroname">{GROUNDS[g].name}</div><div className="crx-herosub">{[GROUNDS[g].city, GROUNDS[g].country].filter(Boolean).join(', ')} · {plural(ts.length, 'Test')} {yrs}</div></div>
+        {info && <div className="crx-ginfo">
+            {info.team && <div><span>Home side</span><strong>{info.team}</strong></div>}
+            {info.stars.length > 0 && <div><span>Names from here</span><strong>{info.stars.slice(0, 4).join(' · ')}</strong></div>}
+        </div>}
         {done.length > 0 && <p className="crx-verdict crx-noabbr">{plural(done.length, 'Test')} here: {batFirst} won by the side batting first, {chase} by the side chasing, {draws} drawn{avgFirst > 0 ? `. First innings average ${avgFirst}` : ''}.{ind.length > 0 ? ` India have won ${iw} of ${ind.length} here.` : ''}{decided.length < 5 && <em className="crx-caveat"> Few results, so take this lightly.</em>}</p>}
         <div className="crx-split"><div className="crx-col">
         <Label>Results</Label>
         <Tiles rows={[['Tests', done.length], ['Batting first won', batFirst], ['Chasing won', chase], ['Drawn', draws]]} />
-        {totalsBars.length > 2 && <MiniBars items={totalsBars} tone="neu" title="First-innings totals" note={`last ${totalsBars.length} Tests`} foot={[yearOf(done.filter((t) => t.inns[0]).slice(-40)[0].d), yearOf(done[done.length - 1].d)]} />}
         <Label>Scores</Label>
         <div className="crx-hg-scores">
             {avgFirst > 0 && <div className="crx-hg-score"><span>Average first innings</span><strong>{avgFirst}</strong></div>}

@@ -103,3 +103,9 @@
 .crx-theme .crx-gphoto figcaption { font-size:11px; line-height:1.45; color:var(--crx-faint); padding:9px 4px 0; }
 .crx-theme .crx-gphoto figcaption a { color:#f2c48a; text-decoration:underline; text-underline-offset:2px; text-decoration-color:rgba(242,196,138,.4); }
 @media (min-width:1000px) { .crx-theme .crx-gphoto img { aspect-ratio:21/9; } }
+
+/* home side + names on Ground analysis */
+.crx-theme .crx-ginfo { display:grid; gap:14px; margin:6px 0 4px; padding:14px 0 2px; border-top:1px solid var(--crx-line, rgba(255,255,255,.1)); }
+.crx-theme .crx-ginfo > div > span { display:block; font-size:10.5px !important; font-weight:600; line-height:1.2; letter-spacing:.14em !important; text-transform:uppercase; color:var(--crx-faint); margin-bottom:5px; }
+.crx-theme .crx-ginfo > div > strong { display:block; font-weight:500; font-size:15px !important; line-height:1.45; color:var(--crx-text, #f3e9dc); }
+@media (min-width:700px) { .crx-theme .crx-ginfo { grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:28px; } }
