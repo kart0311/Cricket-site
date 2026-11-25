@@ -1,0 +1,553 @@
+[
+ {
+  "ground": "Narendra Modi Stadium (Motera)",
+  "city": "Ahmedabad",
+  "country": "India",
+  "tests": 12,
+  "cands": [
+   {
+    "title": "File:Motera Stadium.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Gannu03",
+    "page": "https://commons.wikimedia.org/wiki/File:Motera_Stadium.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/Motera_Stadium.jpg/960px-Motera_Stadium.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 16320,
+    "h": 12240,
+    "score": 4,
+    "file": "g0-0.jpg"
+   },
+   {
+    "title": "File:Motera Stadium Ahmedabad Panorama.jpg",
+    "license": "CC BY 3.0",
+    "author": "Hardik jadeja",
+    "page": "https://commons.wikimedia.org/wiki/File:Motera_Stadium_Ahmedabad_Panorama.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Motera_Stadium_Ahmedabad_Panorama.jpg/960px-Motera_Stadium_Ahmedabad_Panorama.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 2000,
+    "h": 465,
+    "score": 4,
+    "file": "g0-1.jpg"
+   },
+   {
+    "title": "File:President Trump and the First Lady in India (49583724187).jpg",
+    "license": "Public domain",
+    "author": "The White House from Washington, DC",
+    "page": "https://commons.wikimedia.org/wiki/File:President_Trump_and_the_First_Lady_in_India_(49583724187).jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/President_Trump_and_the_First_Lady_in_India_%2849583724187%29.jpg/960px-President_Trump_and_the_First_Lady_in_India_%2849583724187%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 1800,
+    "h": 953,
+    "score": 4,
+    "file": "g0-2.jpg"
+   },
+   {
+    "title": "File:Sardar Patel Gujarat Stadium Ahmedabad.jpg",
+    "license": "CC BY 3.0",
+    "author": "Hardik jadeja",
+    "page": "https://commons.wikimedia.org/wiki/File:Sardar_Patel_Gujarat_Stadium_Ahmedabad.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Sardar_Patel_Gujarat_Stadium_Ahmedabad.jpg/960px-Sardar_Patel_Gujarat_Stadium_Ahmedabad.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 1454,
+    "h": 570,
+    "score": 4,
+    "file": "g0-3.jpg"
+   },
+   {
+    "title": "File:Panorama Ahmedabad Stadium.jpg",
+    "license": "CC BY 3.0",
+    "author": "Hardik jadeja",
+    "page": "https://commons.wikimedia.org/wiki/File:Panorama_Ahmedabad_Stadium.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Panorama_Ahmedabad_Stadium.jpg/960px-Panorama_Ahmedabad_Stadium.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 1454,
+    "h": 371,
+    "score": 4,
+    "file": "g0-4.jpg"
+   },
+   {
+    "title": "File:Motera.jpg",
+    "license": "CC BY 3.0",
+    "author": "Hardik jadeja",
+    "page": "https://commons.wikimedia.org/wiki/File:Motera.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Motera.jpg/960px-Motera.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 5784,
+    "h": 1251,
+    "score": 3,
+    "file": "g0-5.jpg"
+   },
+   {
+    "title": "File:View of Motera.JPG",
+    "license": "CC BY-SA 3.0",
+    "author": "Chintan Varma",
+    "page": "https://commons.wikimedia.org/wiki/File:View_of_Motera.JPG",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/View_of_Motera.JPG/960px-View_of_Motera.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 4608,
+    "h": 3456,
+    "score": 3,
+    "file": "g0-6.jpg"
+   },
+   {
+    "title": "File:Narendra Modi Stadium view from the gallery.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "A Cricket Premi",
+    "page": "https://commons.wikimedia.org/wiki/File:Narendra_Modi_Stadium_view_from_the_gallery.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Narendra_Modi_Stadium_view_from_the_gallery.jpg/960px-Narendra_Modi_Stadium_view_from_the_gallery.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 3656,
+    "h": 2039,
+    "score": 3,
+    "file": "g0-7.jpg"
+   },
+   {
+    "title": "File:Sardar Patel Stadium.JPG",
+    "license": "CC BY 3.0",
+    "author": "Amidtb994",
+    "page": "https://commons.wikimedia.org/wiki/File:Sardar_Patel_Stadium.JPG",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Sardar_Patel_Stadium.JPG/960px-Sardar_Patel_Stadium.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 3072,
+    "h": 2304,
+    "score": 3,
+    "file": "g0-8.jpg"
+   },
+   {
+    "title": "File:Narendra modi stadium 2023 Final between India and Australia.jpg",
+    "license": "CC0",
+    "author": "Ishi6181",
+    "page": "https://commons.wikimedia.org/wiki/File:Narendra_modi_stadium_2023_Final_between_India_and_Australia.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Narendra_modi_stadium_2023_Final_between_India_and_Australia.jpg/960px-Narendra_modi_stadium_2023_Final_between_India_and_Australia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 3024,
+    "h": 2270,
+    "score": 3,
+    "file": "g0-9.jpg"
+   }
+  ]
+ },
+ {
+  "ground": "Old Trafford",
+  "city": "Manchester",
+  "country": "England",
+  "tests": 10,
+  "cands": [
+   {
+    "title": "File:Building Site - geograph.org.uk - 5086719.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Anthony O'Neil",
+    "page": "https://commons.wikimedia.org/wiki/File:Building_Site_-_geograph.org.uk_-_5086719.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/26/Building_Site_-_geograph.org.uk_-_5086719.jpg/960px-Building_Site_-_geograph.org.uk_-_5086719.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 5967,
+    "h": 3978,
+    "score": 5,
+    "file": "g1-0.jpg"
+   },
+   {
+    "title": "File:Cover story, Fourth Test - geograph.org.uk - 4110952.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Anthony O'Neil",
+    "page": "https://commons.wikimedia.org/wiki/File:Cover_story,_Fourth_Test_-_geograph.org.uk_-_4110952.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Cover_story%2C_Fourth_Test_-_geograph.org.uk_-_4110952.jpg/960px-Cover_story%2C_Fourth_Test_-_geograph.org.uk_-_4110952.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 5889,
+    "h": 3926,
+    "score": 5,
+    "file": "g1-1.jpg"
+   },
+   {
+    "title": "File:'Lac' lustre weather at Old Trafford - geograph.org.uk - 4110913.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Anthony O'Neil",
+    "page": "https://commons.wikimedia.org/wiki/File:%27Lac%27_lustre_weather_at_Old_Trafford_-_geograph.org.uk_-_4110913.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/%27Lac%27_lustre_weather_at_Old_Trafford_-_geograph.org.uk_-_4110913.jpg/960px-%27Lac%27_lustre_weather_at_Old_Trafford_-_geograph.org.uk_-_4110913.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 5866,
+    "h": 3895,
+    "score": 5,
+    "file": "g1-2.jpg"
+   },
+   {
+    "title": "File:Emptying the Blotter - geograph.org.uk - 4110945.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Anthony O'Neil",
+    "page": "https://commons.wikimedia.org/wiki/File:Emptying_the_Blotter_-_geograph.org.uk_-_4110945.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Emptying_the_Blotter_-_geograph.org.uk_-_4110945.jpg/960px-Emptying_the_Blotter_-_geograph.org.uk_-_4110945.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 5635,
+    "h": 3687,
+    "score": 5,
+    "file": "g1-3.jpg"
+   },
+   {
+    "title": "File:At the Cricket - geograph.org.uk - 8265863.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Anthony O'Neil",
+    "page": "https://commons.wikimedia.org/wiki/File:At_the_Cricket_-_geograph.org.uk_-_8265863.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/At_the_Cricket_-_geograph.org.uk_-_8265863.jpg/960px-At_the_Cricket_-_geograph.org.uk_-_8265863.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 5523,
+    "h": 3651,
+    "score": 5,
+    "file": "g1-4.jpg"
+   },
+   {
+    "title": "File:At the Cricket 9 - geograph.org.uk - 4111643.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Anthony O'Neil",
+    "page": "https://commons.wikimedia.org/wiki/File:At_the_Cricket_9_-_geograph.org.uk_-_4111643.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/At_the_Cricket_9_-_geograph.org.uk_-_4111643.jpg/960px-At_the_Cricket_9_-_geograph.org.uk_-_4111643.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 5497,
+    "h": 3628,
+    "score": 5,
+    "file": "g1-5.jpg"
+   },
+   {
+    "title": "File:At the Cricket 11 - geograph.org.uk - 4112476.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Anthony O'Neil",
+    "page": "https://commons.wikimedia.org/wiki/File:At_the_Cricket_11_-_geograph.org.uk_-_4112476.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/At_the_Cricket_11_-_geograph.org.uk_-_4112476.jpg/960px-At_the_Cricket_11_-_geograph.org.uk_-_4112476.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 5425,
+    "h": 3589,
+    "score": 5,
+    "file": "g1-6.jpg"
+   },
+   {
+    "title": "File:At the Cricket 6 - geograph.org.uk - 4111600.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Anthony O'Neil",
+    "page": "https://commons.wikimedia.org/wiki/File:At_the_Cricket_6_-_geograph.org.uk_-_4111600.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/At_the_Cricket_6_-_geograph.org.uk_-_4111600.jpg/960px-At_the_Cricket_6_-_geograph.org.uk_-_4111600.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 5422,
+    "h": 3582,
+    "score": 5,
+    "file": "g1-7.jpg"
+   },
+   {
+    "title": "File:Colourful Stall - geograph.org.uk - 4667699.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Anthony O'Neil",
+    "page": "https://commons.wikimedia.org/wiki/File:Colourful_Stall_-_geograph.org.uk_-_4667699.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Colourful_Stall_-_geograph.org.uk_-_4667699.jpg/960px-Colourful_Stall_-_geograph.org.uk_-_4667699.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 5375,
+    "h": 3628,
+    "score": 5,
+    "file": "g1-8.jpg"
+   },
+   {
+    "title": "File:Cover park - geograph.org.uk - 5082904.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Anthony O'Neil",
+    "page": "https://commons.wikimedia.org/wiki/File:Cover_park_-_geograph.org.uk_-_5082904.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/Cover_park_-_geograph.org.uk_-_5082904.jpg/960px-Cover_park_-_geograph.org.uk_-_5082904.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 5257,
+    "h": 3505,
+    "score": 5,
+    "file": "g1-9.jpg"
+   }
+  ]
+ },
+ {
+  "ground": "VCA Stadium, Jamtha",
+  "city": "Nagpur",
+  "country": "India",
+  "tests": 7,
+  "cands": [
+   {
+    "title": "File:VCA stadium Nagpur.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Nikhilb239",
+    "page": "https://commons.wikimedia.org/wiki/File:VCA_stadium_Nagpur.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/VCA_stadium_Nagpur.jpg/960px-VCA_stadium_Nagpur.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 3589,
+    "h": 2508,
+    "score": 4,
+    "file": "g2-0.jpg"
+   },
+   {
+    "title": "File:VCA Jamtha 1.JPG",
+    "license": "Public domain",
+    "author": "sanketholey",
+    "page": "https://commons.wikimedia.org/wiki/File:VCA_Jamtha_1.JPG",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/VCA_Jamtha_1.JPG/960px-VCA_Jamtha_1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 3056,
+    "h": 2292,
+    "score": 4,
+    "file": "g2-1.jpg"
+   },
+   {
+    "title": "File:Cafe Coffee Day, VCA Stadium, Nagpur.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Slyronit",
+    "page": "https://commons.wikimedia.org/wiki/File:Cafe_Coffee_Day,_VCA_Stadium,_Nagpur.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Cafe_Coffee_Day%2C_VCA_Stadium%2C_Nagpur.jpg/960px-Cafe_Coffee_Day%2C_VCA_Stadium%2C_Nagpur.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 2366,
+    "h": 1328,
+    "score": 4,
+    "file": "g2-2.jpg"
+   },
+   {
+    "title": "File:Panoramic view of VCA stadium,nagpur.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Jms1241",
+    "page": "https://commons.wikimedia.org/wiki/File:Panoramic_view_of_VCA_stadium,nagpur.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/Panoramic_view_of_VCA_stadium%2Cnagpur.jpg/960px-Panoramic_view_of_VCA_stadium%2Cnagpur.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 1598,
+    "h": 400,
+    "score": 4,
+    "file": "g2-3.jpg"
+   },
+   {
+    "title": "File:VCA Nagpur,India.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Jms1241",
+    "page": "https://commons.wikimedia.org/wiki/File:VCA_Nagpur,India.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/VCA_Nagpur%2CIndia.jpg/960px-VCA_Nagpur%2CIndia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 3000,
+    "h": 1688,
+    "score": 3,
+    "file": "g2-4.jpg"
+   },
+   {
+    "title": "File:VCA,Nagpur.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Jms1241",
+    "page": "https://commons.wikimedia.org/wiki/File:VCA,Nagpur.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/VCA%2CNagpur.jpg/960px-VCA%2CNagpur.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 1024,
+    "h": 768,
+    "score": 3,
+    "file": "g2-5.jpg"
+   }
+  ]
+ },
+ {
+  "ground": "WACA Ground",
+  "city": "Perth",
+  "country": "Australia",
+  "tests": 4,
+  "cands": [
+   {
+    "title": "File:Adelaide Tce E and City of Perth footbridge 4 police waca.jpg",
+    "license": "CC BY 4.0",
+    "author": "Orderinchaos",
+    "page": "https://commons.wikimedia.org/wiki/File:Adelaide_Tce_E_and_City_of_Perth_footbridge_4_police_waca.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Adelaide_Tce_E_and_City_of_Perth_footbridge_4_police_waca.jpg/960px-Adelaide_Tce_E_and_City_of_Perth_footbridge_4_police_waca.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 4624,
+    "h": 3468,
+    "score": 5,
+    "file": "g3-0.jpg"
+   },
+   {
+    "title": "File:WACAground1951.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Mattohsv",
+    "page": "https://commons.wikimedia.org/wiki/File:WACAground1951.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/WACAground1951.jpg/960px-WACAground1951.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 4376,
+    "h": 2688,
+    "score": 5,
+    "file": "g3-1.jpg"
+   },
+   {
+    "title": "File:Fireworks at Carmen at the WACA Ground, February 2023 02.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Calistemon",
+    "page": "https://commons.wikimedia.org/wiki/File:Fireworks_at_Carmen_at_the_WACA_Ground,_February_2023_02.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_02.jpg/960px-Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 8160,
+    "h": 6120,
+    "score": 4,
+    "file": "g3-2.jpg"
+   },
+   {
+    "title": "File:Fireworks at Carmen at the WACA Ground, February 2023 05.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Calistemon",
+    "page": "https://commons.wikimedia.org/wiki/File:Fireworks_at_Carmen_at_the_WACA_Ground,_February_2023_05.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_05.jpg/960px-Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 8160,
+    "h": 6120,
+    "score": 4,
+    "file": "g3-3.jpg"
+   },
+   {
+    "title": "File:Fireworks at Carmen at the WACA Ground, February 2023 04.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Calistemon",
+    "page": "https://commons.wikimedia.org/wiki/File:Fireworks_at_Carmen_at_the_WACA_Ground,_February_2023_04.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_04.jpg/960px-Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 8160,
+    "h": 6120,
+    "score": 4,
+    "file": "g3-4.jpg"
+   },
+   {
+    "title": "File:Fireworks at Carmen at the WACA Ground, February 2023 08.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Calistemon",
+    "page": "https://commons.wikimedia.org/wiki/File:Fireworks_at_Carmen_at_the_WACA_Ground,_February_2023_08.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_08.jpg/960px-Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 8160,
+    "h": 6120,
+    "score": 4,
+    "file": "g3-5.jpg"
+   },
+   {
+    "title": "File:Fireworks at Carmen at the WACA Ground, February 2023 13.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Calistemon",
+    "page": "https://commons.wikimedia.org/wiki/File:Fireworks_at_Carmen_at_the_WACA_Ground,_February_2023_13.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_13.jpg/960px-Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_13.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 8160,
+    "h": 6120,
+    "score": 4,
+    "file": "g3-6.jpg"
+   },
+   {
+    "title": "File:Fireworks at Carmen at the WACA Ground, February 2023 19.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Calistemon",
+    "page": "https://commons.wikimedia.org/wiki/File:Fireworks_at_Carmen_at_the_WACA_Ground,_February_2023_19.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_19.jpg/960px-Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_19.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 8160,
+    "h": 6120,
+    "score": 4,
+    "file": "g3-7.jpg"
+   },
+   {
+    "title": "File:Fireworks at Carmen at the WACA Ground, February 2023 15.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Calistemon",
+    "page": "https://commons.wikimedia.org/wiki/File:Fireworks_at_Carmen_at_the_WACA_Ground,_February_2023_15.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_15.jpg/960px-Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_15.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 8160,
+    "h": 6120,
+    "score": 4,
+    "file": "g3-8.jpg"
+   },
+   {
+    "title": "File:Fireworks at Carmen at the WACA Ground, February 2023 21.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Calistemon",
+    "page": "https://commons.wikimedia.org/wiki/File:Fireworks_at_Carmen_at_the_WACA_Ground,_February_2023_21.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_21.jpg/960px-Fireworks_at_Carmen_at_the_WACA_Ground%2C_February_2023_21.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 8160,
+    "h": 6120,
+    "score": 4,
+    "file": "g3-9.jpg"
+   }
+  ]
+ },
+ {
+  "ground": "SuperSport Park",
+  "city": "Centurion",
+  "country": "South Africa",
+  "tests": 4,
+  "cands": [
+   {
+    "title": "File:Centurion Park, Horsley Cross - geograph.org.uk - 8144818.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "David Howard",
+    "page": "https://commons.wikimedia.org/wiki/File:Centurion_Park,_Horsley_Cross_-_geograph.org.uk_-_8144818.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Centurion_Park%2C_Horsley_Cross_-_geograph.org.uk_-_8144818.jpg/960px-Centurion_Park%2C_Horsley_Cross_-_geograph.org.uk_-_8144818.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 1920,
+    "h": 1280,
+    "score": 4,
+    "file": "g4-0.jpg"
+   },
+   {
+    "title": "File:Centurion Park, Northam Road - geograph.org.uk - 3732794.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Hugh Venables",
+    "page": "https://commons.wikimedia.org/wiki/File:Centurion_Park,_Northam_Road_-_geograph.org.uk_-_3732794.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/Centurion_Park%2C_Northam_Road_-_geograph.org.uk_-_3732794.jpg/960px-Centurion_Park%2C_Northam_Road_-_geograph.org.uk_-_3732794.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 1600,
+    "h": 1200,
+    "score": 4,
+    "file": "g4-1.jpg"
+   },
+   {
+    "title": "File:River bank, Centurion Park - geograph.org.uk - 7548438.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Robin Webster",
+    "page": "https://commons.wikimedia.org/wiki/File:River_bank,_Centurion_Park_-_geograph.org.uk_-_7548438.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/River_bank%2C_Centurion_Park_-_geograph.org.uk_-_7548438.jpg/960px-River_bank%2C_Centurion_Park_-_geograph.org.uk_-_7548438.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 1024,
+    "h": 768,
+    "score": 4,
+    "file": "g4-2.jpg"
+   },
+   {
+    "title": "File:SS park.jpg",
+    "license": "CC BY 2.0",
+    "author": "shodan",
+    "page": "https://commons.wikimedia.org/wiki/File:SS_park.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/SS_park.jpg/960px-SS_park.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 1024,
+    "h": 768,
+    "score": 3,
+    "file": "g4-3.jpg"
+   },
+   {
+    "title": "File:Centurion Gauteng Wikivoyage banner.jpg",
+    "license": "CC BY 2.0",
+    "author": "shodan",
+    "page": "https://commons.wikimedia.org/wiki/File:Centurion_Gauteng_Wikivoyage_banner.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Centurion_Gauteng_Wikivoyage_banner.jpg/960px-Centurion_Gauteng_Wikivoyage_banner.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 1017,
+    "h": 145,
+    "score": 3,
+    "file": "g4-4.jpg"
+   }
+  ]
+ },
+ {
+  "ground": "JSCA International Stadium Complex",
+  "city": "Ranchi",
+  "country": "India",
+  "tests": 3,
+  "cands": [
+   {
+    "title": "File:JSCAInternational Stadium1.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "Akash Guruji",
+    "page": "https://commons.wikimedia.org/wiki/File:JSCAInternational_Stadium1.jpg",
+    "thumb": "https://upload.wikimedia.org/wikipedia/commons/d/d1/JSCAInternational_Stadium1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "w": 960,
+    "h": 720,
+    "score": 4,
+    "file": "g5-0.jpg"
+   },
+   {
+    "title": "File:JSCA cricket stadium Entrance.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "Akash Guruji",
+    "page": "https://commons.wikimedia.org/wiki/File:JSCA_cricket_stadium_Entrance.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/JSCA_cricket_stadium_Entrance.jpg/960px-JSCA_cricket_stadium_Entrance.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 2048,
+    "h": 1150,
+    "score": 3,
+    "file": "g5-1.jpg"
+   }
+  ]
+ },
+ {
+  "ground": "Barsapara Cricket Stadium",
+  "city": "Guwahati",
+  "country": "India",
+  "tests": 1,
+  "cands": [
+   {
+    "title": "File:Barsapara Cricket Stadium match under floodlights.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Javs1233",
+    "page": "https://commons.wikimedia.org/wiki/File:Barsapara_Cricket_Stadium_match_under_floodlights.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/Barsapara_Cricket_Stadium_match_under_floodlights.jpg/960px-Barsapara_Cricket_Stadium_match_under_floodlights.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 4096,
+    "h": 2304,
+    "score": 3,
+    "file": "g6-0.jpg"
+   },
+   {
+    "title": "File:Barsapara Cricket Stadium during construction.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Javs1233",
+    "page": "https://commons.wikimedia.org/wiki/File:Barsapara_Cricket_Stadium_during_construction.jpg",
+    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Barsapara_Cricket_Stadium_during_construction.jpg/960px-Barsapara_Cricket_Stadium_during_construction.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "w": 1168,
+    "h": 370,
+    "score": 3,
+    "file": "g6-1.jpg"
+   }
+  ]
+ }
+]
