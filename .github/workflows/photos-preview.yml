@@ -1,0 +1,43 @@
+name: Find stadium photo candidates
+
+# Run by hand. Looks up freely licensed (Wikimedia Commons) photos for every ground India has played at,
+# and saves thumbnails + contact sheets on the `photos-preview` branch so they can be reviewed before use.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm install --no-save --no-audit --no-fund playwright && npx playwright install --with-deps chromium
+      - name: Download the scorecard history
+        env:
+          HF: https://huggingface.co/datasets/bhuvaneshprasad/test-cricket-dataset-1877-2014/resolve/main
+        run: |
+          set -e
+          mkdir -p data/history
+          for f in test_Matches_Data.csv test_Batting_Card.csv test_Bowling_Card.csv players_info.csv; do
+            curl -fsSL --retry 3 --retry-delay 5 -o "data/history/$f" "$HF/$f"
+          done
+      - run: node refresh/refresh.mjs
+      - run: node tools/photoscan.mjs
+      - name: Save on the photos-preview branch
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git checkout --orphan photos-new
+          git rm -rf --cached . >/dev/null 2>&1 || true
+          mkdir -p /tmp/keep && cp out/photos/* /tmp/keep/
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp /tmp/keep/* .
+          git add -A
+          git commit -m "Stadium photo candidates"
+          git push -f origin photos-new:photos-preview
