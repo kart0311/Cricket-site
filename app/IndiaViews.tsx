@@ -159,7 +159,7 @@ export function IndiaMatchup({ Selector }: any) {
             const sr = ratio(stats.runs * 100, stats.balls, 0);
             line = stats.outs > 0
                 ? (hasCard ? `${B} has dismissed ${T} ${times(stats.outs)}. In the ${plural(stats.balls, 'ball')} with ball-by-ball detail, ${T} scored ${n1(stats.runs)} runs.`
-                    : `${B} has dismissed ${T} ${times(stats.outs)} in ${plural(stats.balls, 'ball')}, about once every ${Math.round(stats.balls / stats.outs)} balls. ${T} scored ${n1(stats.runs)} runs at a strike rate of ${sr}.`)
+                    : `${B} has dismissed ${T} ${times(stats.outs)} in ${plural(stats.balls, 'ball')}${stats.outs > 1 ? `, about once every ${Math.round(stats.balls / stats.outs)} balls` : ''}. ${T} scored ${n1(stats.runs)} runs at a strike rate of ${sr}.`)
                 : `${B} has not dismissed ${T} in ${plural(stats.balls, 'ball')}. ${T} scored ${n1(stats.runs)} runs at a strike rate of ${sr}.`;
         } else line = `${B} has dismissed ${T} ${times(stats.outs)}. These meetings have scorecard detail only, with no ball-by-ball record.`;
         return { line, small: stats.balls > 0 && stats.balls < 30 ? `Only ${plural(stats.balls, 'ball')} on record, so take this lightly.` : '' };

@@ -405,4 +405,9 @@
 /* Tab bar: solid all the way up, so nothing shows above it (under the clock and notch) when scrolling */
 .crx-theme .crx-tabs { background:#3e271d !important; }
 .crx-theme .crx-tabs.crx-stuck { box-shadow:0 -120px 0 #3e271d, 0 8px 14px -10px rgba(0,0,0,.55); }
-.crx-theme .crx-extra { display:block; min-height:0; padding:0; margin:0; border:0; background:none; }
+.crx-theme .crx-extra { min-height:0; }
+
+/* Matchup title: one flowing serif line ("Jasprit Bumrah to Devon Conway"), not three huge lines */
+.crx-theme .crx-hero-dl .crx-heroname { font-family:Georgia,'Times New Roman',serif !important; font-size:15px; font-style:italic; line-height:1.25; margin:6px 0 4px; }
+.crx-theme .crx-hero-dl .crx-heroname .crx-nm { display:inline !important; font-family:Georgia,'Times New Roman',serif !important; font-size:clamp(24px, 7.4vw, 30px) !important; line-height:1.18 !important; font-weight:400; font-style:normal; margin:0 !important; }
+.crx-theme .crx-hero-dl .crx-heroname .crx-nm + .crx-nm { margin:0 !important; }
