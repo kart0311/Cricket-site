@@ -82,6 +82,13 @@ export function App() {
     const [pageFloor] = useState(() => typeof window === 'undefined' ? 0 : window.innerHeight);
     const [tab, setTab] = useState('matchups');
     const topRef = useRef<HTMLDivElement>(null);
+    const sentinel = useRef<HTMLDivElement>(null);
+    const [stuck, setStuck] = useState(false);
+    useEffect(() => {
+        const f = () => { const s = sentinel.current; if (s) setStuck(s.getBoundingClientRect().top < -1); };
+        f(); window.addEventListener('scroll', f, { passive: true }); window.addEventListener('resize', f);
+        return () => { window.removeEventListener('scroll', f); window.removeEventListener('resize', f); };
+    }, []);
     const pickTab = (id: string) => {
         setTab(id);
         requestAnimationFrame(() => { const a = topRef.current; if (a && a.getBoundingClientRect().top < 0) a.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior }); });
@@ -99,7 +106,8 @@ export function App() {
                     <p className="crx-mastline crx-noabbr">{MASTHEAD_FACTS[0][0]} {MASTHEAD_FACTS[0][1].toLowerCase().replace('tests since', 'Tests since')} · {MASTHEAD_FACTS[1][0]} India Tests with every ball</p>
                 </div>
             </header>
-            <nav className="crx-tabs" role="tablist" aria-label="Sections">
+            <div ref={sentinel} aria-hidden="true" style={{ height: 0 }} />
+            <nav className={'crx-tabs' + (stuck ? ' crx-stuck' : '')} role="tablist" aria-label="Sections">
                 {TABS.map(([id, a, b]) => <button key={id} type="button" role="tab" id={'crx-tab-' + id} aria-selected={tab === id} aria-controls={'crx-panel-' + id} aria-label={a + ' ' + b} className={'crx-tab' + (tab === id ? ' crx-tabon' : '')} onClick={() => pickTab(id)}><span>{a}</span><span>{b}</span></button>)}
             </nav>
             <div className="crx-tabtop" ref={topRef} aria-hidden="true" />
