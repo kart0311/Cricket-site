@@ -1,7 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FileCard } from '@instinct/files';
 import { IndiaCountry, IndiaGrounds, IndiaMatchup, IndiaPlayers, MatchupCoverage, duelName, popularDuels } from './IndiaViews';
-import { HomeSearch } from './HomeSearch';
 import { go } from './nav';
 import { countryView, displayText } from './countryLabels';
 import headerPhoto from './photos/cricket-header.jpg';
@@ -15,7 +14,7 @@ const MASTHEAD_FACTS: [string, string][] = (() => {
     return [[n1(TESTS.length), 'Tests since ' + first], [n1(bb), 'India Tests ball by ball'], [n1(GROUNDS.length), 'grounds']];
 })();
 
-const BROWSE: [string, string][] = [['players', 'Players'], ['grounds', 'Grounds'], ['countries', 'Teams'], ['matchups', 'Duels']];
+const TABS: [string, string, string][] = [['matchups', 'Player', 'matchup'], ['countries', 'Team', 'matchup'], ['players', 'Player', 'analysis'], ['grounds', 'Stadium', 'analysis']];
 
 function Selector({ label, value, options, open, onToggle, onChange, sort = true, placeholder, title, half, searchable = true, tone }: any) {
     const current = options.find((o: any) => o.value === value);
@@ -82,21 +81,16 @@ function InstallTip() {
 
 export function App() {
     const [pageFloor] = useState(() => typeof window === 'undefined' ? 0 : window.innerHeight);
-    // null = the home page; otherwise the screen being shown (players, grounds, countries, matchups)
-    const [view, setView] = useState<string | null>(null);
+    const [tab, setTab] = useState('matchups');
     const topRef = useRef<HTMLDivElement>(null);
-    const toTop = () => requestAnimationFrame(() => { window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }); });
-    useEffect(() => {
-        try { history.replaceState({ v: null }, ''); } catch { /* file:// previews */ }
-        const pop = (e: PopStateEvent) => { setView(e.state && e.state.v ? e.state.v : null); toTop(); };
-        window.addEventListener('popstate', pop); return () => window.removeEventListener('popstate', pop);
-    }, []);
-    const show = (id: string | null) => { setView(id); try { history.pushState({ v: id }, ''); } catch { /* ignore */ } toTop(); };
+    const pickTab = (id: string) => {
+        setTab(id);
+        requestAnimationFrame(() => { const a = topRef.current; if (a && a.getBoundingClientRect().top < 0) a.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior }); });
+    };
     const VIEW_OF: Record<string, string> = { player: 'players', ground: 'grounds', team: 'countries', duel: 'matchups' };
-    const jump = (kind: 'player' | 'ground' | 'team' | 'duel', value: any) => { go(kind, value); show(VIEW_OF[kind]); };
+    const jump = (kind: 'player' | 'ground' | 'team' | 'duel', value: any) => { go(kind, value); pickTab(VIEW_OF[kind]); };
     const duels = useMemo(() => popularDuels(), []);
-    const compact = view !== null;
-    return countryView(<div className={'crx-theme crx-dark' + (compact ? ' crx-compact' : '')}>
+    return countryView(<div className={'crx-theme crx-dark' + ''}>
     <div className="crx-site" style={{ minHeight: pageFloor }}>
     <FileCard>
         <section className="crx-section">
@@ -109,31 +103,28 @@ export function App() {
                     <p className="crx-mastline crx-noabbr">{MASTHEAD_FACTS[0][0]} {MASTHEAD_FACTS[0][1].toLowerCase().replace('tests since', 'Tests since')} · {MASTHEAD_FACTS[1][0]} India Tests with every ball</p>
                 </div>
             </header>
+            <nav className="crx-tabs" role="tablist" aria-label="Sections">
+                {TABS.map(([id, a, b]) => <button key={id} type="button" role="tab" id={'crx-tab-' + id} aria-selected={tab === id} aria-controls={'crx-panel-' + id} aria-label={a + ' ' + b} className={'crx-tab' + (tab === id ? ' crx-tabon' : '')} onClick={() => pickTab(id)}><span>{a}</span><span>{b}</span></button>)}
+            </nav>
             <div className="crx-tabtop" ref={topRef} aria-hidden="true" />
-            {view === null
-                ? <div className="crx-home">
-                    <HomeSearch onPick={(k, v) => jump(k, v)} />
-                    {duels.length > 0 && <div className="crx-quick"><div className="crx-quicktitle">Famous duels</div><div className="crx-quickrow">{duels.map(([b, t, n]) => <button type="button" className="crx-quickbtn" key={b + '-' + t} onClick={() => jump('duel', [b, t])}><span className="crx-qb">{duelName(b)}</span><em>to</em><span className="crx-qt">{duelName(t)}</span><small>{n} {n === 1 ? 'meeting' : 'meetings'}</small></button>)}</div></div>}
-                    <div className="crx-browse">{BROWSE.map(([id, l]) => <button type="button" key={id} className="crx-browsebtn" onClick={() => show(id)}>{l}</button>)}</div>
-                    <InstallTip />
-                </div>
-                : <div className="crx-navbar"><button type="button" className="crx-back" onClick={() => { if (history.state && history.state.v) history.back(); else show(null); }} aria-label="Back to the home page"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>Home</button><HomeSearch compact onPick={(k, v) => jump(k, v)} /></div>}
+            {tab === 'matchups' && duels.length > 0 && <div className="crx-quick"><div className="crx-quicktitle">Famous duels</div><div className="crx-quickrow">{duels.map(([b, t, n]) => <button type="button" className="crx-quickbtn" key={b + '-' + t} onClick={() => jump('duel', [b, t])}><span className="crx-qb">{duelName(b)}</span><em>to</em><span className="crx-qt">{duelName(t)}</span><small>{n} {n === 1 ? 'meeting' : 'meetings'}</small></button>)}</div></div>}
 
-            <div className="crx-tabpanel" role="region" aria-label="Player matchup" id="crx-panel-matchups" hidden={view !== 'matchups'}>
+            <div className="crx-tabpanel" role="region" aria-label="Player matchup" id="crx-panel-matchups" hidden={tab !== 'matchups'}>
                 <IndiaMatchup Selector={Selector} />
             </div>
-            <div className="crx-tabpanel" role="region" aria-label="Team matchup" id="crx-panel-countries" hidden={view !== 'countries'}>
+            <div className="crx-tabpanel" role="region" aria-label="Team matchup" id="crx-panel-countries" hidden={tab !== 'countries'}>
                 <IndiaCountry Selector={Selector} />
             </div>
-            <div className="crx-tabpanel" role="region" aria-label="Player analysis" id="crx-panel-players" hidden={view !== 'players'}>
+            <div className="crx-tabpanel" role="region" aria-label="Player analysis" id="crx-panel-players" hidden={tab !== 'players'}>
                 <IndiaPlayers Selector={Selector} />
             </div>
-            <div className="crx-tabpanel" role="region" aria-label="Ground analysis" id="crx-panel-grounds" hidden={view !== 'grounds'}>
+            <div className="crx-tabpanel" role="region" aria-label="Stadium analysis" id="crx-panel-grounds" hidden={tab !== 'grounds'}>
                 <IndiaGrounds Selector={Selector} />
             </div>
         </section>
+        <InstallTip />
         {<details className="crx-datanote"><summary>About this data</summary>
-            {view === 'matchups' && <p className="crx-fine"><MatchupCoverage /></p>}
+            {tab === 'matchups' && <p className="crx-fine"><MatchupCoverage /></p>}
             <p className="crx-credit">Ball-by-ball data: Cricsheet (cricsheet.org), ODC-By 1.0. Scorecard history since 1932: public Test dataset compiled from ESPNcricinfo records. Computed from match data, not official totals.</p>
         </details>}
     </FileCard>

@@ -380,3 +380,12 @@
 .crx-theme .crx-browse { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin:22px 0 4px; }
 .crx-theme .crx-browsebtn { padding:11px 4px; font-size:13.5px; text-align:center; }
 .crx-theme .crx-tip { margin-top:16px; font-size:13px; }
+
+/* ---- Four section tabs under the title (Player matchup, Team matchup, Player analysis, Stadium analysis) ---- */
+.crx-theme .crx-tabs { position:sticky; top:0; z-index:30; display:grid !important; grid-template-columns:repeat(4, 1fr); gap:8px; padding:10px 0; margin:0 0 6px !important; background:var(--ds-page, #3a261c) !important; border:0 !important; }
+.crx-theme .crx-tabs .crx-tab { min-height:54px; padding:8px 4px !important; border-radius:14px !important; border:1px solid rgba(255,255,255,.14) !important; background:rgba(255,255,255,.05) !important; color:#f1e6d8 !important; font-size:13.5px !important; line-height:16px; cursor:pointer; transition:background .15s, border-color .15s; }
+.crx-theme .crx-tabs .crx-tab span + span { color:rgba(241,230,216,.7) !important; font-weight:400; font-size:12px !important; }
+.crx-theme .crx-tabs .crx-tab.crx-tabon { background:rgba(240,168,76,.18) !important; border-color:#f0a84c !important; color:#fff !important; }
+.crx-theme .crx-tabs .crx-tab.crx-tabon span + span { color:#f0c487 !important; }
+.crx-theme .crx-quick { padding:6px 0 0; }
+@media (max-width:480px) { .crx-theme .crx-tabs { padding:8px 0; gap:6px; } .crx-theme .crx-tabs .crx-tab { font-size:12.5px !important; min-height:52px; } .crx-theme .crx-tabs .crx-tab span + span { font-size:11px !important; } }
