@@ -389,3 +389,15 @@
 .crx-theme .crx-tabs .crx-tab.crx-tabon span + span { color:#f0c487 !important; }
 .crx-theme .crx-quick { padding:6px 0 0; }
 @media (max-width:480px) { .crx-theme .crx-tabs { padding:8px 0; gap:6px; } .crx-theme .crx-tabs .crx-tab { font-size:12.5px !important; min-height:52px; } .crx-theme .crx-tabs .crx-tab span + span { font-size:11px !important; } }
+
+/* ---- Quick picks: one tidy row under the picker, same on every screen ---- */
+.crx-theme .crx-pop { margin:12px 0 4px; }
+.crx-theme .crx-poptitle { font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:#f0c487; margin:0 0 8px; padding-left:10px; border-left:3px solid #f0a84c; line-height:1.1; }
+.crx-theme .crx-poprow { display:flex; flex-wrap:wrap; gap:8px; }
+.crx-theme .crx-popbtn { padding:8px 13px; border-radius:999px !important; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.05); color:#f1e6d8; font:inherit; font-size:14px; line-height:1.2; cursor:pointer; }
+.crx-theme .crx-popbtn em { font-style:italic; font-size:12px; opacity:.65; margin:0 1px; }
+.crx-theme .crx-popbtn small { margin-left:7px; font-size:11px; opacity:.6; }
+.crx-theme .crx-popbtn .crx-qb { color:#f0b565; } .crx-theme .crx-popbtn .crx-qt { color:#7cc3e0; }
+.crx-theme .crx-popbtn.crx-popon { border-color:#f0a84c; background:rgba(240,168,76,.18); color:#fff; }
+.crx-theme button.crx-popbtn { border-radius:999px !important; border:1px solid rgba(255,255,255,.16) !important; background:rgba(255,255,255,.05) !important; }
+.crx-theme button.crx-popbtn.crx-popon { border-color:#f0a84c !important; background:rgba(240,168,76,.18) !important; }

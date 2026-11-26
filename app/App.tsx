@@ -1,7 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FileCard } from '@instinct/files';
-import { IndiaCountry, IndiaGrounds, IndiaMatchup, IndiaPlayers, MatchupCoverage, duelName, popularDuels } from './IndiaViews';
-import { go } from './nav';
+import { IndiaCountry, IndiaGrounds, IndiaMatchup, IndiaPlayers, MatchupCoverage } from './IndiaViews';
 import { countryView, displayText } from './countryLabels';
 import headerPhoto from './photos/cricket-header.jpg';
 import { GROUNDS, TESTS, isIndia, n1, yearOf } from './india';
@@ -87,10 +86,7 @@ export function App() {
         setTab(id);
         requestAnimationFrame(() => { const a = topRef.current; if (a && a.getBoundingClientRect().top < 0) a.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior }); });
     };
-    const VIEW_OF: Record<string, string> = { player: 'players', ground: 'grounds', team: 'countries', duel: 'matchups' };
-    const jump = (kind: 'player' | 'ground' | 'team' | 'duel', value: any) => { go(kind, value); pickTab(VIEW_OF[kind]); };
-    const duels = useMemo(() => popularDuels(), []);
-    return countryView(<div className={'crx-theme crx-dark' + ''}>
+        return countryView(<div className={'crx-theme crx-dark' + ''}>
     <div className="crx-site" style={{ minHeight: pageFloor }}>
     <FileCard>
         <section className="crx-section">
@@ -107,7 +103,6 @@ export function App() {
                 {TABS.map(([id, a, b]) => <button key={id} type="button" role="tab" id={'crx-tab-' + id} aria-selected={tab === id} aria-controls={'crx-panel-' + id} aria-label={a + ' ' + b} className={'crx-tab' + (tab === id ? ' crx-tabon' : '')} onClick={() => pickTab(id)}><span>{a}</span><span>{b}</span></button>)}
             </nav>
             <div className="crx-tabtop" ref={topRef} aria-hidden="true" />
-            {tab === 'matchups' && duels.length > 0 && <div className="crx-quick"><div className="crx-quicktitle">Famous duels</div><div className="crx-quickrow">{duels.map(([b, t, n]) => <button type="button" className="crx-quickbtn" key={b + '-' + t} onClick={() => jump('duel', [b, t])}><span className="crx-qb">{duelName(b)}</span><em>to</em><span className="crx-qt">{duelName(t)}</span><small>{n} {n === 1 ? 'meeting' : 'meetings'}</small></button>)}</div></div>}
 
             <div className="crx-tabpanel" role="region" aria-label="Player matchup" id="crx-panel-matchups" hidden={tab !== 'matchups'}>
                 <IndiaMatchup Selector={Selector} />

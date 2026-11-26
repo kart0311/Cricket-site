@@ -209,6 +209,7 @@ export function IndiaMatchup({ Selector }: any) {
             <Selector half tone={toneOf(batter)} label="Batter" value={batter} open={open === 'batter'} placeholder="Pick a player" title="Batter" onToggle={() => toggle('batter')} onChange={(v: number | null) => { chooseBatter(v); }} sort={false}
                 options={[...(batter != null ? [{ value: null, label: 'Pick a player' }] : []), ...batterOpts]} />
         </div>
+        {!pair && <Quick title="Famous duels" items={popularDuels().map(([b, t, n]) => ({ key: b + '-' + t, label: <><span className="crx-qb">{sur(b)}</span> <em>to</em> <span className="crx-qt">{sur(t)}</span><small>{n}</small></>, on: bowler === b && batter === t, go: () => { setBowler(b); setBatter(t); setGround(-1); setInn('all'); setAll(false); } }))} />}
         {!pair && <Hint>{bowler != null ? 'Now pick a batter.' : batter != null ? 'Now pick a bowler.' : 'Pick a bowler and a batter. One side is always an Indian player, the other from the opposition.'}</Hint>}
         {pair && <Fold label="Filters" note={`${groundLabel} · ${innLabel}`} cls="crx-filters">
             <div className="crx-pair">
@@ -261,6 +262,23 @@ export function IndiaMatchup({ Selector }: any) {
     </div>);
 }
 
+
+// One row of quick picks under each picker, the same on every screen.
+function Quick({ title, items, on }: { title: string; items: { key: string; label: React.ReactNode; on: boolean; go: () => void }[]; on?: undefined }) {
+    if (!items.length) return null;
+    return <div className="crx-pop"><div className="crx-poptitle">{title}</div><div className="crx-poprow">{items.map((it) => <button type="button" key={it.key} className={'crx-popbtn' + (it.on ? ' crx-popon' : '')} aria-pressed={it.on} onClick={it.go}>{it.label}</button>)}</div></div>;
+}
+let POP_PLAYERS: number[] | null = null;
+function popularPlayers(): number[] {
+    if (!POP_PLAYERS) {
+        const n = new Map<number, number>();
+        for (const [k, v] of Object.entries(PAIRS) as [string, any][]) { const [b, t] = k.split(',').map(Number); const c = v.m.length + v.c.length; n.set(b, (n.get(b) || 0) + c); n.set(t, (n.get(t) || 0) + c); }
+        const ok = new Set(HAS_ROWS.map((x) => x.i));
+        POP_PLAYERS = [...n.entries()].filter(([i]) => ok.has(i)).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([i]) => i);
+    }
+    return POP_PLAYERS;
+}
+
 // ============================================================ Country matchup
 const OPPONENTS = (() => {
     const n = new Map<number, number>(); for (const t of TESTS) if (isIndia(t)) n.set(oppOf(t), (n.get(oppOf(t)) || 0) + 1);
@@ -306,6 +324,7 @@ export function IndiaCountry({ Selector }: any) {
         <Selector label="Opponent" title="India v …" value={opp} open={open} placeholder="Pick an opponent" sort={false} onToggle={() => setOpen(!open)}
             onChange={(v: number) => { setOpp(v); setOpen(false); setAll(false); setLead(false); }}
             options={OPPONENTS.map((o) => ({ value: o, label: TEAMS[o], searchText: CODE[o] }))} />
+        <Quick title="Popular" items={OPPONENTS.slice(0, 6).map((o) => ({ key: String(o), label: TEAMS[o], on: o === opp, go: () => { setOpp(o); setAll(false); setLead(false); } }))} />
         <div className="crx-hero"><div className="crx-heroname">India v {TEAMS[opp]}</div>
             {first && <div className="crx-herosub">{plural(allTests.length, 'Test')} · {yearOf(first.d)}{last && yearOf(last.d) !== yearOf(first.d) ? '–' + yearOf(last.d) : ''}{tied > 0 ? ` · ${tied} tied` : ''}</div>}</div>
         <Pills label="Where played" cls="crx-matchupmodes" value={where} onChange={(v) => { setWhere(v); setAll(false); }} items={[['all', 'All'], ['home', 'In India'], ['away', 'Away']]} />
@@ -352,6 +371,7 @@ export function IndiaPlayers({ Selector }: any) {
     const options = useMemo(() => HAS_ROWS.map((x) => ({ value: x.i, label: plabel(x.i), searchText: x.name + ' ' + TEAMS[x.team] })), []);
     return countryView(<div>
         <Selector label="Player" value={p} placeholder="Pick a player" title="Player · India and every opponent" open={open} onToggle={() => setOpen(!open)} onChange={(v: number) => { setP(v); setOpen(false); }} options={options} />
+        <Quick title="Popular" items={popularPlayers().map((i) => ({ key: String(i), label: pname(i), on: i === p, go: () => { setP(i); setOpen(false); } }))} />
         {p == null ? <Hint>Pick any India player, past or present, anyone still playing anywhere, or any opponent who has played India. Retired opponents show their Tests against India only.</Hint> : <PlayerCard key={p} p={p} />}
     </div>);
 }
@@ -549,8 +569,15 @@ export function IndiaGrounds({ Selector }: any) {
     const options = useMemo(() => GROUND_IDS.map((i) => ({ value: i, label: groundName(i) + (dup.get(groundName(i))! > 1 ? ` (${GROUNDS[i].country})` : ''), searchText: groundName(i) + ' ' + GROUNDS[i].country })), [dup]);
     return countryView(<div className="crx-hagley">
         <Selector label="Ground" title="Ground · every ground India has played at" value={g} placeholder="Pick a ground" open={open} onToggle={() => setOpen(!open)} onChange={(v: number) => { setG(v); setOpen(false); setAllInd(false); }} options={options} />
+        <Quick title="Popular" items={INDIA_TOP_GROUNDS().map((i) => ({ key: String(i), label: groundShort(i), on: i === g, go: () => { setG(i); setOpen(false); setAllInd(false); } }))} />
         {g == null ? <Hint>Pick a ground.</Hint> : <GroundCard key={g} g={g} allInd={allInd} setAllInd={setAllInd} />}
     </div>);
+}
+
+let TOP_G: number[] | null = null;
+function INDIA_TOP_GROUNDS(): number[] {
+    if (!TOP_G) { const n = new Map<number, number>(); for (const t of TESTS) if (isIndia(t) && isHome(t)) n.set(t.g, (n.get(t.g) || 0) + 1); TOP_G = [...n.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6).map(([i]) => i); }
+    return TOP_G;
 }
 
 function GroundCard({ g, allInd, setAllInd }: { g: number; allInd: boolean; setAllInd: (v: boolean) => void }) {
