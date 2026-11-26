@@ -47,15 +47,26 @@ async function download() {
     if (!force && existsSync(etagFile) && existsSync(outFile) && existsSync(indiaFile) && /generated/.test(readFileSync(outFile, 'utf8'))) {
         headers['If-None-Match'] = readFileSync(etagFile, 'utf8').trim();
     }
-    log('Downloading', URL_ZIP);
-    const res = await fetch(URL_ZIP, { headers });
-    if (res.status === 304) return null;
-    if (!res.ok) throw new Error(`Cricsheet answered HTTP ${res.status}`);
     const zip = join(cache, 'tests_male_json.zip');
-    writeFileSync(zip, Buffer.from(await res.arrayBuffer()));
-    const etag = res.headers.get('etag');
-    if (etag) writeFileSync(etagFile, etag);
-    return zip;
+    // Cricsheet now and then answers with an error page instead of the zip; try again a few times before giving up.
+    for (let attempt = 1; ; attempt++) {
+        try {
+            log('Downloading', URL_ZIP, attempt > 1 ? `(attempt ${attempt})` : '');
+            const res = await fetch(URL_ZIP, { headers });
+            if (res.status === 304) return null;
+            if (!res.ok) throw new Error(`Cricsheet answered HTTP ${res.status}`);
+            const buf = Buffer.from(await res.arrayBuffer());
+            if (buf.length < 1000 || buf[0] !== 0x50 || buf[1] !== 0x4b) throw new Error(`Cricsheet sent ${buf.length} bytes that are not a zip file`);
+            writeFileSync(zip, buf);
+            const etag = res.headers.get('etag');
+            if (etag) writeFileSync(etagFile, etag);
+            return zip;
+        } catch (e) {
+            if (attempt >= 5) throw e;
+            log(String(e.message || e), '- retrying in', attempt * 10, 's');
+            await new Promise((r) => setTimeout(r, attempt * 10000));
+        }
+    }
 }
 
 async function main() {
