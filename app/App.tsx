@@ -106,15 +106,15 @@ export function App() {
                 </div>
                 <div className="crx-masthead">
                     <h1 className="crx-title crx-noabbr"><span className="crx-title1">Indian Cricket</span><span className="crx-title2">Beyond the Scoreboard</span></h1>
-                    <div className="crx-mastfacts">{MASTHEAD_FACTS.map(([v, l]) => <div key={l}><strong>{v}</strong><span>{l}</span></div>)}</div>
+                    <p className="crx-mastline crx-noabbr">{MASTHEAD_FACTS[0][0]} {MASTHEAD_FACTS[0][1].toLowerCase().replace('tests since', 'Tests since')} · {MASTHEAD_FACTS[1][0]} India Tests with every ball</p>
                 </div>
             </header>
             <div className="crx-tabtop" ref={topRef} aria-hidden="true" />
             {view === null
                 ? <div className="crx-home">
                     <HomeSearch onPick={(k, v) => jump(k, v)} />
-                    {duels.length > 0 && <div className="crx-quick"><div className="crx-quicktitle">Or start with a famous duel</div><div className="crx-quickrow">{duels.map(([b, t, n]) => <button type="button" className="crx-quickbtn" key={b + '-' + t} onClick={() => jump('duel', [b, t])}><span className="crx-qb">{duelName(b)}</span><em>to</em><span className="crx-qt">{duelName(t)}</span><small>{n} {n === 1 ? 'meeting' : 'meetings'}</small></button>)}</div></div>}
-                    <div className="crx-browse"><span>Or browse</span>{BROWSE.map(([id, l]) => <button type="button" key={id} className="crx-browsebtn" onClick={() => show(id)}>{l}</button>)}</div>
+                    {duels.length > 0 && <div className="crx-quick"><div className="crx-quicktitle">Famous duels</div><div className="crx-quickrow">{duels.map(([b, t, n]) => <button type="button" className="crx-quickbtn" key={b + '-' + t} onClick={() => jump('duel', [b, t])}><span className="crx-qb">{duelName(b)}</span><em>to</em><span className="crx-qt">{duelName(t)}</span><small>{n} {n === 1 ? 'meeting' : 'meetings'}</small></button>)}</div></div>}
+                    <div className="crx-browse">{BROWSE.map(([id, l]) => <button type="button" key={id} className="crx-browsebtn" onClick={() => show(id)}>{l}</button>)}</div>
                     <InstallTip />
                 </div>
                 : <div className="crx-navbar"><button type="button" className="crx-back" onClick={() => { if (history.state && history.state.v) history.back(); else show(null); }} aria-label="Back to the home page"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>Home</button><HomeSearch compact onPick={(k, v) => jump(k, v)} /></div>}
