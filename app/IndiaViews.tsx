@@ -1,6 +1,7 @@
 // The four India-wide screens: Player matchup, Country matchup, Player analysis, Ground analysis.
 // Every number is computed here from app/indiaData.ts (see india.ts); nothing is typed in by hand.
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { onGo } from './nav';
 import { countryView } from './countryLabels';
 import { Badge, Info, MiniBars, ResultStrip, type Tone } from './charts';
 import { makeCard, saveCard } from './shareCard';
@@ -32,6 +33,9 @@ function Tiles({ rows, cls = '' }: { rows: [string, string | number, Tone?][]; c
 function Pills({ label, items, value, onChange, cls }: { label: string; items: [string, string][]; value: string; onChange: (v: string) => void; cls: string }) {
     return <div className={'crx-viewtoggle ' + cls} role="group" aria-label={label}>{items.map(([id, l]) =>
         <button key={id} type="button" aria-pressed={value === id} className={'crx-pill' + (value === id ? ' crx-pillon' : '')} onClick={() => onChange(id)}>{l}</button>)}</div>;
+}
+function MoreToggle({ open, onToggle, what = 'detail' }: { open: boolean; onToggle: () => void; what?: string }) {
+    return <button type="button" className="crx-moretoggle" aria-expanded={open} onClick={onToggle}>{open ? 'Show less' : 'Show more ' + what}<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d={open ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6'} fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg></button>;
 }
 function Fold({ label, note, children, cls = '' }: { label: string; note?: string; children: any; cls?: string }) {
     return <details className={'crx-pa-fold ' + cls}><summary>{label}{note && <em>{note}</em>}</summary>{children}</details>;
@@ -79,10 +83,28 @@ export function MatchupCoverage() {
     return <>India's Tests since {fmtDate(PAIRS_FROM)}: {WINDOW.length} Tests. Ball-by-ball detail exists for {ballsTests} of them; for the rest you see who got whom out and how.</>;
 }
 
+// the most-played duels, one per bowler and one per batter, for the home page
+let POPULAR: [number, number, number][] | null = null;
+export function popularDuels(): [number, number, number][] {
+    if (!POPULAR) {
+        const all = Object.entries(PAIRS).map(([k, v]: [string, any]) => { const [b, t] = k.split(',').map(Number); return [b, t, v.m.length + v.c.length] as [number, number, number]; }).sort((x, y) => y[2] - x[2]);
+        const out: [number, number, number][] = []; const ub = new Set<number>(), ut = new Set<number>();
+        for (const r of all) { if (ub.has(r[0]) || ut.has(r[1])) continue; ub.add(r[0]); ut.add(r[1]); out.push(r); if (out.length === 6) break; }
+        POPULAR = out;
+    }
+    return POPULAR;
+}
+export const duelName = (i: number) => sur(i);
+export const plabelOf = (i: number) => plabel(i);
+export const HOME_PLAYERS = () => HAS_ROWS;
+export const HOME_GROUNDS = () => GROUND_IDS;
+export const HOME_TEAMS = () => OPPONENTS;
+
 export function IndiaMatchup({ Selector }: any) {
     const [open, setOpen] = useState<string | null>(null);
     const [bowler, setBowler] = useState<number | null>(null);
     const [batter, setBatter] = useState<number | null>(null);
+    useEffect(() => onGo((d) => { if (d.kind === 'duel') { setBowler(d.value[0]); setBatter(d.value[1]); setGround(-1); setInn('all'); setAll(false); } }), []);
     const [ground, setGround] = useState(-1);
     const [inn, setInn] = useState('all');
     const [all, setAll] = useState(false);
@@ -97,13 +119,6 @@ export function IndiaMatchup({ Selector }: any) {
     const bowlerOpts = useMemo(() => opts(batter != null ? [...BY_BATTER.get(batter)!.keys()] : [...BY_BOWLER.keys()], BY_BATTER, batter), [batter]);
     const batterOpts = useMemo(() => opts(bowler != null ? [...BY_BOWLER.get(bowler)!.keys()] : [...BY_BATTER.keys()], BY_BOWLER, bowler), [bowler]);
     const pair = bowler != null && batter != null ? PAIRS[bowler + ',' + batter] : null;
-    // the most-played duels, one per bowler and one per batter, for the home page
-    const popular = useMemo(() => {
-        const all = Object.entries(PAIRS).map(([k, v]: [string, any]) => { const [b, t] = k.split(',').map(Number); return [b, t, v.m.length + v.c.length] as [number, number, number]; }).sort((x, y) => y[2] - x[2]);
-        const out: [number, number, number][] = []; const ub = new Set<number>(), ut = new Set<number>();
-        for (const r of all) { if (ub.has(r[0]) || ut.has(r[1])) continue; ub.add(r[0]); ut.add(r[1]); out.push(r); if (out.length === 6) break; }
-        return out;
-    }, []);
     const meets = useMemo(() => {
         if (!pair) return [];
         const out: { m: number; inn: number; over?: Over[]; card?: [number, number, number] }[] = [];
@@ -195,7 +210,6 @@ export function IndiaMatchup({ Selector }: any) {
                 options={[...(batter != null ? [{ value: null, label: 'Pick a player' }] : []), ...batterOpts]} />
         </div>
         {!pair && <Hint>{bowler != null ? 'Now pick a batter.' : batter != null ? 'Now pick a bowler.' : 'Pick a bowler and a batter. One side is always an Indian player, the other from the opposition.'}</Hint>}
-        {bowler == null && batter == null && popular.length > 0 && <div className="crx-quick"><div className="crx-quicktitle">Or start with a famous duel</div><div className="crx-quickrow">{popular.map(([b, t, n]) => <button type="button" className="crx-quickbtn" key={b + '-' + t} onClick={() => { setBowler(b); setBatter(t); }}><span className="crx-qb">{sur(b)}</span><em>to</em><span className="crx-qt">{sur(t)}</span><small>{n} {n === 1 ? 'meeting' : 'meetings'}</small></button>)}</div></div>}
         {pair && <Fold label="Filters" note={`${groundLabel} · ${innLabel}`} cls="crx-filters">
             <div className="crx-pair">
                 <Selector half label="Ground" value={ground} options={groundOpts} sort={false} open={open === 'ground'} onToggle={() => toggle('ground')} onChange={(v: number) => { setGround(v); setOpen(null); setAll(false); }} />
@@ -223,7 +237,7 @@ export function IndiaMatchup({ Selector }: any) {
                 </div>
                 : <div className="crx-outkinds"><span>{stats.balls ? `Not dismissed in ${plural(stats.balls, 'ball')}` : 'No dismissals'}</span></div>}
             {meetBars.length > 1 && <MiniBars items={meetBars} tone={toneOf(batter)} title="Runs in each meeting" note="dot = dismissed" foot={[yearOf(TESTS[shown[shown.length - 1].m].d), yearOf(TESTS[shown[0].m].d)]} />}
-            {stats.balls > 0 && <Fold label="More numbers" cls="crx-morenums">
+            {stats.balls > 0 && <Fold label="More numbers" cls="crx-morenums crx-more">
                 <Tiles rows={[['Strike rate', ratio(stats.runs * 100, stats.balls, 1)], ['Dots', stats.dots], ['Dot %', Math.round(100 * stats.dots / stats.balls) + '%'], ['Fours', stats.fours], ['Sixes', stats.sixes], ['Runs per out', stats.outs ? ratio(stats.runs, stats.outs, 1) : '–']]} />
             </Fold>}
             </div><div className="crx-col">
@@ -256,10 +270,12 @@ const LAST_OPP = oppOf([...TESTS].reverse().find(isIndia)!);
 
 export function IndiaCountry({ Selector }: any) {
     const [opp, setOpp] = useState<number>(LAST_OPP);
+    useEffect(() => onGo((d) => { if (d.kind === 'team') setOpp(d.value); }), []);
     const [where, setWhere] = useState('all');
     const [open, setOpen] = useState(false);
     const [all, setAll] = useState(false);
     const [lead, setLead] = useState(false);
+    const [moreOpen, setMoreOpen] = useState(false);
     const allTests = useMemo(() => TESTS.filter((t) => isIndia(t) && oppOf(t) === opp), [opp]);
     const tests = allTests.filter((t) => where === 'all' || (where === 'home' ? isHome(t) : !isHome(t)));
     const list = tests.slice().reverse();
@@ -295,19 +311,19 @@ export function IndiaCountry({ Selector }: any) {
         <Pills label="Where played" cls="crx-matchupmodes" value={where} onChange={(v) => { setWhere(v); setAll(false); }} items={[['all', 'All'], ['home', 'In India'], ['away', 'Away']]} />
         {tests.length === 0 ? <Hint>No Tests in this selection.</Hint> : <>
             <p className="crx-verdict crx-noabbr">India have won {won} of {plural(tests.length, 'Test')} against {TEAMS[opp]}{where === 'home' ? ' in India' : where === 'away' ? ' away from home' : ''}, losing {lost} and drawing {drawn + tied}. Most recent: {resultText(list[0])}, {yearOf(list[0].d)}.</p>
-            <div className="crx-split"><div className="crx-col">
+            <div className={'crx-split' + (moreOpen ? '' : ' crx-lessmode')}><div className="crx-col">
             <Tiles rows={[['Tests', tests.length], ['India won', won, 'ind'], [`${CODE[opp]} won`, lost, 'opp'], ['Drawn', drawn]]} />
             {tests.length > 1 && <ResultStrip oppCode={CODE[opp]} items={tests.map((t) => ({ k: winnerOf(t) === 0 ? 'ind' as const : winnerOf(t) === opp ? 'opp' as const : 'draw' as const, label: `${fmtDate(t.d)} · ${GROUNDS[t.g]?.city || groundShort(t.g)} · ${resultText(t)}` }))} />}
-            <Label>Highest and lowest totals</Label>
+            <div className="crx-more"><Label>Highest and lowest totals</Label>
             <table className="crx-groundtable crx-tot"><thead><tr><th /><th><Badge team={0} /></th><th><Badge team={opp} /></th></tr></thead><tbody>
                 <tr><th>Highest</th>{cell(ti.hi)}{cell(to.hi)}</tr>
                 <tr><th>Lowest (all out)</th>{cell(ti.lo)}{cell(to.lo)}</tr>
-            </tbody></table>
+            </tbody></table></div>
             </div><div className="crx-col">
             <Label>Tests · newest first</Label>
             <div className="crx-meets">{(all ? list : list.slice(0, 5)).map((t) => <TestRow key={t.i} t={t} />)}</div>
             <ShowMore open={all} onToggle={() => setAll(!all)} total={list.length} shown={5} what="Tests" />
-            <Fold label="Top performers" note="runs and wickets" cls="crx-morerec">
+            <Fold label="Top performers" note="runs and wickets" cls="crx-morerec crx-more">
                 {[0, 1].map((s) => <div key={s}>
                     <div className="crx-hg-top">
                         <section className={'crx-t-' + (s === 0 ? 'ind' : 'opp')}><h4>{s === 0 ? 'India' : TEAMS[opp]} · most runs</h4>{leaders[s].bat.map((x) => <div className="crx-hg-topRow" key={x.p}><span className="crx-hg-topName">{pname(x.p)}<em>{x.tests} {x.tests === 1 ? 'Test' : 'Tests'}</em></span><strong>{n1(x.runs)}</strong></div>)}</section>
@@ -315,7 +331,8 @@ export function IndiaCountry({ Selector }: any) {
                     </div>
                 </div>)}
             </Fold>
-            </div></div></>}
+            </div></div>
+            <MoreToggle open={moreOpen} onToggle={() => setMoreOpen(!moreOpen)} what="numbers" /></>}
     </div>);
 }
 
@@ -331,6 +348,7 @@ function oppTable(rows: { opp: number; label: string; vals: (string | number)[] 
 export function IndiaPlayers({ Selector }: any) {
     const [open, setOpen] = useState(false);
     const [p, setP] = useState<number | null>(null);
+    useEffect(() => onGo((d) => { if (d.kind === 'player') { setP(d.value); setOpen(false); } }), []);
     const options = useMemo(() => HAS_ROWS.map((x) => ({ value: x.i, label: plabel(x.i), searchText: x.name + ' ' + TEAMS[x.team] })), []);
     return countryView(<div>
         <Selector label="Player" value={p} placeholder="Pick a player" title="Player · India and every opponent" open={open} onToggle={() => setOpen(!open)} onChange={(v: number) => { setP(v); setOpen(false); }} options={options} />
@@ -398,6 +416,7 @@ function PlayerCard({ p }: { p: number }) {
     const wk = bowl.reduce((a, r) => a + r[5], 0); const rn = bat.reduce((a, r) => a + r[3], 0);
     const [branch, setBranch] = useState(bat.length === 0 || (bowl.length > 0 && wk * 25 > rn) ? 'bowl' : 'bat');
     const [rec, setRec] = useState(false);
+    const [moreOpen, setMoreOpen] = useState(false);
     const [where, setWhere] = useState('all');
     const splits = useMemo(() => ({ bat: splitStats(p, true, where), bowl: splitStats(p, false, where) }), [p, where]);
     const span = playerSpan(p);
@@ -467,18 +486,18 @@ function PlayerCard({ p }: { p: number }) {
         <Pills label="Branch" cls="crx-twomodes" value={branch} onChange={setBranch} items={[['bat', 'Batting analysis'], ['bowl', 'Bowling analysis']]} />
         {empty ? <p className="crx-hint">No {isBat ? 'batting' : 'bowling'} recorded in these Tests.</p> : <>
         {verdict && <p className="crx-verdict crx-noabbr">{verdict.line}{verdict.small && <em className="crx-caveat"> {verdict.small}</em>}</p>}
-        <div className="crx-split"><div className="crx-col">
+        <div className={'crx-split' + (moreOpen ? '' : ' crx-lessmode')}><div className="crx-col">
         {isBat ? <>
             <Tiles rows={[['Tests', ba.tests], ['Runs', n1(ba.runs)], ['Average', ba.avg], ['Hundreds', ba.h]]} />
             {chart}
-            <Fold label="More numbers" cls="crx-morenums"><Tiles rows={[['Innings', ba.inns], ['Not outs', ba.no], ['High score', ba.hs + (ba.hsNo ? '*' : '')], ['Strike rate', ba.sr], ['Fifties', ba.f], ['Ducks', ba.ducks], ['Fours', n1(ba.fours)], ['Sixes', ba.sixes]]} /></Fold>
+            <Fold label="More numbers" cls="crx-morenums crx-more"><Tiles rows={[['Innings', ba.inns], ['Not outs', ba.no], ['High score', ba.hs + (ba.hsNo ? '*' : '')], ['Strike rate', ba.sr], ['Fifties', ba.f], ['Ducks', ba.ducks], ['Fours', n1(ba.fours)], ['Sixes', ba.sixes]]} /></Fold>
         </> : <>
             <Tiles rows={[['Tests', bo.tests], ['Wickets', n1(bo.wkts)], ['Average', bo.avg], ['Economy', bo.econ]]} />
             {chart}
-            <Fold label="More numbers" cls="crx-morenums"><Tiles rows={[['Innings', bo.inns], ['Overs', bo.overs], ['Maidens', bo.maidens], ['Best innings', bo.best], ['5 wicket hauls', bo.w5], ['10 wicket Tests', bo.w10], ['Strike rate', bo.sr], ['Runs conceded', n1(bo.runs)]]} /></Fold>
+            <Fold label="More numbers" cls="crx-morenums crx-more"><Tiles rows={[['Innings', bo.inns], ['Overs', bo.overs], ['Maidens', bo.maidens], ['Best innings', bo.best], ['5 wicket hauls', bo.w5], ['10 wicket Tests', bo.w10], ['Strike rate', bo.sr], ['Runs conceded', n1(bo.runs)]]} /></Fold>
         </>}
-        <Label>{isBat ? 'How he gets out' : 'How he takes wickets'}</Label>
-        {kindRows.some((r) => r[1] > 0) ? <Bars rows={kindRows} tone={tone} /> : <p className="crx-fine">No dismissals recorded.</p>}
+        <div className="crx-more"><Label>{isBat ? 'How he gets out' : 'How he takes wickets'}</Label>
+        {kindRows.some((r) => r[1] > 0) ? <Bars rows={kindRows} tone={tone} /> : <p className="crx-fine">No dismissals recorded.</p>}</div>
         {(() => {
             const sp = isBat ? splits.bat : splits.bowl; const anyBall = [...sp.entries()].some(([k, v]) => k !== '?' && v.balls >= 30); const anyOut = styleRows.some((r) => r[1] > 0);
             if (!anyBall && !anyOut && where === 'all') return null;
@@ -489,18 +508,18 @@ function PlayerCard({ p }: { p: number }) {
             {anyOut ? <Fold label={isBat ? 'By type of bowler' : 'By batting hand'} note={`${n1(styleKnown)} dismissals`}><Bars rows={styleRows} tone={tone} /></Fold> : <p className="crx-fine">No dismissals with a known {isBat ? 'bowling' : 'batting'} style{where !== 'all' ? ' here' : ''}.</p>}
         </>; })()}
         </div><div className="crx-col">
-        {topList.length > 0 && <>
+        {topList.length > 0 && <div className="crx-more">
             <Label>{isBat ? 'Dismissed most often by' : 'Dismissed most often'}</Label>
             <div className="crx-hg-top crx-one">{<section>{topList.map(([i, n]) => <div className="crx-hg-topRow" key={i}><span className="crx-hg-topName">{pname(i)}<em><Badge team={PLAYERS[i].team} /></em></span><strong>{n}</strong></div>)}</section>}</div>
-        </>}
-        {pl.full && oppRows.length > 1 && <Fold label="By opponent" note={`${oppRows.length} teams`}>
+        </div>}
+        {pl.full && oppRows.length > 1 && <Fold label="By opponent" note={`${oppRows.length} teams`} cls="crx-more">
             {oppTable(oppRows.map(([o, v]) => ({ opp: o, label: TEAMS[o], vals: isBat ? (() => { const a = batAgg(v.bat); return [a.tests, n1(a.runs), a.avg, a.h]; })() : (() => { const a = bowlAgg(v.bowl); return [a.tests, a.wkts, a.avg, a.best]; })() })), isBat ? ['Opponent', 'Tests', 'Runs', 'Avg', '100s'] : ['Opponent', 'Tests', 'Wkts', 'Avg', 'Best'])}
         </Fold>}
-        {grdRows.length > 0 && <Fold label="By ground" note={`${grdRows.length} grounds`}>
+        {grdRows.length > 0 && <Fold label="By ground" note={`${grdRows.length} grounds`} cls="crx-more">
             {oppTable(grdRows.slice(0, 15).map(([g, v]) => ({ opp: g, label: groundShort(g), vals: isBat ? (() => { const a = batAgg(v.bat); return [a.tests, n1(a.runs), a.avg, a.h]; })() : (() => { const a = bowlAgg(v.bowl); return [a.tests, a.wkts, a.avg, a.best]; })() })), isBat ? ['Ground', 'Tests', 'Runs', 'Avg', '100s'] : ['Ground', 'Tests', 'Wkts', 'Avg', 'Best'])}
             {grdRows.length > 15 && <p className="crx-fine">Top 15 of {grdRows.length} grounds by {isBat ? 'runs' : 'wickets'}.</p>}
         </Fold>}
-        <Fold label={isBat ? 'Recent innings' : 'Recent bowling'} note="newest first">
+        <Fold label={isBat ? 'Recent innings' : 'Recent bowling'} note="newest first" cls="crx-more">
             <div className="crx-meets">{recent.map((r, i) => {
                 const t = TESTS[r[0]];
                 const line = isBat ? (() => { const b = r as BatRow; return `${b[3]}${b[7] === 0 ? '*' : ''}${b[4] >= 0 ? ` (${b[4]} balls)` : ''} · ${CODE_NAME[b[7]]}`; })() : (() => { const w = r as BowlRow; return `${w[5]}/${w[4]} from ${Math.floor(w[3] / 6)}${w[3] % 6 ? '.' + (w[3] % 6) : ''} overs`; })();
@@ -508,7 +527,9 @@ function PlayerCard({ p }: { p: number }) {
             })}</div>
             <ShowMore open={rec} onToggle={() => setRec(!rec)} total={(isBat ? bat : bowl).length} shown={6} what="innings" />
         </Fold>
-        </div></div></>}
+        </div></div>
+        <MoreToggle open={moreOpen} onToggle={() => setMoreOpen(!moreOpen)} what="detail" />
+        </>}
     </div>;
 }
 
@@ -523,6 +544,7 @@ export function IndiaGrounds({ Selector }: any) {
     const [g, setG] = useState<number | null>(() => TESTS.filter(isIndia).slice(-1)[0]?.g ?? null);
     const [open, setOpen] = useState(false);
     const [allInd, setAllInd] = useState(false);
+    useEffect(() => onGo((d) => { if (d.kind === 'ground') { setG(d.value); setOpen(false); setAllInd(false); } }), []);
     const dup = useMemo(() => { const c = new Map<string, number>(); for (const i of GROUND_IDS) { const k = groundName(i); c.set(k, (c.get(k) || 0) + 1); } return c; }, []);
     const options = useMemo(() => GROUND_IDS.map((i) => ({ value: i, label: groundName(i) + (dup.get(groundName(i))! > 1 ? ` (${GROUNDS[i].country})` : ''), searchText: groundName(i) + ' ' + GROUNDS[i].country })), [dup]);
     return countryView(<div className="crx-hagley">
@@ -532,6 +554,7 @@ export function IndiaGrounds({ Selector }: any) {
 }
 
 function GroundCard({ g, allInd, setAllInd }: { g: number; allInd: boolean; setAllInd: (v: boolean) => void }) {
+    const [moreOpen, setMoreOpen] = useState(false);
     const ts = TESTS.filter((t) => t.g === g);
     const done = ts.filter((t) => t.res !== 'other' && t.inns.length > 0);
     const decided = done.filter((t) => typeof t.res === 'number');
@@ -563,28 +586,28 @@ function GroundCard({ g, allInd, setAllInd }: { g: number; allInd: boolean; setA
             {info.stars.length > 0 && <div className="crx-gi-names"><span>Names from here</span><strong>{info.stars.slice(0, 4).map((n) => <b className="crx-chip" key={n}>{n}</b>)}</strong></div>}
         </div>}
         {done.length > 0 && <p className="crx-verdict crx-noabbr">{plural(done.length, 'Test')} here: {batFirst} won by the side batting first, {chase} by the side chasing, {draws} drawn{avgFirst > 0 ? `. First innings average ${avgFirst}` : ''}.{ind.length > 0 ? ` India have won ${iw} of ${ind.length} here.` : ''}{decided.length < 5 && <em className="crx-caveat"> Few results, so take this lightly.</em>}</p>}
-        <div className="crx-split"><div className="crx-col">
+        <div className={'crx-split' + (moreOpen ? '' : ' crx-lessmode')}><div className="crx-col">
         <Label>Results</Label>
         <Tiles rows={[['Tests', done.length], ['Batting first won', batFirst], ['Chasing won', chase], ['Drawn', draws]]} />
-        <Label>Scores</Label>
+        <div className="crx-more"><Label>Scores</Label>
         <div className="crx-hg-scores">
             {avgFirst > 0 && <div className="crx-hg-score"><span>Average first innings</span><strong>{avgFirst}</strong></div>}
             {hi && <div className="crx-hg-score"><span>Highest total</span><strong>{hi[0]}</strong><em>{rowDetail(hi)}</em></div>}
             {lo && <div className="crx-hg-score"><span>Lowest all out</span><strong>{lo[0]}</strong><em>{rowDetail(lo)}</em></div>}
             {ch && <div className="crx-hg-score"><span>Highest winning chase</span><strong>{ch[0]}</strong><em>{rowDetail(ch)}</em></div>}
-        </div>
-        {A && dis > 0 && <>
+        </div></div>
+        {A && dis > 0 && <div className="crx-more">
             <Label info={`${n1(dis)} dismissals${known > 20 ? ` · bowlers took ${Math.round(100 * ps[0] / known)}% of their wickets with pace and ${Math.round(100 * ps[1] / known)}% with spin` : ''}. All teams, every Test here.`}>How wickets fall</Label>
             <Bars tone="neu" rows={KIND_LABELS.map((l, i) => [l, A.k[i]] as [string, number]).sort((a, b) => b[1] - a[1])} />
-        </>}
+        </div>}
         </div><div className="crx-col">
-        {A && (A.bat.length > 0 || A.bowl.length > 0) && <>
+        {A && (A.bat.length > 0 || A.bowl.length > 0) && <div className="crx-more">
             <Label>Top players</Label>
             <div className="crx-hg-top">
                 <Top title="Most runs" rows={A.bat.slice(0, 3)} unit={(r) => n1(r[2])} />
                 <Top title="Most wickets" rows={A.bowl.slice(0, 3)} unit={(r) => String(r[2])} />
             </div>
-        </>}
+        </div>}
         {ind.length > 0 && <>
             <Label>India here</Label>
             <Tiles rows={[['Tests', ind.length], ['Won', iw, 'ind'], ['Lost', il, 'opp'], ['Drawn', idr]]} />
@@ -592,6 +615,7 @@ function GroundCard({ g, allInd, setAllInd }: { g: number; allInd: boolean; setA
             <ShowMore open={allInd} onToggle={() => setAllInd(!allInd)} total={ind.length} shown={4} what="Tests" />
         </>}
         </div></div>
+        <MoreToggle open={moreOpen} onToggle={() => setMoreOpen(!moreOpen)} what="about this ground" />
     </div>;
 }
 

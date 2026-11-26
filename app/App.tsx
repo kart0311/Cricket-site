@@ -1,6 +1,8 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FileCard } from '@instinct/files';
-import { IndiaCountry, IndiaGrounds, IndiaMatchup, IndiaPlayers, MatchupCoverage } from './IndiaViews';
+import { IndiaCountry, IndiaGrounds, IndiaMatchup, IndiaPlayers, MatchupCoverage, duelName, popularDuels } from './IndiaViews';
+import { HomeSearch } from './HomeSearch';
+import { go } from './nav';
 import { countryView, displayText } from './countryLabels';
 import headerPhoto from './photos/cricket-header.jpg';
 import { GROUNDS, TESTS, isIndia, n1, yearOf } from './india';
@@ -13,7 +15,7 @@ const MASTHEAD_FACTS: [string, string][] = (() => {
     return [[n1(TESTS.length), 'Tests since ' + first], [n1(bb), 'India Tests ball by ball'], [n1(GROUNDS.length), 'grounds']];
 })();
 
-const TABS: [string, string, string][] = [['matchups', 'Player', 'matchup'], ['countries', 'Country', 'matchup'], ['players', 'Player', 'analysis'], ['grounds', 'Ground', 'analysis']];
+const BROWSE: [string, string][] = [['players', 'Players'], ['grounds', 'Grounds'], ['countries', 'Teams'], ['matchups', 'Duels']];
 
 function Selector({ label, value, options, open, onToggle, onChange, sort = true, placeholder, title, half, searchable = true, tone }: any) {
     const current = options.find((o: any) => o.value === value);
@@ -72,18 +74,21 @@ function Selector({ label, value, options, open, onToggle, onChange, sort = true
 
 export function App() {
     const [pageFloor] = useState(() => typeof window === 'undefined' ? 0 : window.innerHeight);
-    // Once someone picks a player, opponent or ground, the big header slims down so the results are on screen.
-    const [picked, setPicked] = useState(false);
-    const [compact, setCompact] = useState(false);
-    const [tab, setTab] = useState('matchups');
-    const tabTopRef = useRef<HTMLDivElement>(null);
-    const pickTab = (id: string) => {
-        setTab(id);
-        requestAnimationFrame(() => { const a = tabTopRef.current; if (a && a.getBoundingClientRect().top < 0) a.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior }); });
-    };
-    const dark = true;
-    return countryView(<div className={'crx-theme' + (dark ? ' crx-dark' : '') + (compact ? ' crx-compact' : '')}
-        onClick={(e) => { if (!picked && (e.target as HTMLElement).closest?.('.crx-opt, .crx-quickbtn')) { setPicked(true); setCompact(true); } }}>
+    // null = the home page; otherwise the screen being shown (players, grounds, countries, matchups)
+    const [view, setView] = useState<string | null>(null);
+    const topRef = useRef<HTMLDivElement>(null);
+    const toTop = () => requestAnimationFrame(() => { window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }); });
+    useEffect(() => {
+        try { history.replaceState({ v: null }, ''); } catch { /* file:// previews */ }
+        const pop = (e: PopStateEvent) => { setView(e.state && e.state.v ? e.state.v : null); toTop(); };
+        window.addEventListener('popstate', pop); return () => window.removeEventListener('popstate', pop);
+    }, []);
+    const show = (id: string | null) => { setView(id); try { history.pushState({ v: id }, ''); } catch { /* ignore */ } toTop(); };
+    const VIEW_OF: Record<string, string> = { player: 'players', ground: 'grounds', team: 'countries', duel: 'matchups' };
+    const jump = (kind: 'player' | 'ground' | 'team' | 'duel', value: any) => { go(kind, value); show(VIEW_OF[kind]); };
+    const duels = useMemo(() => popularDuels(), []);
+    const compact = view !== null;
+    return countryView(<div className={'crx-theme crx-dark' + (compact ? ' crx-compact' : '')}>
     <div className="crx-site" style={{ minHeight: pageFloor }}>
     <FileCard>
         <section className="crx-section">
@@ -95,28 +100,31 @@ export function App() {
                     <h1 className="crx-title crx-noabbr"><span className="crx-title1">Indian Cricket</span><span className="crx-title2">Beyond the Scoreboard</span></h1>
                     <div className="crx-mastfacts">{MASTHEAD_FACTS.map(([v, l]) => <div key={l}><strong>{v}</strong><span>{l}</span></div>)}</div>
                 </div>
-                {picked && <button type="button" className="crx-hdrtoggle" aria-expanded={!compact} aria-label={compact ? 'Show the photo and intro' : 'Hide the photo and intro'} onClick={() => setCompact(!compact)}>{compact ? '▾' : '▴'}</button>}
             </header>
-            <nav className="crx-tabs" role="tablist" aria-label="Sections">
-                {TABS.map(([id, a, b]) => <button key={id} type="button" role="tab" id={'crx-tab-' + id} aria-selected={tab === id} aria-controls={'crx-panel-' + id} aria-label={a + ' ' + b} className={'crx-tab' + (tab === id ? ' crx-tabon' : '')} onClick={() => pickTab(id)}><span>{a}</span><span>{b}</span></button>)}
-            </nav>
-            <div className="crx-tabtop" ref={tabTopRef} aria-hidden="true" />
+            <div className="crx-tabtop" ref={topRef} aria-hidden="true" />
+            {view === null
+                ? <div className="crx-home">
+                    <HomeSearch onPick={(k, v) => jump(k, v)} />
+                    {duels.length > 0 && <div className="crx-quick"><div className="crx-quicktitle">Or start with a famous duel</div><div className="crx-quickrow">{duels.map(([b, t, n]) => <button type="button" className="crx-quickbtn" key={b + '-' + t} onClick={() => jump('duel', [b, t])}><span className="crx-qb">{duelName(b)}</span><em>to</em><span className="crx-qt">{duelName(t)}</span><small>{n} {n === 1 ? 'meeting' : 'meetings'}</small></button>)}</div></div>}
+                    <div className="crx-browse"><span>Or browse</span>{BROWSE.map(([id, l]) => <button type="button" key={id} className="crx-browsebtn" onClick={() => show(id)}>{l}</button>)}</div>
+                </div>
+                : <div className="crx-navbar"><button type="button" className="crx-back" onClick={() => { if (history.state && history.state.v) history.back(); else show(null); }} aria-label="Back to the home page"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>Home</button><HomeSearch compact onPick={(k, v) => jump(k, v)} /></div>}
 
-            <div className="crx-tabpanel" role="tabpanel" id="crx-panel-matchups" aria-labelledby="crx-tab-matchups" hidden={tab !== 'matchups'}>
+            <div className="crx-tabpanel" role="region" aria-label="Player matchup" id="crx-panel-matchups" hidden={view !== 'matchups'}>
                 <IndiaMatchup Selector={Selector} />
             </div>
-            <div className="crx-tabpanel" role="tabpanel" id="crx-panel-countries" aria-labelledby="crx-tab-countries" hidden={tab !== 'countries'}>
+            <div className="crx-tabpanel" role="region" aria-label="Team matchup" id="crx-panel-countries" hidden={view !== 'countries'}>
                 <IndiaCountry Selector={Selector} />
             </div>
-            <div className="crx-tabpanel" role="tabpanel" id="crx-panel-players" aria-labelledby="crx-tab-players" hidden={tab !== 'players'}>
+            <div className="crx-tabpanel" role="region" aria-label="Player analysis" id="crx-panel-players" hidden={view !== 'players'}>
                 <IndiaPlayers Selector={Selector} />
             </div>
-            <div className="crx-tabpanel" role="tabpanel" id="crx-panel-grounds" aria-labelledby="crx-tab-grounds" hidden={tab !== 'grounds'}>
+            <div className="crx-tabpanel" role="region" aria-label="Ground analysis" id="crx-panel-grounds" hidden={view !== 'grounds'}>
                 <IndiaGrounds Selector={Selector} />
             </div>
         </section>
         {<details className="crx-datanote"><summary>About this data</summary>
-            {tab === 'matchups' && <p className="crx-fine"><MatchupCoverage /></p>}
+            {view === 'matchups' && <p className="crx-fine"><MatchupCoverage /></p>}
             <p className="crx-credit">Ball-by-ball data: Cricsheet (cricsheet.org), ODC-By 1.0. Scorecard history since 1932: public Test dataset compiled from ESPNcricinfo records. Computed from match data, not official totals.</p>
         </details>}
     </FileCard>
