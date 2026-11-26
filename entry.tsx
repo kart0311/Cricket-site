@@ -11,3 +11,6 @@ import './app/polish.css';
 import './app/premium.css';
 
 createRoot(document.getElementById('root')!).render(<FileRouter><App /></FileRouter>);
+
+// installable and quick on a weak signal (only on the real website, not a local preview file)
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });

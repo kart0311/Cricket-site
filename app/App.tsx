@@ -72,6 +72,14 @@ function Selector({ label, value, options, open, onToggle, onChange, sort = true
     </div>);
 }
 
+function InstallTip() {
+    const [hide, setHide] = useState(() => { try { return localStorage.getItem('crx-tip') === '1'; } catch { return false; } });
+    const ios = typeof navigator !== 'undefined' && /iPhone|iPad|iPod/.test(navigator.userAgent);
+    const standalone = typeof window !== 'undefined' && ((navigator as any).standalone === true || window.matchMedia?.('(display-mode: standalone)').matches);
+    if (hide || !ios || standalone) return null;
+    return <div className="crx-tip"><span>Keep it on your phone: tap <b>Share</b>, then <b>Add to Home Screen</b>.</span><button type="button" aria-label="Dismiss" onClick={() => { setHide(true); try { localStorage.setItem('crx-tip', '1'); } catch { /* ignore */ } }}>×</button></div>;
+}
+
 export function App() {
     const [pageFloor] = useState(() => typeof window === 'undefined' ? 0 : window.innerHeight);
     // null = the home page; otherwise the screen being shown (players, grounds, countries, matchups)
@@ -107,6 +115,7 @@ export function App() {
                     <HomeSearch onPick={(k, v) => jump(k, v)} />
                     {duels.length > 0 && <div className="crx-quick"><div className="crx-quicktitle">Or start with a famous duel</div><div className="crx-quickrow">{duels.map(([b, t, n]) => <button type="button" className="crx-quickbtn" key={b + '-' + t} onClick={() => jump('duel', [b, t])}><span className="crx-qb">{duelName(b)}</span><em>to</em><span className="crx-qt">{duelName(t)}</span><small>{n} {n === 1 ? 'meeting' : 'meetings'}</small></button>)}</div></div>}
                     <div className="crx-browse"><span>Or browse</span>{BROWSE.map(([id, l]) => <button type="button" key={id} className="crx-browsebtn" onClick={() => show(id)}>{l}</button>)}</div>
+                    <InstallTip />
                 </div>
                 : <div className="crx-navbar"><button type="button" className="crx-back" onClick={() => { if (history.state && history.state.v) history.back(); else show(null); }} aria-label="Back to the home page"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>Home</button><HomeSearch compact onPick={(k, v) => jump(k, v)} /></div>}
 
