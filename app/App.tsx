@@ -1,7 +1,8 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FileCard } from '@instinct/files';
-import { IndiaCountry, IndiaGrounds, IndiaMatchup, IndiaPlayers, MatchupCoverage } from './IndiaViews';
+import { IndiaCountry, IndiaFinder, IndiaGrounds, IndiaMatchup, IndiaPlayers, MatchupCoverage } from './IndiaViews';
 import { countryView, displayText } from './countryLabels';
+import { onGo } from './nav';
 import headerPhoto from './photos/cricket-header.jpg';
 import { GROUNDS, TESTS, isIndia, n1, yearOf } from './india';
 
@@ -13,7 +14,7 @@ const MASTHEAD_FACTS: [string, string][] = (() => {
     return [[n1(TESTS.length), 'Tests since ' + first], [n1(bb), 'India Tests ball by ball'], [n1(GROUNDS.length), 'grounds']];
 })();
 
-const TABS: [string, string, string][] = [['matchups', 'Player', 'matchup'], ['countries', 'Team', 'matchup'], ['players', 'Player', 'analysis'], ['grounds', 'Stadium', 'analysis']];
+const TABS: [string, string, string][] = [['matchups', 'Player', 'matchup'], ['countries', 'Team', 'matchup'], ['players', 'Player', 'analysis'], ['grounds', 'Stadium', 'analysis'], ['finder', 'Who gets', 'him out']];
 
 function Selector({ label, value, options, open, onToggle, onChange, sort = true, placeholder, title, half, searchable = true, tone }: any) {
     const current = options.find((o: any) => o.value === value);
@@ -89,6 +90,7 @@ export function App() {
         f(); window.addEventListener('scroll', f, { passive: true }); window.addEventListener('resize', f);
         return () => { window.removeEventListener('scroll', f); window.removeEventListener('resize', f); };
     }, []);
+    useEffect(() => onGo((d) => { const to: Record<string, string> = { player: 'players', ground: 'grounds', team: 'countries', duel: 'matchups' }; if (to[d.kind]) pickTab(to[d.kind]); }), []);
     const pickTab = (id: string) => {
         setTab(id);
         requestAnimationFrame(() => { const a = topRef.current; if (a && a.getBoundingClientRect().top < 0) a.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior }); });
@@ -120,6 +122,9 @@ export function App() {
             </div>
             <div className="crx-tabpanel" role="region" aria-label="Player analysis" id="crx-panel-players" hidden={tab !== 'players'}>
                 <IndiaPlayers Selector={Selector} />
+            </div>
+            <div className="crx-tabpanel" role="region" aria-label="Who gets him out" id="crx-panel-finder" hidden={tab !== 'finder'}>
+                <IndiaFinder Selector={Selector} />
             </div>
             <div className="crx-tabpanel" role="region" aria-label="Stadium analysis" id="crx-panel-grounds" hidden={tab !== 'grounds'}>
                 <IndiaGrounds Selector={Selector} />

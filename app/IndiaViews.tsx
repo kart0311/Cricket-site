@@ -1,12 +1,14 @@
 // The four India-wide screens: Player matchup, Country matchup, Player analysis, Ground analysis.
 // Every number is computed here from app/indiaData.ts (see india.ts); nothing is typed in by hand.
 import React, { useEffect, useMemo, useState } from 'react';
-import { onGo } from './nav';
+import { onGo, go } from './nav';
 import { countryView } from './countryLabels';
 import { Badge, Info, MiniBars, ResultStrip, type Tone } from './charts';
 import { makeCard, saveCard } from './shareCard';
 import { groundInfo } from './groundInfo';
 import photosJson from './stadiumPhotos.generated.json';
+import NZ_IND_CFG from '../refresh/series/nz-ind.json';
+import IND_AUS_CFG from '../refresh/series/ind-aus.json';
 const PHOTOS = photosJson as unknown as Record<string, { file: string; author: string; license: string; page: string }>;
 import {
     BAT, BOWL, CODE, CODE_LETTER, CODE_NAME, GROUNDS, GROUND_AGG, INNINGS_NAME, PAIRS, PAIRS_FROM, PLAYERS, TEAMS, TESTS,
@@ -646,3 +648,104 @@ function GroundCard({ g, allInd, setAllInd }: { g: number; allInd: boolean; setA
     </div>;
 }
 
+
+
+// ============================================================ Who gets him out
+// Pick a batter who is going well; see which bowlers in the current Test's squad have the best record against him.
+type SqP = { name: string; team: string; style?: string; likely?: boolean };
+type SeriesCfg = { id: string; title: string; homeTeam: string; squads: SqP[]; fixtures: { n: number; label: string; date: string; days: number; venue: string }[]; venues: { key: string; name: string; city: string }[] };
+const SERIES_CFGS = [NZ_IND_CFG, IND_AUS_CFG] as unknown as SeriesCfg[];
+function currentSeries(): { cfg: SeriesCfg; fx: SeriesCfg['fixtures'][0] } {
+    const now = Date.now();
+    for (const cfg of SERIES_CFGS) {
+        for (const fx of cfg.fixtures) { const end = Date.parse(fx.date + 'T00:00:00Z') + (fx.days + 1) * 864e5; if (end >= now) return { cfg, fx }; }
+    }
+    const cfg = SERIES_CFGS[SERIES_CFGS.length - 1]; return { cfg, fx: cfg.fixtures[cfg.fixtures.length - 1] };
+}
+const PLAYER_BY_KEY = (() => { const m = new Map<string, number>(); PLAYERS.forEach((p) => m.set(p.name + '|' + TEAMS[p.team], p.i)); return m; })();
+const squadIdx = (sp: SqP) => PLAYER_BY_KEY.get(sp.name + '|' + sp.team);
+
+function vsStats(b: number, t: number) {
+    const v = PAIRS[b + ',' + t]; const st = emptyStats(); let outs = 0; const tests = new Set<number>();
+    if (!v) return { st, outs: 0, tests: 0 };
+    for (const [m, , s] of v.m) { addStats(st, parseBalls(s)); tests.add(m); }
+    outs = st.outs;
+    for (const [m, , kind] of v.c) { tests.add(m); if (kind > 0) { const l = CODE_LETTER[kind]; if (l && 'cblshk'.includes(l)) outs++; } }
+    return { st, outs, tests: tests.size };
+}
+
+export function IndiaFinder({ Selector }: any) {
+    const { cfg, fx } = useMemo(currentSeries, []);
+    const venue = cfg.venues.find((v) => v.key === (fx as any).venue);
+    const [open, setOpen] = useState(false);
+    const [batter, setBatter] = useState<number | null>(null);
+    const [scope, setScope] = useState('xi');
+    const options = useMemo(() => HAS_ROWS.map((x) => ({ value: x.i, label: plabel(x.i), searchText: x.name + ' ' + TEAMS[x.team] })), []);
+    const squadBatters = useMemo(() => cfg.squads.filter((p) => p.likely && !p.style).map((p) => ({ p, i: squadIdx(p) })).filter((x): x is { p: SqP; i: number } => x.i != null), [cfg]);
+    const bt = batter != null ? PLAYERS[batter] : null;
+    const myTeam = bt ? TEAMS[bt.team] : '';
+    const oppTeam = !bt ? '' : myTeam === 'India' ? (cfg.squads.find((p) => p.team !== 'India')?.team || '') : myTeam === (cfg.squads.find((p) => p.team !== 'India')?.team || '') ? 'India' : '';
+    const inSeries = !!oppTeam;
+    const eff = inSeries ? scope : 'any';
+
+    const rows = useMemo(() => {
+        if (batter == null) return null;
+        let cand: { i: number; style?: string; xi: boolean }[] = [];
+        if (eff === 'any') {
+            const seen = BY_BATTER.get(batter);
+            cand = [...(seen ? seen.keys() : [])].filter((b) => PLAYERS[b].team !== PLAYERS[batter].team).map((b) => ({ i: b, xi: true }));
+        } else {
+            cand = cfg.squads.filter((p) => p.team === oppTeam && (eff === 'all' || p.likely)).map((p) => ({ p, i: squadIdx(p) })).filter((x): x is any => x.i != null).map((x: any) => ({ i: x.i, style: x.p.style, xi: !!x.p.likely }));
+        }
+        const out = cand.map((c) => { const r = vsStats(c.i, batter); return { ...c, ...r }; });
+        const met = out.filter((r) => r.st.balls > 0 || r.outs > 0 || r.tests > 0);
+        const none = out.filter((r) => !(r.st.balls > 0 || r.outs > 0 || r.tests > 0) && (eff === 'any' ? false : !!r.style));
+        met.sort((a, b) => (b.outs - a.outs) || ((a.outs ? a.st.balls / a.outs : 1e9) - (b.outs ? b.st.balls / b.outs : 1e9)) || (b.st.balls - a.st.balls));
+        return { met: eff === 'any' ? met.slice(0, 10) : met, none };
+    }, [batter, eff, oppTeam, cfg]);
+
+    const style = useMemo(() => {
+        if (batter == null) return '';
+        const sp = splitStats(batter, true, 'all'); const pace = sp.get('pace'), spin = sp.get('spin');
+        const nm = sur(batter); const av = (x?: PairStats) => (x && x.balls >= 60 && x.outs ? x.runs / x.outs : NaN);
+        const a = av(pace), b = av(spin);
+        if (Number.isFinite(a) && Number.isFinite(b)) return `${nm} averages ${f1(a)} against pace and ${f1(b)} against spin${Math.abs(a - b) < 0.1 * Math.max(a, b) ? ', so little between them' : a > b ? ', so spin is the better way in' : ', so pace is the better way in'}.`;
+        return '';
+    }, [batter]);
+
+    const best = rows?.met[0];
+    let verdict = '';
+    if (batter != null && rows) {
+        if (best && best.outs > 0) verdict = `Best bet: ${pname(best.i)}. ${sur(best.i)} has dismissed ${sur(batter)} ${times(best.outs)} in ${plural(best.st.balls, 'ball')}${best.outs > 1 ? `, about once every ${Math.round(best.st.balls / best.outs)} balls` : ''}.`;
+        else if (best) verdict = `Nobody here has dismissed ${sur(batter)} before. ${pname(best.i)} has bowled the most to him: ${plural(best.st.balls, 'ball')}, ${best.st.runs} runs.`;
+        else verdict = `None of these bowlers has a recorded meeting with ${sur(batter)}.`;
+    }
+    const scopeLabel = eff === 'xi' ? 'Expected XI' : eff === 'all' ? 'Full squad' : 'Anyone';
+    return <>
+        <div className="crx-pair">
+            <Selector label="Batter" value={batter} options={options} open={open} onToggle={() => setOpen(!open)} onChange={(v: number) => { setBatter(v); setOpen(false); }} tone={toneOf(batter)} />
+        </div>
+        <Quick title={'In this match · ' + cfg.title.replace(/\s+/g, ' ') + ' · ' + fx.label} items={squadBatters.map(({ p, i }) => ({ key: p.name, label: sur(i), on: i === batter, go: () => setBatter(i) }))} />
+        {bt && inSeries && <Pills label="Which bowlers" cls="crx-twomodes crx-three" value={eff} onChange={setScope} items={[['xi', 'Expected XI'], ['all', 'Full squad'], ['any', 'Anyone']]} />}
+        {batter == null && <Hint>Pick the batter who is going well. You get the bowlers most likely to get him out.</Hint>}
+        {bt && rows && <>
+            {inSeries && eff !== 'any' && <p className="crx-hint crx-finderline">{oppTeam} {scopeLabel === 'Expected XI' ? 'expected XI' : 'squad'} for the {fx.label}{venue ? ', ' + venue.name : ''}. The team sheet is not confirmed until the toss.</p>}
+            {!inSeries && <p className="crx-hint crx-finderline">{pname(batter!)} is not in the current series, so this shows anyone who has bowled to him.</p>}
+            <p className="crx-verdict crx-noabbr">{verdict}</p>
+            {rows.met.length > 0 && <>
+                <Label>Who has the edge on {sur(batter!)}</Label>
+                <div className="crx-flist">{rows.met.map((r, k) => {
+                    const sr = r.st.balls ? (100 * r.st.runs / r.st.balls) : 0; const per = r.outs ? Math.round(r.st.balls / r.outs) : 0;
+                    return <button type="button" key={r.i} className={'crx-frow' + (k === 0 && r.outs > 0 ? ' crx-fbest' : '')} onClick={() => go('duel', [r.i, batter])} aria-label={`${pname(r.i)} to ${pname(batter!)}: open the matchup`}>
+                        <span className="crx-fmain"><span className="crx-fname">{pname(r.i)}{r.style && <em>{r.style}</em>}</span>
+                            <span className="crx-fsub">{plural(r.st.balls, 'ball')} · {r.st.runs} runs{r.st.balls ? ` · SR ${sr.toFixed(0)}` : ''}{per ? ` · out every ${per}` : ''}</span></span>
+                        <span className="crx-fnum"><b>{r.outs}</b><small>{r.outs === 1 ? 'wicket' : 'wickets'}</small></span>
+                    </button>;
+                })}</div>
+            </>}
+            {rows.none.length > 0 && <p className="crx-hint crx-finderline">No record against {sur(batter!)}: {rows.none.map((r) => sur(r.i) + (r.style ? ` (${r.style.toLowerCase()})` : '')).join(', ')}.</p>}
+            {style && <p className="crx-hint crx-finderline">{style}</p>}
+            <p className="crx-hint crx-finderline">Counts every Test meeting in the database: ball by ball since {fmtDate(PAIRS_FROM)}, and who got whom out before that. Tap a bowler for the full matchup.</p>
+        </>}
+    </>;
+}

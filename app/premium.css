@@ -411,3 +411,19 @@
 .crx-theme .crx-hero-dl .crx-heroname { font-family:Georgia,'Times New Roman',serif !important; font-size:15px; font-style:italic; line-height:1.25; margin:6px 0 4px; }
 .crx-theme .crx-hero-dl .crx-heroname .crx-nm { display:inline !important; font-family:Georgia,'Times New Roman',serif !important; font-size:clamp(24px, 7.4vw, 30px) !important; line-height:1.18 !important; font-weight:400; font-style:normal; margin:0 !important; }
 .crx-theme .crx-hero-dl .crx-heroname .crx-nm + .crx-nm { margin:0 !important; }
+
+/* ---- Fifth tab: Who gets him out ---- */
+.crx-theme .crx-tabs { grid-template-columns:repeat(5, 1fr) !important; }
+@media (max-width:520px) { .crx-theme .crx-tabs { gap:5px !important; } .crx-theme .crx-tabs .crx-tab { font-size:12px !important; padding:8px 2px !important; border-radius:12px !important; } .crx-theme .crx-tabs .crx-tab span + span { font-size:10.5px !important; } }
+.crx-theme .crx-finderline { margin:10px 0 0; }
+.crx-theme .crx-flist { display:flex; flex-direction:column; gap:8px; margin:10px 0 6px; }
+.crx-theme button.crx-frow { display:flex !important; align-items:center; justify-content:space-between; gap:12px; width:100%; text-align:left; padding:12px 16px !important; border-radius:16px !important; border:1px solid rgba(255,255,255,.12) !important; background:rgba(255,255,255,.05) !important; color:#f1e6d8; font:inherit; cursor:pointer; min-height:0; }
+.crx-theme button.crx-frow.crx-fbest { border-color:#f0a84c !important; background:rgba(240,168,76,.14) !important; }
+.crx-theme .crx-fmain { display:flex; flex-direction:column; gap:3px; min-width:0; }
+.crx-theme .crx-fname { font-size:16px; font-weight:600; color:#f6ede1; }
+.crx-theme .crx-fname em { font-style:normal; font-weight:400; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:#d9b98b; margin-left:8px; }
+.crx-theme .crx-fsub { font-size:12.5px; color:rgba(241,230,216,.65); line-height:1.35; }
+.crx-theme .crx-fnum { display:flex; flex-direction:column; align-items:center; min-width:52px; }
+.crx-theme .crx-fnum b { font-size:26px; font-weight:500; line-height:1; color:#f0c487; }
+.crx-theme .crx-fnum small { font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:rgba(241,230,216,.55); margin-top:3px; }
+.crx-theme .crx-three { display:grid; grid-template-columns:repeat(3, 1fr); }
